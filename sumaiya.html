@@ -8,7 +8,7 @@
         :root {
             --moon-glow: #f5f3ce;
             --accent: #e0c3fc;
-            --glass: rgba(255, 255, 255, 0.12);
+            --glass: rgba(255, 255, 255, 0.08);
         }
 
         body {
@@ -33,41 +33,46 @@
         }
 
         .moon-wrapper {
-            margin: 50px auto 20px;
+            margin: 40px auto 20px;
             perspective: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         /* Realistic Moon Phase Container */
         .moon-sphere {
-            width: 160px;
-            height: 160px;
+            width: 180px;
+            height: 180px;
             background: url('https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg');
             background-size: cover;
             border-radius: 50%;
             position: relative;
-            box-shadow: inset -10px -10px 20px #000, 0 0 40px rgba(245, 243, 206, 0.2);
+            box-shadow: 0 0 50px rgba(224, 195, 252, 0.15), inset -10px -10px 30px #000;
             overflow: hidden;
             transition: transform 0.5s ease;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .moon-sphere:active { transform: scale(1.1) rotate(10deg); }
+        .moon-sphere:active { transform: scale(1.05); }
 
-        /* The dynamic shadow that creates the phase */
+        /* The dynamic shadow - Updated for better realism */
         #moon-shadow {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(2, 6, 23, 0.92);
+            background: #020617;
             border-radius: 50%;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.95;
         }
 
         .advance-wish {
-            font-size: 1.1rem;
-            font-weight: 300;
-            letter-spacing: 3px;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 4px;
             text-transform: uppercase;
             margin-bottom: 10px;
             color: var(--accent);
@@ -76,69 +81,74 @@
 
         @keyframes glow {
             from { text-shadow: 0 0 5px var(--accent); opacity: 0.7; }
-            to { text-shadow: 0 0 20px var(--accent); opacity: 1; }
+            to { text-shadow: 0 0 15px var(--accent); opacity: 1; }
         }
 
         h1 {
-            font-size: 2rem;
-            margin: 0 0 30px 0;
+            font-size: 2.2rem;
+            margin: 0 0 40px 0;
             font-weight: 800;
-            background: linear-gradient(to right, #fff, var(--accent));
+            letter-spacing: 2px;
+            background: linear-gradient(to bottom, #fff, var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-align: center;
         }
 
         .countdown-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 15px;
             width: 90%;
-            max-width: 420px;
-            margin-bottom: 30px;
+            max-width: 450px;
+            margin-bottom: 40px;
         }
 
         .box {
             background: var(--glass);
-            padding: 18px 5px;
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
+            padding: 20px 5px;
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            text-align: center;
         }
 
-        .number { display: block; font-size: 1.6rem; font-weight: 700; color: var(--accent); }
-        .label { font-size: 0.65rem; text-transform: uppercase; opacity: 0.5; letter-spacing: 1px; }
+        .number { display: block; font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.5; letter-spacing: 2px; }
 
         .card {
             width: 85%;
-            background: rgba(15, 23, 42, 0.8);
-            border-radius: 24px;
-            border: 1px solid rgba(224, 195, 252, 0.2);
-            padding: 25px;
+            max-width: 500px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 28px;
+            border: 1px solid rgba(224, 195, 252, 0.15);
+            padding: 30px;
             text-align: left;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
         .card::before {
             content: '🌙';
             position: absolute;
             right: -10px;
-            top: -10px;
-            font-size: 80px;
-            opacity: 0.05;
+            bottom: -10px;
+            font-size: 100px;
+            opacity: 0.03;
         }
 
         .card h3 {
-            font-size: 1rem;
+            font-size: 0.85rem;
             color: var(--accent);
-            margin: 0 0 15px 0;
+            margin: 0 0 20px 0;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
 
-        .event-text { font-size: 0.95rem; line-height: 1.7; color: #cbd5e1; }
-        .event-text span { color: #fff; font-weight: 600; border-bottom: 1px dashed var(--accent); }
+        .event-text { font-size: 1rem; line-height: 1.8; color: #e2e8f0; }
+        .event-text span { color: var(--accent); font-weight: 600; }
     </style>
 </head>
 <body>
@@ -189,7 +199,6 @@
             8: "HAPPY BIRTHDAY! On this day in 2005, Fathima Sumaiya brought a <span>New Light</span> to the world. Our Moon was born!"
         };
 
-        // Feature: Parallax Starfield
         const canvas = document.getElementById('star-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -215,7 +224,7 @@
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
                 ctx.fill();
-                s.opacity += (Math.random() - 0.5) * 0.05;
+                s.opacity += (Math.random() - 0.5) * 0.03;
                 if(s.opacity < 0) s.opacity = 0;
                 if(s.opacity > 1) s.opacity = 1;
             });
@@ -226,25 +235,40 @@
             const now = new Date();
             const day = now.getDate();
             const month = now.getMonth() + 1;
+            const year = 2005;
 
-            document.getElementById("historyTitle").innerText = `Flashback: 2005.0${month}.${day}`;
-            document.getElementById("moonDateLabel").innerText = `Lunar Phase on Jan/Feb ${day}, 2005`;
+            // Update Titles
+            const monthName = month === 1 ? "Jan" : "Feb";
+            document.getElementById("historyTitle").innerText = `Flashback: ${year}.${month < 10 ? '0'+month : month}.${day < 10 ? '0'+day : day}`;
+            document.getElementById("moonDateLabel").innerText = `Lunar Phase: ${monthName} ${day}, 2005`;
             
             if (historyData[day]) {
                 document.getElementById("historyContent").innerHTML = historyData[day];
             }
 
-            // Fixed Moon Shadow Logic
-            // Jan 24 (Full Moon) -> Shadow is at 100% (hidden behind)
-            // Feb 08 (New Moon) -> Shadow is at 0% (covering front)
+            // --- FIXED MOON LOGIC ---
+            // Jan 25 is Full Moon (shadow starts far right)
+            // Feb 8 is New Moon (shadow is center/covers all)
             const shadow = document.getElementById("moon-shadow");
-            let offset;
-            if(month === 1) {
-                offset = 100 + ((day - 24) * 6); // Moves shadow across
-            } else {
-                offset = 40 - (day * 8); // Covers more as we hit Feb 8
+            
+            // Calculate total progress from Jan 24 (Day 0) to Feb 8 (Day 15)
+            let totalDaysPassed = 0;
+            if (month === 1 && day >= 24) {
+                totalDaysPassed = day - 24;
+            } else if (month === 2) {
+                totalDaysPassed = (31 - 24) + day;
             }
-            shadow.style.transform = `translateX(${offset}%)`;
+
+            // At 0 days (Jan 24): Shadow at 100% (Fully Visible Moon)
+            // At 15 days (Feb 8): Shadow at 0% (New Moon / Covered)
+            // Range: 100% to 0%
+            let shadowPos = 100 - (totalDaysPassed * 6.66); 
+            
+            // Clamp values
+            if (shadowPos < 0) shadowPos = 0;
+            if (shadowPos > 100) shadowPos = 100;
+
+            shadow.style.left = `${shadowPos}%`;
         }
 
         function updateTimer() {
@@ -252,10 +276,16 @@
             const now = new Date().getTime();
             const diff = target - now;
 
-            document.getElementById("days").innerHTML = Math.floor(diff / 86400000);
-            document.getElementById("hours").innerHTML = Math.floor((diff % 86400000) / 3600000);
-            document.getElementById("mins").innerHTML = Math.floor((diff % 3600000) / 60000);
-            document.getElementById("secs").innerHTML = Math.floor((diff % 60000) / 1000);
+            if (diff <= 0) {
+                document.querySelector(".countdown-grid").style.display = "none";
+                document.querySelector(".advance-wish").innerText = "Happy Birthday!";
+                return;
+            }
+
+            document.getElementById("days").innerHTML = Math.floor(diff / 86400000).toString().padStart(2, '0');
+            document.getElementById("hours").innerHTML = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
+            document.getElementById("mins").innerHTML = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            document.getElementById("secs").innerHTML = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
         }
 
         window.addEventListener('resize', initStars);
