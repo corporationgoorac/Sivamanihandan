@@ -8,127 +8,151 @@
         :root {
             --moon-glow: #f5f3ce;
             --accent: #e0c3fc;
-            --glass: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.12);
         }
 
         body {
             margin: 0;
             background: #020617; 
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            text-align: center;
+            overflow-x: hidden;
             padding-bottom: 50px;
         }
 
-        .stars-container {
+        /* Animated Star Background */
+        #star-canvas {
             position: fixed;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top, #1e293b 0%, #020617 100%);
+            top: 0;
+            left: 0;
             z-index: -1;
         }
 
-        /* Dynamic Moon Styles */
-        .moon-wrapper { margin: 40px auto 10px; position: relative; }
+        .moon-wrapper {
+            margin: 50px auto 20px;
+            perspective: 1000px;
+        }
         
-        .moon-container {
-            width: 150px;
-            height: 150px;
+        /* Realistic Moon Phase Container */
+        .moon-sphere {
+            width: 160px;
+            height: 160px;
             background: url('https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg');
             background-size: cover;
             border-radius: 50%;
             position: relative;
-            box-shadow: 0 0 40px rgba(245, 243, 206, 0.3);
+            box-shadow: inset -10px -10px 20px #000, 0 0 40px rgba(245, 243, 206, 0.2);
             overflow: hidden;
+            transition: transform 0.5s ease;
         }
 
-        /* Shadow overlay to simulate phases */
-        .moon-shadow {
+        .moon-sphere:active { transform: scale(1.1) rotate(10deg); }
+
+        /* The dynamic shadow that creates the phase */
+        #moon-shadow {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(2, 6, 23, 0.9);
-            transition: all 1s ease;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            color: var(--accent);
-            margin: 20px 0 5px;
-            text-shadow: 0 0 10px rgba(224, 195, 252, 0.5);
+            background: rgba(2, 6, 23, 0.92);
+            border-radius: 50%;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .advance-wish {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 15px;
-            animation: fadeInOut 3s infinite;
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: var(--accent);
+            animation: glow 2s infinite alternate;
         }
 
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.6; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1); }
+        @keyframes glow {
+            from { text-shadow: 0 0 5px var(--accent); opacity: 0.7; }
+            to { text-shadow: 0 0 20px var(--accent); opacity: 1; }
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin: 0 0 30px 0;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .countdown-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 12px;
             width: 90%;
-            max-width: 400px;
+            max-width: 420px;
             margin-bottom: 30px;
         }
 
         .box {
             background: var(--glass);
-            padding: 15px 5px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
+            padding: 18px 5px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
-        .number { display: block; font-size: 1.5rem; font-weight: bold; }
-        .label { font-size: 0.7rem; text-transform: uppercase; opacity: 0.6; }
+        .number { display: block; font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+        .label { font-size: 0.65rem; text-transform: uppercase; opacity: 0.5; letter-spacing: 1px; }
 
         .card {
             width: 85%;
             background: rgba(15, 23, 42, 0.8);
-            border-radius: 20px;
-            border: 1px solid var(--accent);
-            padding: 20px;
+            border-radius: 24px;
+            border: 1px solid rgba(224, 195, 252, 0.2);
+            padding: 25px;
             text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '🌙';
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            font-size: 80px;
+            opacity: 0.05;
         }
 
         .card h3 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--accent);
-            margin-bottom: 15px;
-            text-align: center;
-            border-bottom: 1px solid rgba(224, 195, 252, 0.2);
-            padding-bottom: 10px;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .event-text { font-size: 0.9rem; line-height: 1.6; }
-        .event-text span { color: var(--accent); font-weight: bold; }
+        .event-text { font-size: 0.95rem; line-height: 1.7; color: #cbd5e1; }
+        .event-text span { color: #fff; font-weight: 600; border-bottom: 1px dashed var(--accent); }
     </style>
 </head>
 <body>
 
-    <div class="stars-container"></div>
+    <canvas id="star-canvas"></canvas>
 
     <div class="moon-wrapper">
-        <div class="moon-container">
-            <div id="moonShadow" class="moon-shadow"></div>
+        <div class="moon-sphere">
+            <div id="moon-shadow"></div>
         </div>
-        <p id="moonDateLabel" style="font-size: 0.75rem; margin-top: 15px; color: var(--accent);"></p>
+        <p id="moonDateLabel" style="font-size: 0.7rem; margin-top: 15px; opacity: 0.6; letter-spacing: 1px;"></p>
     </div>
 
-    <div class="advance-wish">Advance Happy Birthday, Moon! 🌙</div>
+    <div class="advance-wish">Advance Happy Birthday</div>
     <h1>FATHIMA SUMAIYA</h1>
 
     <div class="countdown-grid">
@@ -139,60 +163,88 @@
     </div>
 
     <div class="card">
-        <h3 id="historyTitle">2005 Flashback</h3>
+        <h3 id="historyTitle">Space Memory</h3>
         <div id="historyContent" class="event-text">
-            Loading cosmic history...
+            Connecting to 2005 satellite data...
         </div>
     </div>
 
     <script>
-        // Database of historical events from Jan 24 to Feb 8, 2005
         const historyData = {
-            24: "On this day, the Moon was a <span>Full Moon</span> (100% bright). Meanwhile, the Opportunity Rover on Mars was celebrating its first full year of exploration!",
-            25: "The Moon began its waning phase. In 2005, scientists were busy analyzing the first data from Titan's surface sent by the <span>Huygens probe</span>.",
-            26: "A <span>Full Moon</span> still dominated the 2005 sky. The world was watching the countdown to the Super Bowl while your arrival was just 13 days away.",
-            27: "On this day in 2005, the <span>Smart-1</span> mission was capturing high-resolution images of the lunar craters, preparing the way for you.",
-            28: "The 2005 sky was clear. On Earth, 'Let Me Love You' was the top song, providing the soundtrack to the world you were about to join.",
-            29: "The countdown hit single digits in weeks! Space agencies were tracking a large asteroid flyby that safely passed Earth today in 2005.",
-            30: "The Moon was 75% visible. In 2005, the first ever <span>democratic elections</span> were held in Iraq, a major moment in world history.",
-            31: "January ended in 2005 with a beautiful high moon. You were now only 8 days away from becoming the new light in the world.",
-            1: "Welcome to February 2005! The <span>Deep Impact</span> spacecraft was zooming through deep space toward a comet on this very day.",
-            2: "Groundhog Day 2005! While people looked for shadows on Earth, the stars were aligning for your birth in just 6 days.",
-            3: "The Moon was becoming a thin crescent. In 2005, tech history was being made as the founders of <span>YouTube</span> were finalized their plans.",
-            4: "Only 4 days to go! In 2005, the world was bracing for a major winter storm, but the warmth of your arrival was coming.",
-            5: "The 2005 Moon was nearly invisible (Waning Crescent). The universe was getting quiet and dark, preparing for your big debut.",
-            6: "2 days left! In 2005, the Super Bowl was happening (Patriots vs Eagles), but the real MVP was arriving in 48 hours.",
-            7: "The final countdown! In 2005, the <span>New Moon</span> began, marking a complete reset of the lunar cycle just for you.",
-            8: "HAPPY BIRTHDAY! Today in 2005, Fathima Sumaiya—the Moon—was born. A New Moon for a new life!"
+            24: "Exactly 15 days before you arrived, the Moon was a <span>Full Moon</span>. NASA's Opportunity rover on Mars celebrated its first year of discovery today!",
+            25: "The Moon began to lean into the shadows. In 2005, the world was mesmerized by the first color images of <span>Titan's frozen rivers</span>.",
+            26: "The 2005 sky was brilliantly clear. While you were counting down your final 13 days, the world was reaching for the stars with the <span>Huygens probe</span>.",
+            27: "Lunar orbital mission <span>Smart-1</span> began mapping the Moon's South Pole today in 2005, searching for the brightest peaks of light.",
+            28: "The air was filled with music. 2005's top hits were playing on every radio, creating the vibe for the world you were about to change.",
+            29: "A massive asteroid (Toutatis) was the talk of 2005 today, but the real star was getting ready to shine in just 10 days.",
+            30: "The Moon reached its <span>Last Quarter</span>. 2005 was a year of new beginnings, and your arrival was the most important one.",
+            31: "As January 2005 closed, the Moon grew thinner. You were now just 8 days away—the final week of the world without you.",
+            1: "February started with a cosmic glow. The <span>Deep Impact</span> mission was hurtling through space, just like you were headed toward us.",
+            2: "The universe was aligning. In 2005, space telescopes were capturing the birth of new stars, unaware that a <span>'Moon'</span> was coming to Earth.",
+            3: "The Moon was a silver sliver. YouTube was just a dream being coded by three friends today in 2005. A new era was starting.",
+            4: "4 days left! The 2005 atmosphere was electric. The stars were shifting to make room for your light.",
+            5: "The Moon turned almost invisible. A <span>Waning Crescent</span> signaled that something entirely new was about to begin.",
+            6: "48 hours to go. In 2005, the world was busy with the Super Bowl, but the stars were only looking at you.",
+            7: "The final night. The <span>New Moon</span> appeared, resetting the sky so you could be the brightest thing in it tomorrow.",
+            8: "HAPPY BIRTHDAY! On this day in 2005, Fathima Sumaiya brought a <span>New Light</span> to the world. Our Moon was born!"
         };
 
-        function updateDailyContent() {
+        // Feature: Parallax Starfield
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function initStars() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for(let i=0; i<200; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5,
+                    opacity: Math.random()
+                });
+            }
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                ctx.fill();
+                s.opacity += (Math.random() - 0.5) * 0.05;
+                if(s.opacity < 0) s.opacity = 0;
+                if(s.opacity > 1) s.opacity = 1;
+            });
+            requestAnimationFrame(drawStars);
+        }
+
+        function updateContent() {
             const now = new Date();
             const day = now.getDate();
-            const month = now.getMonth() + 1; // Jan is 1, Feb is 2
+            const month = now.getMonth() + 1;
 
-            // Update History Content
-            const historyDiv = document.getElementById("historyContent");
-            const titleDiv = document.getElementById("historyTitle");
-            const moonShadow = document.getElementById("moonShadow");
-            const moonLabel = document.getElementById("moonDateLabel");
-
-            titleDiv.innerText = `Flashback: ${month === 1 ? 'Jan' : 'Feb'} ${day}, 2005`;
-            moonLabel.innerText = `Moon Phase on ${month === 1 ? 'Jan' : 'Feb'} ${day}, 2005`;
-
+            document.getElementById("historyTitle").innerText = `Flashback: 2005.0${month}.${day}`;
+            document.getElementById("moonDateLabel").innerText = `Lunar Phase on Jan/Feb ${day}, 2005`;
+            
             if (historyData[day]) {
-                historyDiv.innerHTML = historyData[day];
+                document.getElementById("historyContent").innerHTML = historyData[day];
             }
 
-            // Simple Moon Phase Logic for the UI (Simulating the 2005 transition)
-            // As we approach Feb 8 (New Moon), the shadow covers more of the moon.
-            let shadowPercent = 0;
-            if (month === 1) {
-                shadowPercent = (day - 24) * 5; // Jan 24 was Full (0% shadow)
+            // Fixed Moon Shadow Logic
+            // Jan 24 (Full Moon) -> Shadow is at 100% (hidden behind)
+            // Feb 08 (New Moon) -> Shadow is at 0% (covering front)
+            const shadow = document.getElementById("moon-shadow");
+            let offset;
+            if(month === 1) {
+                offset = 100 + ((day - 24) * 6); // Moves shadow across
             } else {
-                shadowPercent = 50 + (day * 6); // Feb moves toward New Moon
+                offset = 40 - (day * 8); // Covers more as we hit Feb 8
             }
-            moonShadow.style.left = `${shadowPercent}%`;
+            shadow.style.transform = `translateX(${offset}%)`;
         }
 
         function updateTimer() {
@@ -200,20 +252,18 @@
             const now = new Date().getTime();
             const diff = target - now;
 
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerHTML = d;
-            document.getElementById("hours").innerHTML = h;
-            document.getElementById("mins").innerHTML = m;
-            document.getElementById("secs").innerHTML = s;
+            document.getElementById("days").innerHTML = Math.floor(diff / 86400000);
+            document.getElementById("hours").innerHTML = Math.floor((diff % 86400000) / 3600000);
+            document.getElementById("mins").innerHTML = Math.floor((diff % 3600000) / 60000);
+            document.getElementById("secs").innerHTML = Math.floor((diff % 60000) / 1000);
         }
 
+        window.addEventListener('resize', initStars);
+        initStars();
+        drawStars();
         setInterval(updateTimer, 1000);
         updateTimer();
-        updateDailyContent();
+        updateContent();
     </script>
 </body>
 </html>
