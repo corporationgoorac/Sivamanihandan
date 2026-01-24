@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Moon | Fathima Sumaiya</title>
+    <style>
+        :root {
+            --moon-glow: #f5f3ce;
+            --accent: #e0c3fc;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            background: #020617; 
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding-bottom: 50px;
+        }
+
+        .stars-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top, #1e293b 0%, #020617 100%);
+            z-index: -1;
+        }
+
+        /* The Full Moon of Jan 24, 2005 */
+        .moon-wrapper {
+            margin: 40px auto 10px;
+        }
+
+        .historical-moon {
+            width: 140px;
+            height: 140px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg');
+            background-size: cover;
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(245, 243, 206, 0.4);
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(245, 243, 206, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 60px rgba(245, 243, 206, 0.5); }
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin: 20px 0 5px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(224, 195, 252, 0.5);
+        }
+
+        .nickname { font-size: 1rem; opacity: 0.8; margin-bottom: 20px; }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 90%;
+            max-width: 400px;
+            margin-bottom: 30px;
+        }
+
+        .box {
+            background: var(--glass);
+            padding: 15px 5px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .number { display: block; font-size: 1.5rem; font-weight: bold; }
+        .label { font-size: 0.7rem; text-transform: uppercase; opacity: 0.6; }
+
+        .card {
+            width: 85%;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 20px;
+            border: 1px solid var(--accent);
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(224, 195, 252, 0.2);
+            padding-bottom: 10px;
+        }
+
+        .event-item {
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .event-item span { color: var(--accent); font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <div class="stars-container"></div>
+
+    <div class="moon-wrapper">
+        <div class="historical-moon"></div>
+        <p style="font-size: 0.75rem; margin-top: 15px; color: var(--accent);">Historical Moon: January 24, 2005</p>
+    </div>
+
+    <h1>FATHIMA SUMAIYA</h1>
+    <div class="nickname">The 2005 Countdown Moment 🌙</div>
+
+    <div class="countdown-grid">
+        <div class="box"><span class="number" id="days">00</span><span class="label">Days</span></div>
+        <div class="box"><span class="number" id="hours">00</span><span class="label">Hrs</span></div>
+        <div class="box"><span class="number" id="mins">00</span><span class="label">Min</span></div>
+        <div class="box"><span class="number" id="secs">00</span><span class="label">Sec</span></div>
+    </div>
+
+    <div class="card">
+        <h3>✨ On This Day: Jan 24, 2005</h3>
+        
+        <div class="event-item">
+            <span>Lunar Presence:</span> Exactly 15 days before you were born, the moon was a <strong>Full Moon</strong>. It was shining at 100% brightness, lighting the path for your arrival.
+        </div>
+        
+        <div class="event-item">
+            <span>Space Voyage:</span> While the world waited for you, the <strong>Opportunity Rover</strong> on Mars was celebrating its 1st anniversary on the Red Planet today!
+        </div>
+
+        <div class="event-item">
+            <span>The Atmosphere:</span> The #1 song in the world on this countdown day in 2005 was <strong>"Let Me Love You"</strong> by Mario. The world was filled with melody just for you.
+        </div>
+    </div>
+
+    <script>
+        function updateTimer() {
+            const target = new Date("February 8, 2026 00:00:00").getTime();
+            const now = new Date().getTime();
+            const diff = target - now;
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = d;
+            document.getElementById("hours").innerHTML = h;
+            document.getElementById("mins").innerHTML = m;
+            document.getElementById("secs").innerHTML = s;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+</body>
+</html>
