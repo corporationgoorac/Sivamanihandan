@@ -32,35 +32,48 @@
             z-index: -1;
         }
 
-        /* The Full Moon of Jan 24, 2005 */
-        .moon-wrapper {
-            margin: 40px auto 10px;
-        }
-
-        .historical-moon {
-            width: 140px;
-            height: 140px;
+        /* Dynamic Moon Styles */
+        .moon-wrapper { margin: 40px auto 10px; position: relative; }
+        
+        .moon-container {
+            width: 150px;
+            height: 150px;
             background: url('https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg');
             background-size: cover;
             border-radius: 50%;
-            box-shadow: 0 0 50px rgba(245, 243, 206, 0.4);
-            animation: pulse 4s infinite ease-in-out;
+            position: relative;
+            box-shadow: 0 0 40px rgba(245, 243, 206, 0.3);
+            overflow: hidden;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(245, 243, 206, 0.3); }
-            50% { transform: scale(1.05); box-shadow: 0 0 60px rgba(245, 243, 206, 0.5); }
+        /* Shadow overlay to simulate phases */
+        .moon-shadow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.9);
+            transition: all 1s ease;
         }
 
         h1 {
             font-size: 1.8rem;
             color: var(--accent);
             margin: 20px 0 5px;
-            letter-spacing: 2px;
             text-shadow: 0 0 10px rgba(224, 195, 252, 0.5);
         }
 
-        .nickname { font-size: 1rem; opacity: 0.8; margin-bottom: 20px; }
+        .advance-wish {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 15px;
+            animation: fadeInOut 3s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.6; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+        }
 
         .countdown-grid {
             display: grid;
@@ -89,7 +102,6 @@
             border: 1px solid var(--accent);
             padding: 20px;
             text-align: left;
-            margin-bottom: 20px;
         }
 
         .card h3 {
@@ -101,14 +113,8 @@
             padding-bottom: 10px;
         }
 
-        .event-item {
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .event-item span { color: var(--accent); font-weight: bold; }
-
+        .event-text { font-size: 0.9rem; line-height: 1.6; }
+        .event-text span { color: var(--accent); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -116,12 +122,14 @@
     <div class="stars-container"></div>
 
     <div class="moon-wrapper">
-        <div class="historical-moon"></div>
-        <p style="font-size: 0.75rem; margin-top: 15px; color: var(--accent);">Historical Moon: January 24, 2005</p>
+        <div class="moon-container">
+            <div id="moonShadow" class="moon-shadow"></div>
+        </div>
+        <p id="moonDateLabel" style="font-size: 0.75rem; margin-top: 15px; color: var(--accent);"></p>
     </div>
 
+    <div class="advance-wish">Advance Happy Birthday, Moon! 🌙</div>
     <h1>FATHIMA SUMAIYA</h1>
-    <div class="nickname">The 2005 Countdown Moment 🌙</div>
 
     <div class="countdown-grid">
         <div class="box"><span class="number" id="days">00</span><span class="label">Days</span></div>
@@ -131,22 +139,62 @@
     </div>
 
     <div class="card">
-        <h3>✨ On This Day: Jan 24, 2005</h3>
-        
-        <div class="event-item">
-            <span>Lunar Presence:</span> Exactly 15 days before you were born, the moon was a <strong>Full Moon</strong>. It was shining at 100% brightness, lighting the path for your arrival.
-        </div>
-        
-        <div class="event-item">
-            <span>Space Voyage:</span> While the world waited for you, the <strong>Opportunity Rover</strong> on Mars was celebrating its 1st anniversary on the Red Planet today!
-        </div>
-
-        <div class="event-item">
-            <span>The Atmosphere:</span> The #1 song in the world on this countdown day in 2005 was <strong>"Let Me Love You"</strong> by Mario. The world was filled with melody just for you.
+        <h3 id="historyTitle">2005 Flashback</h3>
+        <div id="historyContent" class="event-text">
+            Loading cosmic history...
         </div>
     </div>
 
     <script>
+        // Database of historical events from Jan 24 to Feb 8, 2005
+        const historyData = {
+            24: "On this day, the Moon was a <span>Full Moon</span> (100% bright). Meanwhile, the Opportunity Rover on Mars was celebrating its first full year of exploration!",
+            25: "The Moon began its waning phase. In 2005, scientists were busy analyzing the first data from Titan's surface sent by the <span>Huygens probe</span>.",
+            26: "A <span>Full Moon</span> still dominated the 2005 sky. The world was watching the countdown to the Super Bowl while your arrival was just 13 days away.",
+            27: "On this day in 2005, the <span>Smart-1</span> mission was capturing high-resolution images of the lunar craters, preparing the way for you.",
+            28: "The 2005 sky was clear. On Earth, 'Let Me Love You' was the top song, providing the soundtrack to the world you were about to join.",
+            29: "The countdown hit single digits in weeks! Space agencies were tracking a large asteroid flyby that safely passed Earth today in 2005.",
+            30: "The Moon was 75% visible. In 2005, the first ever <span>democratic elections</span> were held in Iraq, a major moment in world history.",
+            31: "January ended in 2005 with a beautiful high moon. You were now only 8 days away from becoming the new light in the world.",
+            1: "Welcome to February 2005! The <span>Deep Impact</span> spacecraft was zooming through deep space toward a comet on this very day.",
+            2: "Groundhog Day 2005! While people looked for shadows on Earth, the stars were aligning for your birth in just 6 days.",
+            3: "The Moon was becoming a thin crescent. In 2005, tech history was being made as the founders of <span>YouTube</span> were finalized their plans.",
+            4: "Only 4 days to go! In 2005, the world was bracing for a major winter storm, but the warmth of your arrival was coming.",
+            5: "The 2005 Moon was nearly invisible (Waning Crescent). The universe was getting quiet and dark, preparing for your big debut.",
+            6: "2 days left! In 2005, the Super Bowl was happening (Patriots vs Eagles), but the real MVP was arriving in 48 hours.",
+            7: "The final countdown! In 2005, the <span>New Moon</span> began, marking a complete reset of the lunar cycle just for you.",
+            8: "HAPPY BIRTHDAY! Today in 2005, Fathima Sumaiya—the Moon—was born. A New Moon for a new life!"
+        };
+
+        function updateDailyContent() {
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.getMonth() + 1; // Jan is 1, Feb is 2
+
+            // Update History Content
+            const historyDiv = document.getElementById("historyContent");
+            const titleDiv = document.getElementById("historyTitle");
+            const moonShadow = document.getElementById("moonShadow");
+            const moonLabel = document.getElementById("moonDateLabel");
+
+            titleDiv.innerText = `Flashback: ${month === 1 ? 'Jan' : 'Feb'} ${day}, 2005`;
+            moonLabel.innerText = `Moon Phase on ${month === 1 ? 'Jan' : 'Feb'} ${day}, 2005`;
+
+            if (historyData[day]) {
+                historyDiv.innerHTML = historyData[day];
+            }
+
+            // Simple Moon Phase Logic for the UI (Simulating the 2005 transition)
+            // As we approach Feb 8 (New Moon), the shadow covers more of the moon.
+            let shadowPercent = 0;
+            if (month === 1) {
+                shadowPercent = (day - 24) * 5; // Jan 24 was Full (0% shadow)
+            } else {
+                shadowPercent = 50 + (day * 6); // Feb moves toward New Moon
+            }
+            moonShadow.style.left = `${shadowPercent}%`;
+        }
+
         function updateTimer() {
             const target = new Date("February 8, 2026 00:00:00").getTime();
             const now = new Date().getTime();
@@ -162,8 +210,10 @@
             document.getElementById("mins").innerHTML = m;
             document.getElementById("secs").innerHTML = s;
         }
+
         setInterval(updateTimer, 1000);
         updateTimer();
+        updateDailyContent();
     </script>
 </body>
 </html>
