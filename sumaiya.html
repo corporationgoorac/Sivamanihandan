@@ -7,21 +7,38 @@
     <style>
         :root {
             --moon-glow: #f5f3ce;
-            --accent: #e0c3fc;
-            --glass: rgba(255, 255, 255, 0.08);
+            --accent: #c084fc; 
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --card-bg: rgba(8, 10, 24, 0.85);
         }
 
         body {
             margin: 0;
-            background: #020617; 
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%); 
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
-            padding-bottom: 50px;
+            padding-bottom: 80px;
+            cursor: none;
+        }
+
+        /* Custom Cursor Stardust */
+        #cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 15px var(--accent);
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
         }
 
         /* Animated Star Background */
@@ -32,15 +49,50 @@
             z-index: -1;
         }
 
+        /* Audio Visualizer Canvas */
+        #audio-canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Fathima Sumaiya Name Animation - Lunar Orbit */
+        @keyframes moonRotate {
+            0% { text-shadow: 0 0 10px #f5f3ce, -2px -2px 0px rgba(255,255,255,0.2); }
+            50% { text-shadow: 0 0 25px #f5f3ce, 2px 2px 10px #c084fc; }
+            100% { text-shadow: 0 0 10px #f5f3ce, -2px -2px 0px rgba(255,255,255,0.2); }
+        }
+
+        .reveal {
+            opacity: 0;
+            animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
         .moon-wrapper {
             margin: 40px auto 20px;
             perspective: 1000px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            animation-delay: 0.2s;
         }
         
-        /* Realistic Moon Phase Container */
         .moon-sphere {
             width: 180px;
             height: 180px;
@@ -48,51 +100,71 @@
             background-size: cover;
             border-radius: 50%;
             position: relative;
-            box-shadow: 0 0 50px rgba(224, 195, 252, 0.15), inset -10px -10px 30px #000;
+            box-shadow: 
+                0 0 60px rgba(192, 132, 252, 0.3), 
+                inset -20px -20px 50px #000;
             overflow: hidden;
-            transition: transform 0.5s ease;
+            transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1);
             border: 1px solid rgba(255,255,255,0.1);
+            animation: float 6s ease-in-out infinite;
         }
 
-        .moon-sphere:active { transform: scale(1.05); }
-
-        /* The dynamic shadow - Updated for better realism */
         #moon-shadow {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #020617;
+            background: linear-gradient(90deg, #020617 0%, #050b1d 100%);
             border-radius: 50%;
-            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0.95;
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.98;
         }
 
         .advance-wish {
-            font-size: 0.9rem;
-            font-weight: 400;
-            letter-spacing: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 5px;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin: 20px 0 10px;
             color: var(--accent);
-            animation: glow 2s infinite alternate;
+            text-align: center;
+            animation: glow 3s infinite alternate;
         }
 
         @keyframes glow {
-            from { text-shadow: 0 0 5px var(--accent); opacity: 0.7; }
+            from { text-shadow: 0 0 5px var(--accent); opacity: 0.6; }
             to { text-shadow: 0 0 15px var(--accent); opacity: 1; }
         }
 
+        /* MOON STYLE FONT FOR THE NAME */
+        .name-container { position: relative; width: 100%; display: flex; justify-content: center; }
         h1 {
-            font-size: 2.2rem;
+            font-size: clamp(1.8rem, 7vw, 3.5rem);
             margin: 0 0 40px 0;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: linear-gradient(to bottom, #fff, var(--accent));
+            font-weight: 900;
+            letter-spacing: 6px;
+            background: radial-gradient(circle at 30% 30%, #fff 0%, #f5f3ce 40%, #a1a1aa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-align: center;
+            padding: 0 20px;
+            line-height: 1.2;
+            animation: moonRotate 5s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px rgba(245, 243, 206, 0.5));
+            position: relative;
+            z-index: 1;
+        }
+
+        h1::before {
+            content: "FATHIMA SUMAIYA";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: -1;
+            -webkit-text-stroke: 1px rgba(245, 243, 206, 0.2);
+            -webkit-text-fill-color: transparent;
         }
 
         .countdown-grid {
@@ -100,86 +172,180 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 15px;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
             margin-bottom: 40px;
         }
 
         .box {
             background: var(--glass);
             padding: 20px 5px;
-            border-radius: 24px;
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
             text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .box:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.08);
+            border-color: var(--accent);
         }
 
-        .number { display: block; font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .number { display: block; font-size: clamp(1.2rem, 4vw, 2.2rem); font-weight: 800; color: #fff; }
         .label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.5; letter-spacing: 2px; }
 
-        .card {
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
             width: 85%;
-            max-width: 500px;
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 28px;
-            border: 1px solid rgba(224, 195, 252, 0.15);
-            padding: 30px;
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
+            max-width: 550px;
         }
 
-        .card::before {
-            content: '🌙';
-            position: absolute;
-            right: -10px;
-            bottom: -10px;
-            font-size: 100px;
-            opacity: 0.03;
+        .card {
+            background: var(--card-bg);
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .event-image-container {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #000;
+            position: relative;
+        }
+
+        .event-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.5s ease, opacity 0.5s ease;
+        }
+
+        .card:hover .event-image-container img {
+            transform: scale(1.1);
         }
 
         .card h3 {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--accent);
-            margin: 0 0 20px 0;
+            margin: 0 0 15px 0;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .event-text { font-size: 1rem; line-height: 1.8; color: #e2e8f0; }
-        .event-text span { color: var(--accent); font-weight: 600; }
+        .card h3::after {
+            content: '';
+            height: 1px;
+            flex-grow: 1;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        .event-text { font-size: 1rem; line-height: 1.7; color: #cbd5e1; }
+        .event-text span { color: #fff; font-weight: 700; background: rgba(192, 132, 252, 0.2); padding: 0 4px; border-radius: 4px; }
+
+        #moonDateLabel {
+            font-weight: 600;
+            background: rgba(255,255,255,0.05);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 15px;
+        }
+
+        /* Sound Control Button */
+        #sound-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 480px) {
+            .countdown-grid { gap: 8px; }
+            .box { padding: 15px 2px; }
+            .card { padding: 20px; }
+            .event-image-container { height: 140px; }
+        }
     </style>
 </head>
 <body>
 
+    <div id="cursor-dot"></div>
     <canvas id="star-canvas"></canvas>
+    
+    <button id="sound-toggle">🎵</button>
 
-    <div class="moon-wrapper">
+    <div class="moon-wrapper reveal" style="animation-delay: 0.2s;">
         <div class="moon-sphere">
             <div id="moon-shadow"></div>
         </div>
-        <p id="moonDateLabel" style="font-size: 0.7rem; margin-top: 15px; opacity: 0.6; letter-spacing: 1px;"></p>
+        <p id="moonDateLabel" style="font-size: 0.7rem; opacity: 0.6; letter-spacing: 2px;"></p>
     </div>
 
-    <div class="advance-wish">Advance Happy Birthday</div>
-    <h1>FATHIMA SUMAIYA</h1>
+    <div class="advance-wish reveal" style="animation-delay: 0.4s;">Advance Happy Birthday</div>
+    
+    <div class="name-container reveal" style="animation-delay: 0.5s;">
+        <canvas id="audio-canvas" width="600" height="200"></canvas>
+        <h1>FATHIMA SUMAIYA</h1>
+    </div>
 
-    <div class="countdown-grid">
+    <div class="countdown-grid reveal" style="animation-delay: 0.6s;">
         <div class="box"><span class="number" id="days">00</span><span class="label">Days</span></div>
         <div class="box"><span class="number" id="hours">00</span><span class="label">Hrs</span></div>
         <div class="box"><span class="number" id="mins">00</span><span class="label">Min</span></div>
         <div class="box"><span class="number" id="secs">00</span><span class="label">Sec</span></div>
     </div>
 
-    <div class="card">
-        <h3 id="historyTitle">Space Memory</h3>
-        <div id="historyContent" class="event-text">
-            Connecting to 2005 satellite data...
+    <div class="card-container">
+        <div class="card reveal" style="animation-delay: 0.7s;">
+            <div class="event-image-container">
+                <img id="eventImg" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop" alt="Space Event">
+            </div>
+            <h3 id="historyTitle">Space Memory</h3>
+            <div id="historyContent" class="event-text">
+                Connecting to 2005 satellite data...
+            </div>
+        </div>
+
+        <div class="card reveal" style="animation-delay: 0.8s;">
+            <div class="event-image-container">
+                <img id="earthImg" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000" alt="Earth Event">
+            </div>
+            <h3 id="earthTitle">Earth Flashback 2005</h3>
+            <div id="earthContent" class="event-text">
+                Retrieving historical records...
+            </div>
         </div>
     </div>
 
     <script>
+        const dot = document.getElementById('cursor-dot');
+        document.addEventListener('mousemove', (e) => {
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+        });
+
+        // 2005 History Databases
         const historyData = {
             24: "Exactly 15 days before you arrived, the Moon was a <span>Full Moon</span>. NASA's Opportunity rover on Mars celebrated its first year of discovery today!",
             25: "The Moon began to lean into the shadows. In 2005, the world was mesmerized by the first color images of <span>Titan's frozen rivers</span>.",
@@ -199,6 +365,64 @@
             8: "HAPPY BIRTHDAY! On this day in 2005, Fathima Sumaiya brought a <span>New Light</span> to the world. Our Moon was born!"
         };
 
+        const earthHistoryData = {
+            24: "January 24, 2005: The world was gripped by the <span>Orange Revolution</span> in Ukraine as a new era of democracy began.",
+            25: "January 25, 2005: A stampede at <span>Mandher Devi temple</span> in India made global news, reminding us of the fragility of life.",
+            26: "January 26, 2005: Condoleezza Rice was sworn in as US Secretary of State, becoming one of the most powerful women on Earth.",
+            27: "January 27, 2005: World leaders gathered at <span>Auschwitz</span> to mark the 60th anniversary of its liberation in a moment of global reflection.",
+            28: "January 28, 2005: <span>The Phantom of the Opera</span> became the longest-running show in Broadway history today in 2005.",
+            29: "January 29, 2005: The first direct flights between <span>China and Taiwan</span> in over 50 years took off, bridging worlds together.",
+            30: "January 30, 2005: Millions of Iraqis braved threats of violence to vote in the first free <span>multi-party elections</span> in 50 years.",
+            31: "January 31, 2005: The singer <span>Michael Jackson</span> began his high-profile trial today, dominating every television screen on Earth.",
+            1: "February 1, 2005: King Gyanendra of Nepal dismissed the government and took absolute power, causing a global diplomatic stir.",
+            2: "February 2, 2005: The <span>Kyoto Protocol</span> was the talk of the world today as countries prepared for its historic implementation.",
+            3: "February 3, 2005: <span>Kam Air Flight 904</span> vanished in Afghanistan; a mystery that captured the world's attention for days.",
+            4: "February 4, 2005: The groundbreaking of the <span>Freedom Tower</span> site in NYC began, symbolizing hope and rebuilding.",
+            5: "February 5, 2005: This was the eve of <span>Super Bowl XXXIX</span>. Paul McCartney was preparing for his legendary halftime performance.",
+            6: "February 6, 2005: The <span>New England Patriots</span> defeated the Eagles. The world was celebrating, unaware of the miracle coming in 48 hours.",
+            7: "February 7, 2005: <span>Ellen MacArthur</span> broke the world record for the fastest solo circumnavigation of the globe today.",
+            8: "February 8, 2005: Israel and Palestine declared a <span>ceasefire</span>. On this peaceful day, the most beautiful soul, Sumaiya, was born."
+        };
+
+        const imageMapping = {
+            24: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9", 
+            25: "https://images.unsplash.com/photo-1614313913007-2b4ae8ce32d6", 
+            26: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa", 
+            27: "https://images.unsplash.com/photo-1538370965046-79c0d6907d47", 
+            28: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745", 
+            29: "https://images.unsplash.com/photo-1614726338864-123403561964", 
+            30: "https://images.unsplash.com/photo-1532667449560-72a95c8d381b", 
+            31: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78", 
+            1: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d", 
+            2: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564", 
+            3: "https://images.unsplash.com/photo-1614728263952-84ea256f9679", 
+            4: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa", 
+            5: "https://images.unsplash.com/photo-1506318137071-a8e063b4bcc0", 
+            6: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986", 
+            7: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a", 
+            8: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30"  
+        };
+
+        const earthImageMapping = {
+            24: "https://images.unsplash.com/photo-1541873676947-d3112f4b010f",
+            25: "https://images.unsplash.com/photo-1518391846015-55a9cc003b25",
+            26: "https://images.unsplash.com/photo-1444418185997-1145404417e0",
+            27: "https://images.unsplash.com/photo-1505664194779-8beaceb93744",
+            28: "https://images.unsplash.com/photo-1514525253361-b83f85dfd75c",
+            29: "https://images.unsplash.com/photo-1520038410233-7141be7e6f97",
+            30: "https://images.unsplash.com/photo-1540910419312-4040921b31b2",
+            31: "https://images.unsplash.com/photo-1493225255756-d9584f8606e9",
+            1: "https://images.unsplash.com/photo-1526481280693-3bfa75ac8efd",
+            2: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
+            3: "https://images.unsplash.com/photo-1436491865332-7a61a109c055",
+            4: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
+            5: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390",
+            6: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2",
+            7: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606",
+            8: "https://images.unsplash.com/photo-1513151233558-d860c5398176"
+        };
+
+        // Star Background
         const canvas = document.getElementById('star-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -207,12 +431,13 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             stars = [];
-            for(let i=0; i<200; i++) {
+            for(let i=0; i<250; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5,
-                    opacity: Math.random()
+                    size: Math.random() * 1.8,
+                    opacity: Math.random(),
+                    speed: Math.random() * 0.05
                 });
             }
         }
@@ -227,8 +452,64 @@
                 s.opacity += (Math.random() - 0.5) * 0.03;
                 if(s.opacity < 0) s.opacity = 0;
                 if(s.opacity > 1) s.opacity = 1;
+                s.y -= s.speed;
+                if(s.y < 0) s.y = canvas.height;
             });
             requestAnimationFrame(drawStars);
+        }
+
+        // Audio Logic
+        const soundToggle = document.getElementById('sound-toggle');
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let analyser = audioCtx.createAnalyser();
+        let source;
+        let isPlaying = false;
+
+        soundToggle.addEventListener('click', async () => {
+            if (audioCtx.state === 'suspended') await audioCtx.resume();
+            
+            if (!isPlaying) {
+                // Generate a "Cosmic Hum" using Oscillator
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(110, audioCtx.currentTime); 
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                osc.start();
+                isPlaying = true;
+                soundToggle.innerText = '⏸';
+                visualizeAudio();
+            }
+        });
+
+        function visualizeAudio() {
+            const visualCanvas = document.getElementById('audio-canvas');
+            const vCtx = visualCanvas.getContext('2d');
+            analyser.fftSize = 64;
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function draw() {
+                if (!isPlaying) return;
+                requestAnimationFrame(draw);
+                analyser.getByteFrequencyData(dataArray);
+                vCtx.clearRect(0, 0, visualCanvas.width, visualCanvas.height);
+                
+                vCtx.beginPath();
+                for (let i = 0; i < bufferLength; i++) {
+                    const barHeight = dataArray[i] / 2;
+                    const x = (visualCanvas.width / bufferLength) * i;
+                    vCtx.strokeStyle = `rgba(192, 132, 252, ${dataArray[i]/255})`;
+                    vCtx.lineWidth = 2;
+                    vCtx.moveTo(x, visualCanvas.height/2 - barHeight);
+                    vCtx.lineTo(x, visualCanvas.height/2 + barHeight);
+                }
+                vCtx.stroke();
+            }
+            draw();
         }
 
         function updateContent() {
@@ -237,38 +518,28 @@
             const month = now.getMonth() + 1;
             const year = 2005;
 
-            // Update Titles
             const monthName = month === 1 ? "Jan" : "Feb";
-            document.getElementById("historyTitle").innerText = `Flashback: ${year}.${month < 10 ? '0'+month : month}.${day < 10 ? '0'+day : day}`;
-            document.getElementById("moonDateLabel").innerText = `Lunar Phase: ${monthName} ${day}, 2005`;
+            document.getElementById("historyTitle").innerText = `Space: ${year}.${month < 10 ? '0'+month : month}.${day < 10 ? '0'+day : day}`;
+            document.getElementById("earthTitle").innerText = `Earth: ${year}.${month < 10 ? '0'+month : month}.${day < 10 ? '0'+day : day}`;
+            document.getElementById("moonDateLabel").innerText = `LUNAR PHASE • ${monthName} ${day}, 2005`;
             
             if (historyData[day]) {
                 document.getElementById("historyContent").innerHTML = historyData[day];
+                document.getElementById("earthContent").innerHTML = earthHistoryData[day] || "Peaceful day on Earth.";
             }
 
-            // --- FIXED MOON LOGIC ---
-            // Jan 25 is Full Moon (shadow starts far right)
-            // Feb 8 is New Moon (shadow is center/covers all)
+            if (imageMapping[day]) {
+                document.getElementById("eventImg").src = imageMapping[day];
+                document.getElementById("earthImg").src = earthImageMapping[day] || earthImageMapping[24];
+            }
+
+            // Accurate 2005 Lunar Phase Shadow
             const shadow = document.getElementById("moon-shadow");
-            
-            // Calculate total progress from Jan 24 (Day 0) to Feb 8 (Day 15)
-            let totalDaysPassed = 0;
-            if (month === 1 && day >= 24) {
-                totalDaysPassed = day - 24;
-            } else if (month === 2) {
-                totalDaysPassed = (31 - 24) + day;
-            }
+            let lunarAge = (month === 1) ? 15 + (day - 25) : day - 8;
+            if (lunarAge < 0) lunarAge += 29.5;
 
-            // At 0 days (Jan 24): Shadow at 100% (Fully Visible Moon)
-            // At 15 days (Feb 8): Shadow at 0% (New Moon / Covered)
-            // Range: 100% to 0%
-            let shadowPos = 100 - (totalDaysPassed * 6.66); 
-            
-            // Clamp values
-            if (shadowPos < 0) shadowPos = 0;
-            if (shadowPos > 100) shadowPos = 100;
-
-            shadow.style.left = `${shadowPos}%`;
+            let shadowPos = (lunarAge <= 15) ? (lunarAge / 15) * 100 : 100 - ((lunarAge - 15) / 14.5) * 100;
+            shadow.style.left = `${Math.max(0, Math.min(100, shadowPos))}%`;
         }
 
         function updateTimer() {
