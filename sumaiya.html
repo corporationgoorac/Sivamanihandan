@@ -49,17 +49,6 @@
             z-index: -1;
         }
 
-        /* Audio Visualizer Canvas */
-        #audio-canvas {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
         /* Animations */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(40px); }
@@ -138,7 +127,6 @@
         }
 
         /* MOON STYLE FONT FOR THE NAME */
-        .name-container { position: relative; width: 100%; display: flex; justify-content: center; }
         h1 {
             font-size: clamp(1.8rem, 7vw, 3.5rem);
             margin: 0 0 40px 0;
@@ -153,7 +141,6 @@
             animation: moonRotate 5s ease-in-out infinite;
             filter: drop-shadow(0 0 8px rgba(245, 243, 206, 0.5));
             position: relative;
-            z-index: 1;
         }
 
         h1::before {
@@ -195,15 +182,9 @@
         .number { display: block; font-size: clamp(1.2rem, 4vw, 2.2rem); font-weight: 800; color: #fff; }
         .label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.5; letter-spacing: 2px; }
 
-        .card-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .card {
             width: 85%;
             max-width: 550px;
-        }
-
-        .card {
             background: var(--card-bg);
             border-radius: 30px;
             border: 1px solid var(--glass-border);
@@ -265,21 +246,6 @@
             margin-top: 15px;
         }
 
-        /* Sound Control Button */
-        #sound-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            color: white;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
-
         @media (max-width: 480px) {
             .countdown-grid { gap: 8px; }
             .box { padding: 15px 2px; }
@@ -292,8 +258,6 @@
 
     <div id="cursor-dot"></div>
     <canvas id="star-canvas"></canvas>
-    
-    <button id="sound-toggle">🎵</button>
 
     <div class="moon-wrapper reveal" style="animation-delay: 0.2s;">
         <div class="moon-sphere">
@@ -303,11 +267,7 @@
     </div>
 
     <div class="advance-wish reveal" style="animation-delay: 0.4s;">Advance Happy Birthday</div>
-    
-    <div class="name-container reveal" style="animation-delay: 0.5s;">
-        <canvas id="audio-canvas" width="600" height="200"></canvas>
-        <h1>FATHIMA SUMAIYA</h1>
-    </div>
+    <h1 class="reveal" style="animation-delay: 0.5s;">FATHIMA SUMAIYA</h1>
 
     <div class="countdown-grid reveal" style="animation-delay: 0.6s;">
         <div class="box"><span class="number" id="days">00</span><span class="label">Days</span></div>
@@ -316,25 +276,13 @@
         <div class="box"><span class="number" id="secs">00</span><span class="label">Sec</span></div>
     </div>
 
-    <div class="card-container">
-        <div class="card reveal" style="animation-delay: 0.7s;">
-            <div class="event-image-container">
-                <img id="eventImg" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop" alt="Space Event">
-            </div>
-            <h3 id="historyTitle">Space Memory</h3>
-            <div id="historyContent" class="event-text">
-                Connecting to 2005 satellite data...
-            </div>
+    <div class="card reveal" style="animation-delay: 0.7s;">
+        <div class="event-image-container">
+            <img id="eventImg" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop" alt="Space Event">
         </div>
-
-        <div class="card reveal" style="animation-delay: 0.8s;">
-            <div class="event-image-container">
-                <img id="earthImg" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000" alt="Earth Event">
-            </div>
-            <h3 id="earthTitle">Earth Flashback 2005</h3>
-            <div id="earthContent" class="event-text">
-                Retrieving historical records...
-            </div>
+        <h3 id="historyTitle">Space Memory</h3>
+        <div id="historyContent" class="event-text">
+            Connecting to 2005 satellite data...
         </div>
     </div>
 
@@ -345,7 +293,6 @@
             dot.style.top = e.clientY + 'px';
         });
 
-        // 2005 History Databases
         const historyData = {
             24: "Exactly 15 days before you arrived, the Moon was a <span>Full Moon</span>. NASA's Opportunity rover on Mars celebrated its first year of discovery today!",
             25: "The Moon began to lean into the shadows. In 2005, the world was mesmerized by the first color images of <span>Titan's frozen rivers</span>.",
@@ -365,64 +312,25 @@
             8: "HAPPY BIRTHDAY! On this day in 2005, Fathima Sumaiya brought a <span>New Light</span> to the world. Our Moon was born!"
         };
 
-        const earthHistoryData = {
-            24: "January 24, 2005: The world was gripped by the <span>Orange Revolution</span> in Ukraine as a new era of democracy began.",
-            25: "January 25, 2005: A stampede at <span>Mandher Devi temple</span> in India made global news, reminding us of the fragility of life.",
-            26: "January 26, 2005: Condoleezza Rice was sworn in as US Secretary of State, becoming one of the most powerful women on Earth.",
-            27: "January 27, 2005: World leaders gathered at <span>Auschwitz</span> to mark the 60th anniversary of its liberation in a moment of global reflection.",
-            28: "January 28, 2005: <span>The Phantom of the Opera</span> became the longest-running show in Broadway history today in 2005.",
-            29: "January 29, 2005: The first direct flights between <span>China and Taiwan</span> in over 50 years took off, bridging worlds together.",
-            30: "January 30, 2005: Millions of Iraqis braved threats of violence to vote in the first free <span>multi-party elections</span> in 50 years.",
-            31: "January 31, 2005: The singer <span>Michael Jackson</span> began his high-profile trial today, dominating every television screen on Earth.",
-            1: "February 1, 2005: King Gyanendra of Nepal dismissed the government and took absolute power, causing a global diplomatic stir.",
-            2: "February 2, 2005: The <span>Kyoto Protocol</span> was the talk of the world today as countries prepared for its historic implementation.",
-            3: "February 3, 2005: <span>Kam Air Flight 904</span> vanished in Afghanistan; a mystery that captured the world's attention for days.",
-            4: "February 4, 2005: The groundbreaking of the <span>Freedom Tower</span> site in NYC began, symbolizing hope and rebuilding.",
-            5: "February 5, 2005: This was the eve of <span>Super Bowl XXXIX</span>. Paul McCartney was preparing for his legendary halftime performance.",
-            6: "February 6, 2005: The <span>New England Patriots</span> defeated the Eagles. The world was celebrating, unaware of the miracle coming in 48 hours.",
-            7: "February 7, 2005: <span>Ellen MacArthur</span> broke the world record for the fastest solo circumnavigation of the globe today.",
-            8: "February 8, 2005: Israel and Palestine declared a <span>ceasefire</span>. On this peaceful day, the most beautiful soul, Sumaiya, was born."
-        };
-
         const imageMapping = {
-            24: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9", 
-            25: "https://images.unsplash.com/photo-1614313913007-2b4ae8ce32d6", 
-            26: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa", 
-            27: "https://images.unsplash.com/photo-1538370965046-79c0d6907d47", 
-            28: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745", 
-            29: "https://images.unsplash.com/photo-1614726338864-123403561964", 
-            30: "https://images.unsplash.com/photo-1532667449560-72a95c8d381b", 
-            31: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78", 
-            1: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d", 
-            2: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564", 
-            3: "https://images.unsplash.com/photo-1614728263952-84ea256f9679", 
-            4: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa", 
-            5: "https://images.unsplash.com/photo-1506318137071-a8e063b4bcc0", 
-            6: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986", 
-            7: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a", 
-            8: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30"  
+            24: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?q=80&w=1000", 
+            25: "https://images.unsplash.com/photo-1614313913007-2b4ae8ce32d6?q=80&w=1000", 
+            26: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1000", 
+            27: "https://images.unsplash.com/photo-1538370965046-79c0d6907d47?q=80&w=1000", 
+            28: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1000", 
+            29: "https://images.unsplash.com/photo-1614726338864-123403561964?q=80&w=1000", 
+            30: "https://images.unsplash.com/photo-1532667449560-72a95c8d381b?q=80&w=1000", 
+            31: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?q=80&w=1000", 
+            1: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=1000", 
+            2: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=1000", 
+            3: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=1000", 
+            4: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1000", 
+            5: "https://images.unsplash.com/photo-1506318137071-a8e063b4bcc0?q=80&w=1000", 
+            6: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=1000", 
+            7: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?q=80&w=1000", 
+            8: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000"  
         };
 
-        const earthImageMapping = {
-            24: "https://images.unsplash.com/photo-1541873676947-d3112f4b010f",
-            25: "https://images.unsplash.com/photo-1518391846015-55a9cc003b25",
-            26: "https://images.unsplash.com/photo-1444418185997-1145404417e0",
-            27: "https://images.unsplash.com/photo-1505664194779-8beaceb93744",
-            28: "https://images.unsplash.com/photo-1514525253361-b83f85dfd75c",
-            29: "https://images.unsplash.com/photo-1520038410233-7141be7e6f97",
-            30: "https://images.unsplash.com/photo-1540910419312-4040921b31b2",
-            31: "https://images.unsplash.com/photo-1493225255756-d9584f8606e9",
-            1: "https://images.unsplash.com/photo-1526481280693-3bfa75ac8efd",
-            2: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
-            3: "https://images.unsplash.com/photo-1436491865332-7a61a109c055",
-            4: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
-            5: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390",
-            6: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2",
-            7: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606",
-            8: "https://images.unsplash.com/photo-1513151233558-d860c5398176"
-        };
-
-        // Star Background
         const canvas = document.getElementById('star-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -458,60 +366,6 @@
             requestAnimationFrame(drawStars);
         }
 
-        // Audio Logic
-        const soundToggle = document.getElementById('sound-toggle');
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        let analyser = audioCtx.createAnalyser();
-        let source;
-        let isPlaying = false;
-
-        soundToggle.addEventListener('click', async () => {
-            if (audioCtx.state === 'suspended') await audioCtx.resume();
-            
-            if (!isPlaying) {
-                // Generate a "Cosmic Hum" using Oscillator
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(110, audioCtx.currentTime); 
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                osc.connect(gain);
-                gain.connect(analyser);
-                analyser.connect(audioCtx.destination);
-                osc.start();
-                isPlaying = true;
-                soundToggle.innerText = '⏸';
-                visualizeAudio();
-            }
-        });
-
-        function visualizeAudio() {
-            const visualCanvas = document.getElementById('audio-canvas');
-            const vCtx = visualCanvas.getContext('2d');
-            analyser.fftSize = 64;
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-
-            function draw() {
-                if (!isPlaying) return;
-                requestAnimationFrame(draw);
-                analyser.getByteFrequencyData(dataArray);
-                vCtx.clearRect(0, 0, visualCanvas.width, visualCanvas.height);
-                
-                vCtx.beginPath();
-                for (let i = 0; i < bufferLength; i++) {
-                    const barHeight = dataArray[i] / 2;
-                    const x = (visualCanvas.width / bufferLength) * i;
-                    vCtx.strokeStyle = `rgba(192, 132, 252, ${dataArray[i]/255})`;
-                    vCtx.lineWidth = 2;
-                    vCtx.moveTo(x, visualCanvas.height/2 - barHeight);
-                    vCtx.lineTo(x, visualCanvas.height/2 + barHeight);
-                }
-                vCtx.stroke();
-            }
-            draw();
-        }
-
         function updateContent() {
             const now = new Date();
             const day = now.getDate();
@@ -519,27 +373,61 @@
             const year = 2005;
 
             const monthName = month === 1 ? "Jan" : "Feb";
-            document.getElementById("historyTitle").innerText = `Space: ${year}.${month < 10 ? '0'+month : month}.${day < 10 ? '0'+day : day}`;
-            document.getElementById("earthTitle").innerText = `Earth: ${year}.${month < 10 ? '0'+month : month}.${day < 10 ? '0'+day : day}`;
+            document.getElementById("historyTitle").innerText = `Flashback: ${year}.${month < 10 ? '0'+month : month}.${day < 10 ? '0'+day : day}`;
             document.getElementById("moonDateLabel").innerText = `LUNAR PHASE • ${monthName} ${day}, 2005`;
             
             if (historyData[day]) {
                 document.getElementById("historyContent").innerHTML = historyData[day];
-                document.getElementById("earthContent").innerHTML = earthHistoryData[day] || "Peaceful day on Earth.";
             }
 
             if (imageMapping[day]) {
-                document.getElementById("eventImg").src = imageMapping[day];
-                document.getElementById("earthImg").src = earthImageMapping[day] || earthImageMapping[24];
+                const img = document.getElementById("eventImg");
+                img.style.opacity = '0';
+                setTimeout(() => {
+                    img.src = imageMapping[day];
+                    img.style.opacity = '1';
+                }, 300);
             }
 
-            // Accurate 2005 Lunar Phase Shadow
+            // Accurate 2005 Lunar Phase Logic
             const shadow = document.getElementById("moon-shadow");
-            let lunarAge = (month === 1) ? 15 + (day - 25) : day - 8;
-            if (lunarAge < 0) lunarAge += 29.5;
+            
+            // Reference: Jan 25, 2005 was roughly Full Moon (Lunar Age ~15)
+            // Full Moon 2005 dates: Jan 25, Feb 24
+            // New Moon 2005 dates: Jan 10, Feb 8
+            
+            let lunarAge = 0;
+            if (month === 1) {
+                // Calculation relative to Jan 25 (Full Moon)
+                lunarAge = 15 + (day - 25);
+            } else if (month === 2) {
+                // Calculation relative to Feb 8 (New Moon / Birthday)
+                lunarAge = day - 8;
+                if (lunarAge < 0) lunarAge += 29.5; 
+            }
 
-            let shadowPos = (lunarAge <= 15) ? (lunarAge / 15) * 100 : 100 - ((lunarAge - 15) / 14.5) * 100;
-            shadow.style.left = `${Math.max(0, Math.min(100, shadowPos))}%`;
+            // Map Lunar Age (0-29.5) to shadow position (0% - 100%)
+            // 0 = New Moon (Full shadow), 15 = Full Moon (No shadow)
+            let shadowPos;
+            if (lunarAge <= 15) {
+                // Waning towards New Moon (shadow comes from left)
+                shadowPos = (lunarAge / 15) * 100;
+            } else {
+                // Waxing towards Full Moon (shadow leaves to right)
+                shadowPos = 100 - ((lunarAge - 15) / 14.5) * 100;
+            }
+
+            // Apply constraints to prevent overflow
+            shadowPos = Math.max(0, Math.min(100, shadowPos));
+            shadow.style.left = `${shadowPos}%`;
+            
+            // Adjust opacity for realism: New Moon (Feb 8) should be darkest
+            if (month === 2 && day === 8) {
+                shadow.style.opacity = "0.98";
+                shadow.style.left = "0%"; 
+            } else if (month === 1 && day === 25) {
+                shadow.style.left = "100%"; // Full Moon
+            }
         }
 
         function updateTimer() {
