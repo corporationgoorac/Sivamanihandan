@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
         /* --- 1. LUXURY THEME --- */
@@ -74,7 +74,7 @@
         .gift-icon { font-size: 5rem; filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3)); animation: float 3s ease-in-out infinite; }
         .tap-hint { margin-top: 25px; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.8; animation: pulse 2s infinite; }
 
-        /* --- 4. COUNTDOWN TIMELINE --- */
+        /* --- 4. COUNTER --- */
         .counter-wrapper { text-align: center; }
         .counter-label { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: #666; margin-bottom: 20px; }
         .big-number { font-family: 'Playfair Display', serif; font-size: 6rem; line-height: 1; font-weight: 600; color: var(--gold); font-variant-numeric: tabular-nums; text-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
@@ -98,70 +98,98 @@
         h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; color: var(--gold); }
         h3 { font-weight: 300; font-size: 1rem; letter-spacing: 2px; margin: 5px 0 0 0; text-transform: uppercase; color: #aaa; }
 
-        /* --- 6. PERSONALITY PAGE STYLES --- */
-        .profile-container {
+        /* --- 6. PERSONALITY STYLES --- */
+        .profile-container { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
+        .profile-img-box { position: relative; margin-bottom: 20px; }
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 25px rgba(212, 175, 55, 0.4); animation: pulse-border 3s infinite; }
+        .header-title { color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 5px; }
+        .header-sub { color: #666; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
+        .scrolling-content { flex: 1; width: 100%; background: rgba(255, 255, 255, 0.03); border-left: 2px solid var(--gold-dim); padding: 15px; overflow-y: auto; text-align: left; font-family: 'Montserrat', sans-serif; font-size: 0.9rem; line-height: 1.6; color: #ddd; scrollbar-width: thin; scrollbar-color: var(--gold-dim) #111; }
+        .flash-line { opacity: 0; transform: translateY(5px); animation: decodeAnim 0.6s ease forwards; margin-bottom: 8px; display: block; }
+
+        /* --- 7. BLESSINGS PAGE (New Card Layout) --- */
+        .blessing-container {
+            flex: 1;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
-            height: 100%;
+            justify-content: center;
         }
 
-        .profile-img-box {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .profile-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 2px solid var(--gold);
-            object-fit: cover;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-            animation: pulse-border 3s infinite;
-        }
-
-        .header-title {
+        .moon-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
             color: var(--gold);
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            animation: float 4s ease-in-out infinite;
         }
 
-        .header-sub {
-            color: #666;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        /* The Scrolling Text Container */
-        .scrolling-content {
-            flex: 1;
+        /* The Card */
+        .dua-display {
             width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 2px solid var(--gold-dim);
-            padding: 15px;
-            overflow-y: auto;
-            text-align: left;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #ddd;
-            /* Scrollbar styling */
-            scrollbar-width: thin;
-            scrollbar-color: var(--gold-dim) #111;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 30px 20px;
+            margin: 20px 0;
+            position: relative;
+            transition: transform 0.3s;
         }
 
-        /* The Flashing Line Animation */
-        .flash-line {
-            opacity: 0;
-            transform: translateY(5px);
-            animation: decodeAnim 0.6s ease forwards;
-            margin-bottom: 8px;
-            display: block;
+        .dua-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: center;
+            direction: rtl;
+        }
+
+        .dua-english {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: #ddd;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* Dua Navigation (Arrows) */
+        .dua-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 10px;
+        }
+
+        .arrow-btn {
+            background: none;
+            border: 1px solid var(--gold-dim);
+            color: var(--gold);
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        .arrow-btn:hover { background: var(--gold); color: #000; }
+        .dua-counter { color: #666; font-size: 0.8rem; letter-spacing: 2px; }
+
+        /* Fade Animation for Dua Switch */
+        .fade-in { animation: fadeInDua 0.5s ease forwards; }
+
+        @keyframes fadeInDua {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         /* --- ANIMATIONS --- */
@@ -169,17 +197,15 @@
         @keyframes pulse { 0%, 100% {opacity: 0.5;} 50% {opacity: 1;} }
         @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
         @keyframes pulse-border { 0% {box-shadow:0 0 0 0 rgba(212,175,55,0.4);} 70% {box-shadow:0 0 0 10px transparent;} 100% {box-shadow:0 0 0 0 transparent;} }
-        
-        /* The "Data Decode" Effect */
-        @keyframes decodeAnim {
-            0% { opacity: 0; color: var(--gold); text-shadow: 0 0 10px var(--gold); transform: translateY(5px); }
-            50% { opacity: 1; color: #fff; }
-            100% { opacity: 0.9; color: #ddd; transform: translateY(0); }
-        }
+        @keyframes decodeAnim { 0% { opacity: 0; color: var(--gold); transform: translateY(5px); } 50% { opacity: 1; color: #fff; } 100% { opacity: 0.9; color: #ddd; transform: translateY(0); } }
 
     </style>
 </head>
 <body>
+
+    <audio id="bg-nasheed" preload="auto" loop>
+        <source src="https://archive.org/download/nasheed_202008/Heart%20Touching%20Nasheed.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="app">
 
@@ -260,7 +286,30 @@
 
                 <div class="nav-area">
                     <button onclick="goto('v-aafika')">Back</button>
-                    <button class="primary" onclick="alert('Next pages coming soon!')">Next</button>
+                    <button class="primary" onclick="goto('v-blessings')">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="v-blessings" class="view">
+            <div class="blessing-container">
+                <div class="moon-icon">☾</div>
+                <div class="header-title">The Prayers</div>
+                
+                <div id="dua-card-box" class="dua-display">
+                    <div id="dua-ar" class="dua-arabic">...</div>
+                    <div id="dua-en" class="dua-english">...</div>
+                </div>
+
+                <div class="dua-controls">
+                    <button class="arrow-btn" onclick="prevDua()">&#8592;</button>
+                    <span id="dua-counter" class="dua-counter">1 / 5</span>
+                    <button class="arrow-btn" onclick="nextDua()">&#8594;</button>
+                </div>
+
+                <div class="nav-area" style="margin-top: 10px;">
+                    <button onclick="goto('v-personality')">Back</button>
+                    <button class="primary" onclick="alert('Happy Birthday, Fathima Sumaiya!')">The End</button>
                 </div>
             </div>
         </div>
@@ -271,7 +320,35 @@
 
     <script>
         /* =========================================
-           AUDIO ENGINE
+           DATA: THE 5 DUAS
+           ========================================= */
+        const DUAS = [
+            {
+                ar: "بَارَكَ اللَّهُ فِي عُمْرِكِ",
+                en: "May Allah bless your life with barakah, light, and endless happiness."
+            },
+            {
+                ar: "اللَّهُمَّ احْفَظْهَا بِعَيْنِكَ الَّتِي لَا تَنَامُ",
+                en: "Oh Allah, protect her with Your eyes that never sleep, and keep her heart safe from all sadness."
+            },
+            {
+                ar: "رَبِّ زِدْنِي عِلْمًا وَارْزُقْنِي فَهْمًا",
+                en: "Oh Lord, increase her in knowledge and grant her deep understanding and wisdom in all her choices."
+            },
+            {
+                ar: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً",
+                en: "Our Lord, grant her goodness in this world and goodness in the Hereafter."
+            },
+            {
+                ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ",
+                en: "Oh Turner of hearts, keep her heart steadfast on Your faith and filled with peace."
+            }
+        ];
+
+        let currentDuaIndex = 0;
+
+        /* =========================================
+           AUDIO ENGINE (UI Sounds)
            ========================================= */
         const AudioSys = {
             ctx: null,
@@ -292,7 +369,7 @@
             },
             tick() { this.playTone(600, 'sine', 0.05, 0.05); },
             click() { this.playTone(800, 'triangle', 0.1, 0.05); },
-            data() { this.playTone(1000, 'square', 0.03, 0.02); }, // Computer data sound
+            data() { this.playTone(1000, 'square', 0.03, 0.02); }, 
             chime() { 
                 setTimeout(()=>this.playTone(523.25, 'sine', 1.5, 0.1), 0);
                 setTimeout(()=>this.playTone(659.25, 'sine', 1.5, 0.1), 100);
@@ -301,20 +378,82 @@
         };
 
         /* =========================================
-           VIEW LOGIC
+           VIEW MANAGER
            ========================================= */
         function goto(id) {
             AudioSys.click();
+            // 1. Reset
             document.querySelectorAll('video').forEach(v => v.pause());
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            
+            // 2. Handle Religious Audio
+            const nasheed = document.getElementById('bg-nasheed');
+            
+            if(id === 'v-blessings') {
+                // Try to play audio reliably
+                nasheed.volume = 0.5;
+                // Important: Reset time only if not already playing or just started
+                if(nasheed.paused) nasheed.play().catch(e => console.log("Audio block:", e));
+                
+                // Render first Dua
+                renderDua(0);
+            } else {
+                // Fade out/Stop audio if leaving blessings
+                if(!nasheed.paused) {
+                    nasheed.pause();
+                    nasheed.currentTime = 0;
+                }
+            }
+
+            // 3. Show Target
             const target = document.getElementById(id);
             target.classList.add('active');
 
+            // 4. Play Video if present
             const vid = target.querySelector('video');
             if(vid) { vid.currentTime = 0; vid.play().catch(e => {}); }
         }
 
-        /* --- TIMELINE ANIMATIONS --- */
+        /* =========================================
+           DUA CARD LOGIC
+           ========================================= */
+        function renderDua(index) {
+            const card = document.getElementById('dua-card-box');
+            
+            // Remove animation class to reset
+            card.classList.remove('fade-in');
+            void card.offsetWidth; // Trigger reflow
+            
+            document.getElementById('dua-ar').innerText = DUAS[index].ar;
+            document.getElementById('dua-en').innerText = DUAS[index].en;
+            document.getElementById('dua-counter').innerText = `${index + 1} / ${DUAS.length}`;
+            
+            card.classList.add('fade-in');
+        }
+
+        function nextDua() {
+            AudioSys.click();
+            if(currentDuaIndex < DUAS.length - 1) {
+                currentDuaIndex++;
+                renderDua(currentDuaIndex);
+            } else {
+                // Optional: Loop back to 0
+                currentDuaIndex = 0;
+                renderDua(currentDuaIndex);
+            }
+        }
+
+        function prevDua() {
+            AudioSys.click();
+            if(currentDuaIndex > 0) {
+                currentDuaIndex--;
+                renderDua(currentDuaIndex);
+            }
+        }
+
+        /* =========================================
+           TIMELINE LOGIC
+           ========================================= */
         function startJourney() {
             AudioSys.init();
             AudioSys.click();
@@ -361,36 +500,31 @@
         function startPersonality() {
             goto('v-personality');
             const container = document.getElementById('personality-stream');
-            container.innerHTML = ""; // Clear previous
             
-            // Check if PERSONALITY_TEXT is loaded
-            if (typeof PERSONALITY_TEXT === 'undefined') {
-                container.innerText = "Error: data.js not found or empty.";
-                return;
-            }
-
-            // Clean and split text
-            const lines = PERSONALITY_TEXT.trim().split('\n');
-            let i = 0;
-
-            const interval = setInterval(() => {
-                if (i < lines.length) {
-                    const lineStr = lines[i].trim();
-                    if(lineStr) {
-                        const p = document.createElement('div');
-                        p.className = 'flash-line';
-                        p.innerText = lineStr;
-                        container.appendChild(p);
-                        
-                        // Auto-scroll to bottom
-                        container.scrollTop = container.scrollHeight;
-                        AudioSys.data(); // Beep sound
-                    }
-                    i++;
-                } else {
-                    clearInterval(interval);
+            if(container.innerHTML === "") {
+                if (typeof PERSONALITY_TEXT === 'undefined') {
+                    container.innerText = "Data file missing...";
+                    return;
                 }
-            }, 500); // Speed of each line appearing
+                const lines = PERSONALITY_TEXT.trim().split('\n');
+                let i = 0;
+                const interval = setInterval(() => {
+                    if (i < lines.length) {
+                        const lineStr = lines[i].trim();
+                        if(lineStr) {
+                            const p = document.createElement('div');
+                            p.className = 'flash-line';
+                            p.innerText = lineStr;
+                            container.appendChild(p);
+                            container.scrollTop = container.scrollHeight;
+                            AudioSys.data(); 
+                        }
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 400); 
+            }
         }
 
     </script>
