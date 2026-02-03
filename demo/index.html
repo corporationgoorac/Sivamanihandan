@@ -125,123 +125,47 @@
         .arrow-btn:hover { background: var(--gold); color: #000; }
         .dua-counter { color: #666; font-size: 0.8rem; letter-spacing: 2px; }
 
+        /* --- 8. FLOATING LANTERN STYLES --- */
+        .lantern-scene { position: relative; width: 100%; flex: 1; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 60px; background: linear-gradient(to top, #000510 0%, #000 80%); }
+        .lantern-text { position: absolute; top: 20%; width: 100%; text-align: center; font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); opacity: 0; transition: opacity 1s ease; z-index: 5; pointer-events: none; }
+        .water-reflection { position: absolute; bottom: 0; width: 100%; height: 25%; background: linear-gradient(to top, rgba(0,10,30,0.8), transparent); z-index: 1; pointer-events: none; }
+        
+        .lantern { position: absolute; background: rgba(255,255,255,0.1); width: 35px; height: 50px; border-radius: 6px 6px 4px 4px; bottom: 10%; transition: all 0.8s ease; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); }
+        .lantern.main-lantern { bottom: 50px; width: 50px; height: 70px; z-index: 10; left: 50%; transform: translateX(-50%); }
+        .lantern::after { content:''; position: absolute; bottom:0; left:0; right:0; height: 4px; background: #555; }
+        
+        /* Lit State */
+        .lantern.lit { background: radial-gradient(circle at center, #fff, #ffcc00, #d4af37); box-shadow: 0 0 30px rgba(255, 200, 0, 0.6), 0 0 60px rgba(255, 100, 0, 0.2); border: none; }
+        .lantern.fly { animation: floatUpSky 12s linear forwards; pointer-events: none; }
+
+        @keyframes floatUpSky { 
+            0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(-120vh) scale(0.5); opacity: 0; }
+        }
+        
+        /* Floating particles (extra lanterns) */
+        .bg-lantern { position: absolute; width: 20px; height: 30px; background: radial-gradient(circle, #fff, #ffcc00); border-radius: 4px; opacity: 0; box-shadow: 0 0 10px #ffcc00; }
+        .bg-lantern.rise { animation: riseUp 10s linear forwards; }
+        
+        @keyframes riseUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-20vh) scale(0.2); opacity: 0; }
+        }
+
+        .fade-hidden { opacity: 0; pointer-events: none; transition: opacity 1s ease; }
+        .fade-visible { opacity: 1; pointer-events: all; }
+
         /* Fade Animation */
         .fade-in { animation: fadeInDua 0.5s ease forwards; }
         @keyframes fadeInDua { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-        /* --- 8. PANNING LANTERN SCENE --- */
-        #v-lanterns {
-            background: #020205;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* PANNING LOGIC:
-           We move 'ocean-layer' DOWN and 'sky-layer' DOWN to simulate camera going UP.
-        */
-        
-        /* The "Ground" layer */
-        .ocean-layer {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 60%;
-            background: linear-gradient(to top, #020205 0%, #111 100%);
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            padding-bottom: 100px;
-            transition: transform 4s ease-in-out, opacity 4s ease;
-            z-index: 5;
-        }
-        
-        .ocean-line {
-            position: absolute; bottom: 20%; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3), transparent);
-        }
-
-        /* The "Sky" layer (Initially Hidden Above) */
-        .sky-layer {
-            position: absolute;
-            top: -100%; /* Start above screen */
-            left: 0; right: 0; height: 100%;
-            background: radial-gradient(circle at bottom, #1a1a2e 0%, #000 100%);
-            z-index: 2;
-            transition: transform 4s ease-in-out;
-        }
-
-        /* When Triggered: Move everything DOWN */
-        .pan-active .ocean-layer {
-            transform: translateY(100vh); /* Move Ocean down out of view */
-            opacity: 0;
-        }
-        
-        .pan-active .sky-layer {
-            transform: translateY(100%); /* Move Sky down into view */
-        }
-
-        /* Interactive Main Lantern */
-        .main-lantern {
-            width: 70px; height: 100px;
-            background: linear-gradient(to bottom, #d4af37, #ff8c00);
-            border-radius: 8px 8px 25px 25px;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 140, 0, 0.4);
-            transition: all 4s ease-in-out; /* Smooth long transition for the "flight" */
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .main-lantern::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 12px; background: rgba(0,0,0,0.3); border-radius: 8px 8px 0 0; }
-        .main-lantern::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 8px; background: rgba(0,0,0,0.3); border-radius: 0 0 25px 25px; }
-
-        /* Glow Effect */
-        .main-lantern.lit {
-            background: linear-gradient(to bottom, #fff7cc, #ffcc00);
-            box-shadow: 0 0 60px rgba(255, 200, 0, 0.9), 0 0 100px rgba(255, 100, 0, 0.5);
-        }
-
-        /* Flight Path in Pan Mode */
-        .pan-active .main-lantern {
-            transform: translateY(-50vh) scale(0.6); /* Move up relative to ocean (which is moving down), creating pan effect */
-            /* Note: Since Ocean is moving down 100vh, and we want lantern in center, we adjust relative to container */
-        }
-
-        /* Wrapper for Main Lantern to handle click vs animation separate */
-        .lantern-wrapper {
-            position: absolute;
-            bottom: 120px; left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            transition: bottom 4s ease-in-out;
-        }
-        
-        .pan-active .lantern-wrapper {
-            bottom: 50%; /* Move to center of screen */
-        }
-
-        /* Text Styles */
-        .wish-text {
-            position: absolute; width: 100%; text-align: center;
-            font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold);
-            text-shadow: 0 0 10px rgba(0,0,0,0.8); pointer-events: none;
-            opacity: 0; transition: opacity 1s ease;
-            top: 25%; z-index: 20;
-        }
-        
-        .wish-text.visible { opacity: 1; }
-
-        /* Background Lanterns in Sky */
-        .distant-lantern {
-            position: absolute;
-            background: linear-gradient(to bottom, #ffcc00, #ff4500);
-            border-radius: 5px 5px 15px 15px;
-            opacity: 0.8;
-            box-shadow: 0 0 15px rgba(255, 140, 0, 0.6);
-            animation: flickerFloat 6s ease-in-out infinite alternate;
-        }
-
-        @keyframes float { 0%, 100% {transform:translateY(0);} 50% {transform:translateY(-10px);} }
-        @keyframes flickerFloat { 0% { opacity: 0.7; transform: translateY(0); } 100% { opacity: 1; transform: translateY(-20px); } }
+        /* --- ANIMATIONS --- */
+        @keyframes float { 0%, 100% {transform:translateY(0);} 50% {transform:translateY(-15px);} }
+        @keyframes pulse { 0%, 100% {opacity: 0.5;} 50% {opacity: 1;} }
+        @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+        @keyframes pulse-border { 0% {box-shadow:0 0 0 0 rgba(212,175,55,0.4);} 70% {box-shadow:0 0 0 10px transparent;} 100% {box-shadow:0 0 0 0 transparent;} }
+        @keyframes fadeWord { 0% { opacity: 0; transform: translateY(5px); color: var(--gold); } 100% { opacity: 1; transform: translateY(0); color: #ddd; } }
 
     </style>
 </head>
@@ -332,23 +256,12 @@
         </div>
 
         <div id="v-lanterns" class="view">
-            
-            <div id="wish-text-1" class="wish-text">Close your eyes and make a wish...</div>
-            <div id="wish-text-2" class="wish-text">Tap the lantern to release it</div>
-            <div id="wish-text-3" class="wish-text" style="color:#fff; text-shadow:0 0 20px #d4af37;">Your wish has reached the heavens</div>
-
-            <div id="sky-layer" class="sky-layer">
-                </div>
-
-            <div id="ocean-layer" class="ocean-layer">
-                <div class="ocean-line"></div>
+            <div class="lantern-scene" id="lantern-scene">
+                <div id="lantern-msg" class="lantern-text">Close your eyes and make a wish...</div>
+                <div id="sky-container"></div> <div class="water-reflection"></div>
+                <div id="main-lantern" class="lantern main-lantern" onclick="releaseLantern()"></div>
             </div>
-
-            <div id="lantern-wrapper" class="lantern-wrapper">
-                <div id="main-lantern" class="main-lantern" onclick="triggerLanterns()"></div>
-            </div>
-
-            <div class="nav-area" style="position: absolute; bottom: 20px; z-index: 50;">
+            <div id="lantern-nav" class="nav-area fade-hidden">
                 <button onclick="goto('v-blessings')">Back</button>
                 <button class="primary" onclick="goto('v-aafika')">Next</button>
             </div>
@@ -417,9 +330,10 @@
         ];
 
         let currentDuaIndex = 0;
+        let lanternReleased = false;
 
         /* =========================================
-           AUDIO ENGINE
+           AUDIO ENGINE (UI Sounds)
            ========================================= */
         const AudioSys = {
             ctx: null,
@@ -453,69 +367,193 @@
            ========================================= */
         function goto(id) {
             AudioSys.click();
+            // 1. Reset everything
             document.querySelectorAll('video').forEach(v => v.pause());
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             
+            // 2. AUDIO HANDLING
             const nasheed = document.getElementById('audio-nasheed');
             const personalityAudio = document.getElementById('audio-personality');
             
-            // Audio Logic
-            if(id === 'v-blessings' || id === 'v-lanterns') {
+            // Logic: Lantern page shares the same audio as Blessings (Duo)
+            if (id === 'v-blessings' || id === 'v-lanterns') {
                 if(nasheed.paused) {
                     nasheed.volume = 0.5;
                     nasheed.play().catch(e => console.log("Audio block:", e));
                 }
-                if(!personalityAudio.paused) { personalityAudio.pause(); personalityAudio.currentTime = 0; }
+                // Ensure personality song is off
+                if (!personalityAudio.paused) { personalityAudio.pause(); personalityAudio.currentTime = 0; }
             }
             else if(id === 'v-personality') {
-                if(!nasheed.paused) { nasheed.pause(); nasheed.currentTime = 0; }
+                // Stop nasheed, start personality song
+                if (!nasheed.paused) { nasheed.pause(); nasheed.currentTime = 0; }
                 personalityAudio.currentTime = 3;
                 personalityAudio.volume = 0.8;
                 personalityAudio.play().catch(e => console.log("Audio block:", e));
             }
             else {
-                if(!nasheed.paused) { nasheed.pause(); nasheed.currentTime = 0; }
-                if(!personalityAudio.paused) { personalityAudio.pause(); personalityAudio.currentTime = 0; }
+                // Stop all if going back to start or other pages (optional, depends on preference. 
+                // Usually we keep music playing, but sticking to strict reset for earlier pages)
+                if(id === 'v-start' || id === 'v-rewind' || id === 'v-born') {
+                     if (!nasheed.paused) { nasheed.pause(); nasheed.currentTime = 0; }
+                     if (!personalityAudio.paused) { personalityAudio.pause(); personalityAudio.currentTime = 0; }
+                }
             }
 
-            // Page Specifics
-            if(id === 'v-blessings') renderDua(0);
-            if(id === 'v-lanterns') resetLanternPage();
+            // 3. Handle Page-Specific Logic
+            if(id === 'v-blessings') {
+                renderDua(0);
+            } 
+            else if(id === 'v-lanterns') {
+                initLanternPage();
+            }
 
+            // 4. Show Target
             const target = document.getElementById(id);
             target.classList.add('active');
+
+            // 5. Play Video if present
             const vid = target.querySelector('video');
             if(vid) { vid.currentTime = 0; vid.play().catch(e => {}); }
         }
 
         /* =========================================
-           DUA LOGIC
+           DUA CARD LOGIC
            ========================================= */
         function renderDua(index) {
             const card = document.getElementById('dua-card-box');
             card.classList.remove('fade-in');
-            void card.offsetWidth; 
+            void card.offsetWidth; // Trigger reflow
             document.getElementById('dua-ar').innerText = DUAS[index].ar;
             document.getElementById('dua-en').innerText = DUAS[index].en;
             document.getElementById('dua-counter').innerText = `${index + 1} / ${DUAS.length}`;
             card.classList.add('fade-in');
         }
-        function nextDua() { AudioSys.click(); currentDuaIndex = (currentDuaIndex < DUAS.length - 1) ? currentDuaIndex + 1 : 0; renderDua(currentDuaIndex); }
-        function prevDua() { AudioSys.click(); currentDuaIndex = (currentDuaIndex > 0) ? currentDuaIndex - 1 : 0; renderDua(currentDuaIndex); }
+
+        function nextDua() {
+            AudioSys.click();
+            if(currentDuaIndex < DUAS.length - 1) {
+                currentDuaIndex++;
+                renderDua(currentDuaIndex);
+            } else {
+                currentDuaIndex = 0; 
+                renderDua(currentDuaIndex);
+            }
+        }
+
+        function prevDua() {
+            AudioSys.click();
+            if(currentDuaIndex > 0) {
+                currentDuaIndex--;
+                renderDua(currentDuaIndex);
+            }
+        }
+
+        /* =========================================
+           LANTERN LOGIC
+           ========================================= */
+        function initLanternPage() {
+            // Reset State
+            lanternReleased = false;
+            const lantern = document.getElementById('main-lantern');
+            const msg = document.getElementById('lantern-msg');
+            const sky = document.getElementById('sky-container');
+            const nav = document.getElementById('lantern-nav');
+
+            lantern.className = 'lantern main-lantern'; // Remove lit/fly classes
+            lantern.style.pointerEvents = 'none'; // Disable click initially
+            sky.innerHTML = ''; // Clear old background lanterns
+            nav.classList.remove('fade-visible');
+            nav.classList.add('fade-hidden');
+            
+            // Text Sequence
+            msg.style.opacity = '0';
+            msg.innerText = "Close your eyes and make a wish...";
+            
+            setTimeout(() => { msg.style.opacity = '1'; }, 500);
+
+            // After 4 seconds, enable interaction
+            setTimeout(() => {
+                msg.style.opacity = '0';
+                setTimeout(() => {
+                    msg.innerText = "Tap the lantern";
+                    msg.style.opacity = '1';
+                    lantern.style.pointerEvents = 'all';
+                }, 1000);
+            }, 4500);
+        }
+
+        function releaseLantern() {
+            if(lanternReleased) return;
+            lanternReleased = true;
+            
+            AudioSys.chime(); // Magical sound
+
+            const lantern = document.getElementById('main-lantern');
+            const msg = document.getElementById('lantern-msg');
+            
+            // Light up and fly
+            lantern.classList.add('lit');
+            
+            // Wait slight moment then fly
+            setTimeout(() => {
+                lantern.classList.add('fly');
+                spawnSkyLanterns();
+                
+                // Update text
+                msg.style.opacity = '0';
+                setTimeout(() => {
+                    msg.innerText = "Your wish has reached the heavens";
+                    msg.style.opacity = '1';
+                    
+                    // Show Next Button
+                    document.getElementById('lantern-nav').classList.remove('fade-hidden');
+                    document.getElementById('lantern-nav').classList.add('fade-visible');
+                }, 2000);
+            }, 500);
+        }
+
+        function spawnSkyLanterns() {
+            const sky = document.getElementById('sky-container');
+            const count = 40; // Number of background lanterns
+            
+            for(let i=0; i<count; i++) {
+                const l = document.createElement('div');
+                l.className = 'bg-lantern';
+                // Random positioning
+                const left = Math.random() * 100;
+                const delay = Math.random() * 3;
+                const dur = 8 + Math.random() * 5;
+                const scale = 0.5 + Math.random() * 0.5;
+
+                l.style.left = left + '%';
+                l.style.animationDelay = delay + 's';
+                l.style.animationDuration = dur + 's';
+                
+                l.classList.add('rise');
+                sky.appendChild(l);
+            }
+        }
 
         /* =========================================
            TIMELINE LOGIC
            ========================================= */
         function startJourney() {
-            AudioSys.init(); AudioSys.click(); goto('v-rewind');
+            AudioSys.init();
+            AudioSys.click();
+            goto('v-rewind');
             const numEl = document.getElementById('num-rewind');
             const detailEl = document.getElementById('detail-rewind');
             let year = 2026;
             const timer = setInterval(() => {
-                year--; numEl.innerText = year; AudioSys.tick();
+                year--;
+                numEl.innerText = year;
+                AudioSys.tick();
                 if (year <= 2005) {
-                    clearInterval(timer); AudioSys.chime();
-                    detailEl.innerText = "FEB 08"; detailEl.style.color = "var(--gold)";
+                    clearInterval(timer);
+                    AudioSys.chime();
+                    detailEl.innerText = "FEB 08";
+                    detailEl.style.color = "var(--gold)";
                     setTimeout(() => goto('v-born'), 1500);
                 }
             }, 150);
@@ -525,105 +563,60 @@
             goto('v-forward');
             const numEl = document.getElementById('num-forward');
             const detailEl = document.getElementById('detail-forward');
-            let year = 2005; let age = 0;
+            let year = 2005;
+            let age = 0;
             const timer = setInterval(() => {
-                year++; age++; numEl.innerText = year; detailEl.innerText = "Age: " + age; AudioSys.tick();
+                year++; age++;
+                numEl.innerText = year;
+                detailEl.innerText = "Age: " + age;
+                AudioSys.tick();
                 if (age >= 21) {
-                    clearInterval(timer); AudioSys.chime();
-                    detailEl.innerText = "TURNING 21"; detailEl.style.color = "var(--gold)";
+                    clearInterval(timer);
+                    AudioSys.chime();
+                    detailEl.innerText = "TURNING 21";
+                    detailEl.style.color = "var(--gold)";
                     setTimeout(() => goto('v-wishes'), 1500);
                 }
             }, 200);
         }
 
-        /* =========================================
-           CINEMATIC LANTERN LOGIC
-           ========================================= */
-        let lanternTriggered = false;
-
-        function resetLanternPage() {
-            lanternTriggered = false;
-            
-            // Reset Classes
-            document.getElementById('v-lanterns').classList.remove('pan-active');
-            document.getElementById('main-lantern').classList.remove('lit');
-            
-            // Generate Sky Lanterns (Pre-existing)
-            const sky = document.getElementById('sky-layer');
-            sky.innerHTML = '';
-            for(let i=0; i<60; i++) {
-                const l = document.createElement('div');
-                l.className = 'distant-lantern';
-                // Randomize positions in the sky
-                const size = 5 + Math.random() * 20;
-                l.style.width = size + 'px';
-                l.style.height = (size * 1.5) + 'px';
-                l.style.left = Math.random() * 100 + '%';
-                l.style.top = Math.random() * 100 + '%'; // Distributed vertically in sky layer
-                l.style.animationDelay = Math.random() * 5 + 's';
-                sky.appendChild(l);
-            }
-
-            // Text Sequence Reset
-            const t1 = document.getElementById('wish-text-1');
-            const t2 = document.getElementById('wish-text-2');
-            const t3 = document.getElementById('wish-text-3');
-            
-            t1.classList.remove('visible'); t2.classList.remove('visible'); t3.classList.remove('visible');
-            
-            // Start Sequence
-            setTimeout(() => t1.classList.add('visible'), 500);
-            setTimeout(() => {
-                t1.classList.remove('visible');
-                setTimeout(() => { if(!lanternTriggered) t2.classList.add('visible'); }, 1000);
-            }, 4000);
-        }
-
-        function triggerLanterns() {
-            if(lanternTriggered) return;
-            lanternTriggered = true;
-
-            AudioSys.chime();
-            
-            // Hide Instructions
-            document.getElementById('wish-text-2').classList.remove('visible');
-
-            // 1. Light the Lantern
-            const lantern = document.getElementById('main-lantern');
-            lantern.classList.add('lit');
-
-            // 2. Start the Camera Pan (after split second)
-            setTimeout(() => {
-                document.getElementById('v-lanterns').classList.add('pan-active');
-                
-                // 3. Show Final Message
-                setTimeout(() => {
-                    document.getElementById('wish-text-3').classList.add('visible');
-                }, 3500); // Waits for pan to mostly finish
-            }, 800);
-        }
-
-        /* --- PERSONALITY TEXT ANIMATION --- */
+        /* --- PERSONALITY TEXT ANIMATION (WORD BY WORD) --- */
         function startPersonality() {
             goto('v-personality');
             const container = document.getElementById('personality-stream');
+            
+            // Only load if empty
             if(container.innerHTML === "") {
-                if (typeof PERSONALITY_TEXT === 'undefined') { container.innerText = "Data file missing..."; return; }
+                if (typeof PERSONALITY_TEXT === 'undefined') {
+                    container.innerText = "Data file missing...";
+                    return;
+                }
+                
+                // Split by spaces/newlines to get words (preserving structure roughly)
                 const words = PERSONALITY_TEXT.split(/\s+/);
                 let i = 0;
+                
                 const interval = setInterval(() => {
                     if (i < words.length) {
                         const span = document.createElement('span');
                         span.className = 'word-span';
-                        span.innerText = words[i] + " ";
+                        span.innerText = words[i] + " "; // Add space back
                         container.appendChild(span);
+                        
+                        // Auto-scroll
                         container.scrollTop = container.scrollHeight;
+                        
+                        // Small beep every 5 words
                         if(i % 5 === 0) AudioSys.data(); 
+                        
                         i++;
-                    } else { clearInterval(interval); }
-                }, 150);
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 150); // Speed: 150ms per word (Fast reading pace)
             }
         }
+
     </script>
 </body>
 </html>
