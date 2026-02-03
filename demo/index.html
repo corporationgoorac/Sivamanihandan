@@ -28,8 +28,9 @@
             background-color: var(--bg);
             color: var(--text-main);
             font-family: 'Montserrat', sans-serif;
-            height: 100dvh;
-            overflow: hidden;
+            height: 100dvh; /* Dynamic viewport height */
+            width: 100vw;
+            overflow: hidden; /* Prevent scrolling */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -85,8 +86,15 @@
         .poetic-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; line-height: 1.6; color: #ddd; animation: fadeIn 1.5s ease forwards; }
 
         /* Video Frame */
-        .video-box { width: 100%; flex: 1; background: #000; border: 1px solid #222; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        video { width: 100%; height: 100%; object-fit: contain; }
+        .video-box { width: 100%; flex: 1; background: #000; border: 1px solid #222; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
+        
+        /* Video Fixes */
+        video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            display: block;
+        }
 
         /* Navigation */
         .nav-area { width: 100%; padding-top: 20px; display: flex; justify-content: center; gap: 20px; position: relative; z-index: 50; }
@@ -100,10 +108,10 @@
 
         /* --- 6. PERSONALITY STYLES --- */
         .profile-container { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
-        .profile-img-box { position: relative; margin-bottom: 20px; }
+        .profile-img-box { position: relative; margin-bottom: 20px; flex-shrink: 0; }
         .profile-img { width: 120px; height: 120px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 25px rgba(212, 175, 55, 0.4); animation: pulse-border 3s infinite; }
-        .header-title { color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 5px; }
-        .header-sub { color: #666; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
+        .header-title { color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 5px; flex-shrink: 0; }
+        .header-sub { color: #666; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; flex-shrink: 0; }
         .scrolling-content { flex: 1; width: 100%; background: rgba(255, 255, 255, 0.03); border-left: 2px solid var(--gold-dim); padding: 15px; overflow-y: auto; text-align: left; font-family: 'Montserrat', sans-serif; font-size: 0.95rem; line-height: 1.8; color: #ddd; scrollbar-width: thin; scrollbar-color: var(--gold-dim) #111; }
         .word-span { opacity: 0; display: inline-block; margin-right: 5px; animation: fadeWord 0.5s ease forwards; }
 
@@ -146,7 +154,7 @@
             position: relative; 
         }
         .wish-image { 
-            max-width: 85%; /* Bit small on screen */
+            max-width: 85%;
             max-height: 60vh;
             width: auto; 
             height: auto; 
@@ -216,7 +224,7 @@
                 </div>
             </div>
             <div class="video-box">
-                <video id="vid-born" playsinline loop src="born.mp4"></video>
+                <video id="vid-born" playsinline webkit-playsinline loop muted preload="auto" src="born.mp4"></video>
             </div>
             <div class="nav-area">
                 <button class="primary" onclick="startForward()">Start Journey</button>
@@ -237,7 +245,7 @@
                 <h3>Fathima Sumaiya</h3>
             </div>
             <div class="video-box">
-                <video id="vid-wishes" playsinline loop src="wishes.mp4"></video>
+                <video id="vid-wishes" playsinline webkit-playsinline loop muted preload="auto" src="wishes.mp4"></video>
             </div>
             <div class="nav-area">
                 <button onclick="goto('v-born')">Back</button>
@@ -287,7 +295,7 @@
                 <h3>Sending Love</h3>
             </div>
             <div class="video-box">
-                <video id="vid-aafika" playsinline loop src="aafika.mp4"></video>
+                <video id="vid-aafika" playsinline webkit-playsinline loop muted preload="auto" src="aafika.mp4"></video>
             </div>
             <div class="nav-area">
                 <button onclick="goto('v-lanterns')">Back</button>
@@ -342,7 +350,7 @@
 
     <script>
         /* =========================================
-           DATA: DUAS & WISHES
+           DATA CONFIG
            ========================================= */
         const DUAS = [
             { ar: "بَارَكَ اللَّهُ فِي عُمْرِكِ", en: "May Allah bless your life with barakah, light, and endless happiness." },
@@ -352,18 +360,10 @@
             { ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", en: "Oh Turner of hearts, keep her heart steadfast on Your faith and filled with peace." }
         ];
 
-        /* CAPTIONS MAPPED TO PHOTO CONTENT (Context: She is in college, photos are school) */
         const WISHES = [
-            // pic1.jpg: School Steps -> Foundation/Past
             { text: "Looking back at where it all started... May the discipline and dreams of your school days continue to guide you to greatness in your college life and beyond." }, 
-            
-            // pic2.jpg: Reading Book -> Knowledge/Studying
             { text: "Always lost in books, even back then. As you pursue higher education now, may your thirst for knowledge write a beautiful success story for your future." }, 
-            
-            // pic3.jpg: Greenery -> Growth/Hope
             { text: "You have grown so much since this photo was taken. Like the nature around you, may your life always bloom with hope, resilience, and endless possibilities." }, 
-            
-            // pic4.jpg: Bus Window -> Journey/Dreams
             { text: "From those school bus rides to the journey you are on now... May Allah protect you, guide your steps, and lead you to the most beautiful destinations." } 
         ];
 
@@ -373,13 +373,14 @@
         let typingInterval = null; 
 
         /* =========================================
-           AUDIO ENGINE (UI Sounds)
+           AUDIO ENGINE
            ========================================= */
         const AudioSys = {
             ctx: null,
             init() {
                 try {
-                    if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (!this.ctx) this.ctx = new AudioContext();
                     if (this.ctx.state === 'suspended') this.ctx.resume();
                 } catch (e) { console.log("Audio Init Error", e); }
             },
@@ -406,13 +407,17 @@
         };
 
         /* =========================================
-           VIEW MANAGER
+           VIEW MANAGER (FIXED VIDEO LOGIC)
            ========================================= */
         function goto(id) {
+            AudioSys.init(); // Ensure context is awake
             AudioSys.click();
             
             // 1. Reset
-            document.querySelectorAll('video').forEach(v => v.pause());
+            document.querySelectorAll('video').forEach(v => {
+                v.pause();
+                v.muted = true; // IMPORTANT: Always reset to muted
+            });
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             
             // 2. Audio Control
@@ -422,11 +427,11 @@
             const song2 = document.getElementById('audio-song2');
 
             const stopAllExcept = (exception) => {
-                if(exception !== nasheed) { nasheed.pause(); nasheed.currentTime = 0; }
-                if(exception !== personality) { personality.pause(); personality.currentTime = 0; }
-                if(exception !== song1) { song1.pause(); song1.currentTime = 0; }
+                if(exception !== nasheed) { nasheed.pause(); }
+                if(exception !== personality) { personality.pause(); }
+                if(exception !== song1) { song1.pause(); }
                 // Don't stop song2 if going to grand finale
-                if(exception !== song2 && id !== 'v-grand-finale') { song2.pause(); song2.currentTime = 0; }
+                if(exception !== song2 && id !== 'v-grand-finale') { song2.pause(); }
             };
 
             if (id === 'v-blessings') {
@@ -443,7 +448,6 @@
                 renderFinalWishes();
             }
             else if (id === 'v-grand-finale') {
-                // Keep Song 2 playing
                 song1.pause(); 
             }
             else {
@@ -458,9 +462,21 @@
             const target = document.getElementById(id);
             target.classList.add('active');
 
-            // 5. Play Video
+            // 5. Play Video (FIXED FOR INSTAGRAM)
             const vid = target.querySelector('video');
-            if(vid) { vid.currentTime = 0; vid.play().catch(e => {}); }
+            if(vid) { 
+                vid.currentTime = 0;
+                vid.muted = true; // Force mute to bypass autoplay block
+                vid.playsInline = true; 
+                
+                var promise = vid.play();
+                if (promise !== undefined) {
+                    promise.catch(error => {
+                        console.log("Autoplay prevented:", error);
+                        // Optional: Add a "Tap to Play" overlay here if needed
+                    });
+                }
+            }
         }
 
         /* =========================================
@@ -531,7 +547,6 @@
             const words = WISHES[currentWishIndex].text.split(" ");
             let i = 0;
             
-            // 400ms delay per word = very slow reading
             typingInterval = setInterval(() => {
                 if(i < words.length) {
                     const span = document.createElement("span");
@@ -542,11 +557,8 @@
                     i++;
                 } else {
                     clearInterval(typingInterval);
-                    // CHECK IF LAST SLIDE
                     if(currentWishIndex === WISHES.length - 1) {
-                        setTimeout(() => {
-                            goto('v-grand-finale');
-                        }, 3000); // Wait 3 seconds then go to new page
+                        setTimeout(() => { goto('v-grand-finale'); }, 3000); 
                     }
                 }
             }, 400); 
@@ -555,7 +567,6 @@
             const s1 = document.getElementById('audio-song1');
             const s2 = document.getElementById('audio-song2');
 
-            // Index 0,1 -> Song 1. Index 2,3 -> Song 2.
             if(currentWishIndex === 0) {
                 s2.pause(); s2.currentTime = 0; 
                 if(s1.paused) { s1.currentTime = 0; s1.volume = 0.7; s1.play().catch(e=>{}); }
@@ -567,7 +578,7 @@
             // 4. Button Logic
             const btn = document.getElementById('btn-next-wish');
             if(currentWishIndex === WISHES.length - 1) {
-                btn.style.display = 'none'; // Hide on last slide
+                btn.style.display = 'none'; 
             } else {
                 btn.style.display = 'inline-block';
             }
@@ -608,7 +619,8 @@
             goto('v-personality');
             const container = document.getElementById('personality-stream');
             if(container.innerHTML === "") {
-                const text = (typeof PERSONALITY_TEXT !== 'undefined') ? PERSONALITY_TEXT : "You are kind, smart, and wonderful. Happy Birthday!";
+                // FALLBACK for missing variable
+                const text = (typeof PERSONALITY_TEXT !== 'undefined') ? PERSONALITY_TEXT : "You are the poetry the world forgot to write. Kind, smart, and truly wonderful. Happy Birthday!";
                 const words = text.split(/\s+/); let i = 0;
                 const interval = setInterval(() => {
                     if (i < words.length) {
