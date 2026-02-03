@@ -588,7 +588,7 @@
             AudioSys.init(); AudioSys.click(); goto('v-rewind');
             const numEl = document.getElementById('num-rewind'); const detailEl = document.getElementById('detail-rewind');
             let year = 2026;
-            // CHANGED SPEED TO 164ms (Total approx 3.45 seconds)
+            // SET REWIND TO 164ms (Total ~3.45s)
             const timer = setInterval(() => {
                 year--; numEl.innerText = year; AudioSys.tick();
                 if (year <= 2005) { clearInterval(timer); AudioSys.chime(); detailEl.innerText = "FEB 08"; detailEl.style.color = "var(--gold)"; setTimeout(() => goto('v-born'), 1500); }
@@ -604,7 +604,7 @@
             const numEl = document.getElementById('num-forward'); const detailEl = document.getElementById('detail-forward');
             let year = 2005; let age = 0;
             
-            // 2. FASTER SPEED for Autoplay
+            // 2. SET FORWARD TO 164ms (Total ~3.45s)
             const timer = setInterval(() => {
                 year++; age++; numEl.innerText = year; detailEl.innerText = "Age: " + age; AudioSys.tick();
                 if (age >= 21) { 
@@ -612,10 +612,10 @@
                     AudioSys.chime(); 
                     detailEl.innerText = "TURNING 21"; 
                     detailEl.style.color = "var(--gold)"; 
-                    // 3. SHORTER WAIT for Autoplay
+                    // 3. Keep Short Wait (500ms) for Audio Safety
                     setTimeout(() => goto('v-wishes'), 500); 
                 }
-            }, 80);
+            }, 164);
         }
 
         function startPersonality() {
