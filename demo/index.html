@@ -107,7 +107,7 @@
         .scrolling-content { flex: 1; width: 100%; background: rgba(255, 255, 255, 0.03); border-left: 2px solid var(--gold-dim); padding: 15px; overflow-y: auto; text-align: left; font-family: 'Montserrat', sans-serif; font-size: 0.9rem; line-height: 1.6; color: #ddd; scrollbar-width: thin; scrollbar-color: var(--gold-dim) #111; }
         .flash-line { opacity: 0; transform: translateY(5px); animation: decodeAnim 0.6s ease forwards; margin-bottom: 8px; display: block; }
 
-        /* --- 7. BLESSINGS PAGE (New Card Layout) --- */
+        /* --- 7. BLESSINGS PAGE STYLES --- */
         .blessing-container {
             flex: 1;
             width: 100%;
@@ -125,7 +125,7 @@
             animation: float 4s ease-in-out infinite;
         }
 
-        /* The Card */
+        /* Dua Card */
         .dua-display {
             width: 100%;
             flex: 1;
@@ -161,7 +161,7 @@
             text-align: center;
         }
 
-        /* Dua Navigation (Arrows) */
+        /* Dua Controls */
         .dua-controls {
             display: flex;
             justify-content: center;
@@ -184,15 +184,14 @@
         .arrow-btn:hover { background: var(--gold); color: #000; }
         .dua-counter { color: #666; font-size: 0.8rem; letter-spacing: 2px; }
 
-        /* Fade Animation for Dua Switch */
+        /* Animation */
         .fade-in { animation: fadeInDua 0.5s ease forwards; }
-
         @keyframes fadeInDua {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- KEYFRAMES --- */
         @keyframes float { 0%, 100% {transform:translateY(0);} 50% {transform:translateY(-15px);} }
         @keyframes pulse { 0%, 100% {opacity: 0.5;} 50% {opacity: 1;} }
         @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
@@ -256,38 +255,7 @@
             </div>
             <div class="nav-area">
                 <button onclick="goto('v-born')">Back</button>
-                <button class="primary" onclick="goto('v-aafika')">Next</button>
-            </div>
-        </div>
-
-        <div id="v-aafika" class="view">
-            <div class="text-panel" style="flex-direction: column;">
-                <h2>Little Aafika</h2>
-                <h3>Sending Love</h3>
-            </div>
-            <div class="video-box">
-                <video id="vid-aafika" playsinline loop src="aafika.mp4"></video>
-            </div>
-            <div class="nav-area">
-                <button onclick="goto('v-wishes')">Back</button>
-                <button class="primary" onclick="startPersonality()">Next</button>
-            </div>
-        </div>
-
-        <div id="v-personality" class="view">
-            <div class="profile-container">
-                <div class="profile-img-box">
-                    <img src="face.png" alt="Her Photo" class="profile-img">
-                </div>
-                <div class="header-title">The Perception</div>
-                <div class="header-sub">HOW I SEE YOU</div>
-                
-                <div id="personality-stream" class="scrolling-content"></div>
-
-                <div class="nav-area">
-                    <button onclick="goto('v-aafika')">Back</button>
-                    <button class="primary" onclick="goto('v-blessings')">Next</button>
-                </div>
+                <button class="primary" onclick="goto('v-blessings')">Next</button>
             </div>
         </div>
 
@@ -308,7 +276,38 @@
                 </div>
 
                 <div class="nav-area" style="margin-top: 10px;">
-                    <button onclick="goto('v-personality')">Back</button>
+                    <button onclick="goto('v-wishes')">Back</button>
+                    <button class="primary" onclick="goto('v-aafika')">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="v-aafika" class="view">
+            <div class="text-panel" style="flex-direction: column;">
+                <h2>Little Aafika</h2>
+                <h3>Sending Love</h3>
+            </div>
+            <div class="video-box">
+                <video id="vid-aafika" playsinline loop src="aafika.mp4"></video>
+            </div>
+            <div class="nav-area">
+                <button onclick="goto('v-blessings')">Back</button>
+                <button class="primary" onclick="startPersonality()">Next</button>
+            </div>
+        </div>
+
+        <div id="v-personality" class="view">
+            <div class="profile-container">
+                <div class="profile-img-box">
+                    <img src="face.png" alt="Her Photo" class="profile-img">
+                </div>
+                <div class="header-title">The Perception</div>
+                <div class="header-sub">HOW I SEE YOU</div>
+                
+                <div id="personality-stream" class="scrolling-content"></div>
+
+                <div class="nav-area">
+                    <button onclick="goto('v-aafika')">Back</button>
                     <button class="primary" onclick="alert('Happy Birthday, Fathima Sumaiya!')">The End</button>
                 </div>
             </div>
@@ -348,7 +347,7 @@
         let currentDuaIndex = 0;
 
         /* =========================================
-           AUDIO ENGINE (UI Sounds)
+           AUDIO ENGINE
            ========================================= */
         const AudioSys = {
             ctx: null,
@@ -386,19 +385,18 @@
             document.querySelectorAll('video').forEach(v => v.pause());
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             
-            // 2. Handle Religious Audio (Nasheed)
+            // 2. Handle Religious Audio (Duo.mp3)
             const nasheed = document.getElementById('bg-nasheed');
             
             if(id === 'v-blessings') {
-                // Try to play audio reliably
+                // Play audio
                 nasheed.volume = 0.5;
-                // Important: Reset time only if not already playing or just started
-                if(nasheed.paused) nasheed.play().catch(e => console.log("Audio block:", e));
+                if(nasheed.paused) nasheed.play().catch(e => console.log("Audio block (Interact first):", e));
                 
-                // Render first Dua
+                // Initialize Dua Card
                 renderDua(0);
             } else {
-                // Fade out/Stop audio if leaving blessings
+                // Stop audio if leaving
                 if(!nasheed.paused) {
                     nasheed.pause();
                     nasheed.currentTime = 0;
@@ -420,7 +418,7 @@
         function renderDua(index) {
             const card = document.getElementById('dua-card-box');
             
-            // Remove animation class to reset
+            // Animation Reset
             card.classList.remove('fade-in');
             void card.offsetWidth; // Trigger reflow
             
@@ -437,8 +435,7 @@
                 currentDuaIndex++;
                 renderDua(currentDuaIndex);
             } else {
-                // Optional: Loop back to 0
-                currentDuaIndex = 0;
+                currentDuaIndex = 0; // Loop back
                 renderDua(currentDuaIndex);
             }
         }
@@ -501,6 +498,7 @@
             goto('v-personality');
             const container = document.getElementById('personality-stream');
             
+            // Prevent duplicate text loading
             if(container.innerHTML === "") {
                 if (typeof PERSONALITY_TEXT === 'undefined') {
                     container.innerText = "Data file missing...";
