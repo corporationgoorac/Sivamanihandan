@@ -69,7 +69,7 @@
             z-index: 10;
         }
 
-        /* --- 3. GIFT BOX (START) --- */
+        /* --- 3. GIFT BOX --- */
         .gift-wrapper { cursor: pointer; text-align: center; }
         .gift-icon { font-size: 5rem; filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3)); animation: float 3s ease-in-out infinite; }
         .tap-hint { margin-top: 25px; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.8; animation: pulse 2s infinite; }
@@ -104,90 +104,93 @@
         .profile-img { width: 120px; height: 120px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 25px rgba(212, 175, 55, 0.4); animation: pulse-border 3s infinite; }
         .header-title { color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 5px; }
         .header-sub { color: #666; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
-        
         .scrolling-content { flex: 1; width: 100%; background: rgba(255, 255, 255, 0.03); border-left: 2px solid var(--gold-dim); padding: 15px; overflow-y: auto; text-align: left; font-family: 'Montserrat', sans-serif; font-size: 0.95rem; line-height: 1.8; color: #ddd; scrollbar-width: thin; scrollbar-color: var(--gold-dim) #111; }
-        
-        /* Word Animation */
         .word-span { opacity: 0; display: inline-block; margin-right: 5px; animation: fadeWord 0.5s ease forwards; }
 
-        /* --- 7. BLESSINGS PAGE STYLES --- */
+        /* --- 7. BLESSINGS/DUA --- */
         .blessing-container { flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .moon-icon { font-size: 3rem; margin-bottom: 10px; color: var(--gold); text-shadow: 0 0 15px rgba(212, 175, 55, 0.5); animation: float 4s ease-in-out infinite; }
-
-        /* Dua Card */
         .dua-display { width: 100%; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; padding: 30px 20px; margin: 20px 0; position: relative; transition: transform 0.3s; }
         .dua-arabic { font-family: 'Amiri', serif; font-size: 2rem; color: var(--gold); line-height: 1.8; margin-bottom: 20px; text-align: center; direction: rtl; }
         .dua-english { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: #ddd; line-height: 1.6; text-align: center; }
-
-        /* Dua Controls */
         .dua-controls { display: flex; justify-content: center; align-items: center; gap: 30px; margin-bottom: 10px; }
         .arrow-btn { background: none; border: 1px solid var(--gold-dim); color: var(--gold); width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .arrow-btn:hover { background: var(--gold); color: #000; }
         .dua-counter { color: #666; font-size: 0.8rem; letter-spacing: 2px; }
 
-        /* --- 8. FLOATING LANTERN STYLES --- */
+        /* --- 8. LANTERNS --- */
         .lantern-scene { position: relative; width: 100%; flex: 1; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 60px; background: linear-gradient(to top, #000510 0%, #000 80%); }
         .lantern-text { position: absolute; top: 20%; width: 100%; text-align: center; font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); opacity: 0; transition: opacity 1s ease; z-index: 5; pointer-events: none; }
         .water-reflection { position: absolute; bottom: 0; width: 100%; height: 25%; background: linear-gradient(to top, rgba(0,10,30,0.8), transparent); z-index: 1; pointer-events: none; }
-        
         .lantern { position: absolute; background: rgba(255,255,255,0.1); width: 35px; height: 50px; border-radius: 6px 6px 4px 4px; bottom: 10%; transition: all 0.8s ease; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); }
         .lantern.main-lantern { bottom: 50px; width: 50px; height: 70px; z-index: 10; left: 50%; transform: translateX(-50%); }
         .lantern::after { content:''; position: absolute; bottom:0; left:0; right:0; height: 4px; background: #555; }
-        
-        /* Lit State */
         .lantern.lit { background: radial-gradient(circle at center, #fff, #ffcc00, #d4af37); box-shadow: 0 0 30px rgba(255, 200, 0, 0.6), 0 0 60px rgba(255, 100, 0, 0.2); border: none; }
         .lantern.fly { animation: floatUpSky 12s linear forwards; pointer-events: none; }
-
-        @keyframes floatUpSky { 
-            0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateX(-50%) translateY(-120vh) scale(0.5); opacity: 0; }
-        }
-        
-        /* Floating particles (extra lanterns) */
         .bg-lantern { position: absolute; width: 20px; height: 30px; background: radial-gradient(circle, #fff, #ffcc00); border-radius: 4px; opacity: 0; box-shadow: 0 0 10px #ffcc00; pointer-events: none; z-index: 2; }
         .bg-lantern.rise { animation: riseUp 10s linear forwards; }
-        
-        @keyframes riseUp {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            20% { opacity: 0.8; }
-            100% { transform: translateY(-20vh) scale(0.2); opacity: 0; }
-        }
+
+        @keyframes floatUpSky { 0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; } 100% { transform: translateX(-50%) translateY(-120vh) scale(0.5); opacity: 0; } }
+        @keyframes riseUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-20vh) scale(0.2); opacity: 0; } }
 
         /* --- 9. FINAL WISHES STYLES --- */
-        .media-box { width: 100%; flex: 1; background: transparent; border: 1px solid var(--gold-dim); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
-        .wish-image { width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 1s ease; position: absolute; top:0; left:0; }
-        .wish-image.active-img { opacity: 1; }
+        .media-box { 
+            width: 100%; 
+            flex: 1; 
+            background: transparent; 
+            border: 1px solid transparent; 
+            overflow: visible; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+        }
+        .wish-image { 
+            max-width: 85%; /* Bit small on screen */
+            max-height: 60vh;
+            width: auto; 
+            height: auto; 
+            object-fit: contain; 
+            opacity: 0; 
+            position: absolute; 
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            transition: opacity 1s ease;
+        }
+        .wish-image.active-img { 
+            opacity: 1; 
+            animation: floatImage 3s ease-in-out infinite alternate;
+        }
 
-        /* Fade Animation */
-        .fade-in { animation: fadeInDua 0.5s ease forwards; }
-        @keyframes fadeInDua { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        /* --- 10. GRAND FINALE STYLES --- */
+        .grand-title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 4rem; 
+            color: var(--gold); 
+            text-align: center; 
+            line-height: 1.2; 
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5); 
+            animation: float 3s ease-in-out infinite; 
+        }
 
         /* --- ANIMATIONS --- */
+        @keyframes floatImage { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
         @keyframes float { 0%, 100% {transform:translateY(0);} 50% {transform:translateY(-15px);} }
         @keyframes pulse { 0%, 100% {opacity: 0.5;} 50% {opacity: 1;} }
         @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
         @keyframes pulse-border { 0% {box-shadow:0 0 0 0 rgba(212,175,55,0.4);} 70% {box-shadow:0 0 0 10px transparent;} 100% {box-shadow:0 0 0 0 transparent;} }
         @keyframes fadeWord { 0% { opacity: 0; transform: translateY(5px); color: var(--gold); } 100% { opacity: 1; transform: translateY(0); color: #ddd; } }
+        .fade-in { animation: fadeInDua 0.5s ease forwards; }
+        @keyframes fadeInDua { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
     </style>
 </head>
 <body>
 
-    <audio id="audio-nasheed" preload="auto" loop>
-        <source src="duo.mp3" type="audio/mpeg">
-    </audio>
-
-    <audio id="audio-personality" preload="auto">
-        <source src="neenda_neenda_kalam.mp3" type="audio/mpeg">
-    </audio>
-
-    <audio id="audio-song1" preload="auto">
-        <source src="song1.mp3" type="audio/mpeg">
-    </audio>
-
-    <audio id="audio-song2" preload="auto">
-        <source src="song2.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="audio-nasheed" preload="auto" loop><source src="duo.mp3" type="audio/mpeg"></audio>
+    <audio id="audio-personality" preload="auto"><source src="neenda_neenda_kalam.mp3" type="audio/mpeg"></audio>
+    <audio id="audio-song1" preload="auto"><source src="song1.mp3" type="audio/mpeg"></audio>
+    <audio id="audio-song2" preload="auto"><source src="song2.mp3" type="audio/mpeg"></audio>
 
     <div id="app">
 
@@ -310,23 +313,27 @@
         </div>
 
         <div id="v-final-wishes" class="view">
-            <div class="text-panel" style="min-height: 100px;">
+            <div class="text-panel" style="min-height: 120px; display:flex; align-items:center; justify-content:center;">
                 <div id="final-caption" class="poetic-text" style="color: var(--gold); text-align: center; font-size: 1.1rem; line-height: 1.8;">
                     ...
                 </div>
             </div>
             
             <div class="media-box">
-                <img id="img-wish-1" src="27957.jpg" class="wish-image" alt="Journey">
-                <img id="img-wish-2" src="27951.jpg" class="wish-image" alt="Hope">
-                <img id="img-wish-3" src="27845.jpg" class="wish-image" alt="School">
-                <img id="img-wish-4" src="27828.jpg" class="wish-image" alt="Reading">
+                <img id="img-wish-1" src="pic1.jpg" class="wish-image" alt="Journey">
+                <img id="img-wish-2" src="pic2.jpg" class="wish-image" alt="Hope">
+                <img id="img-wish-3" src="pic3.jpg" class="wish-image" alt="School">
+                <img id="img-wish-4" src="pic4.jpg" class="wish-image" alt="Reading">
             </div>
 
             <div class="nav-area">
                 <button onclick="goto('v-personality')">Back</button>
                 <button id="btn-next-wish" class="primary" onclick="nextWishSlide()">Next Wish</button>
             </div>
+        </div>
+
+        <div id="v-grand-finale" class="view">
+            <h1 class="grand-title">Happy Birthday<br>21</h1>
         </div>
 
     </div>
@@ -345,12 +352,12 @@
             { ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", en: "Oh Turner of hearts, keep her heart steadfast on Your faith and filled with peace." }
         ];
 
-        /* LONG CAPTIONS BASED ON YOUR PHOTOS */
+        /* LONG, RELATABLE CAPTIONS FOR PHOTOS */
         const WISHES = [
-            { text: "May every journey you take in this life be filled with purpose, leading you to peace, safety, and beautiful destinations that your heart desires." }, // 27957.jpg (Bus Window)
-            { text: "Look forward with hope and strength. May your future be as bright, green, and full of life as the beautiful world around you right now." }, // 27951.jpg (Greenery)
-            { text: "May wisdom always guide your path, and may you find immense success, knowledge, and barakah at every single door of opportunity you choose to open." }, // 27845.jpg (School)
-            { text: "May your life be a beautiful story, written with chapters of joy, wonder, unshakeable faith, and the endless pursuit of knowledge that brings you closer to your dreams." } // 27828.jpg (Reading)
+            { text: "As you look out the window of life, may every turn lead you to beautiful destinations, and may your journey be safe, peaceful, and filled with barakah." }, // pic1.jpg
+            { text: "Like the greenery around you, may your life always bloom with hope. Keep looking forward with that beautiful strength, for the best is yet to come." }, // pic2.jpg
+            { text: "Standing at the doors of knowledge, may you always find wisdom. May your path be easy, your burden light, and your success greater than you ever imagined." }, // pic3.jpg
+            { text: "In a world full of noise, may you always find your peace in knowledge and faith. Write your own story, chapter by chapter, with a heart full of light." } // pic4.jpg
         ];
 
         let currentDuaIndex = 0;
@@ -359,7 +366,7 @@
         let typingInterval = null; 
 
         /* =========================================
-           AUDIO ENGINE
+           AUDIO ENGINE (UI Sounds)
            ========================================= */
         const AudioSys = {
             ctx: null,
@@ -411,7 +418,8 @@
                 if(exception !== nasheed) { nasheed.pause(); nasheed.currentTime = 0; }
                 if(exception !== personality) { personality.pause(); personality.currentTime = 0; }
                 if(exception !== song1) { song1.pause(); song1.currentTime = 0; }
-                if(exception !== song2) { song2.pause(); song2.currentTime = 0; }
+                // Don't stop song2 if going to grand finale
+                if(exception !== song2 && id !== 'v-grand-finale') { song2.pause(); song2.currentTime = 0; }
             };
 
             if (id === 'v-blessings') {
@@ -426,6 +434,11 @@
                 stopAllExcept(null); 
                 currentWishIndex = 0;
                 renderFinalWishes();
+            }
+            else if (id === 'v-grand-finale') {
+                // DO NOT STOP SONG 2
+                // Ensure song1 is stopped
+                song1.pause(); song1.currentTime = 0;
             }
             else {
                 stopAllExcept(null);
@@ -512,7 +525,7 @@
             const words = WISHES[currentWishIndex].text.split(" ");
             let i = 0;
             
-            // 350ms delay per word = long reading time
+            // 400ms delay per word = very slow reading
             typingInterval = setInterval(() => {
                 if(i < words.length) {
                     const span = document.createElement("span");
@@ -523,8 +536,14 @@
                     i++;
                 } else {
                     clearInterval(typingInterval);
+                    // CHECK IF LAST SLIDE
+                    if(currentWishIndex === WISHES.length - 1) {
+                        setTimeout(() => {
+                            goto('v-grand-finale');
+                        }, 3000); // Wait 3 seconds then go to new page
+                    }
                 }
-            }, 350); 
+            }, 400); 
 
             // 3. Audio Switching
             const s1 = document.getElementById('audio-song1');
@@ -533,16 +552,16 @@
             // Index 0,1 -> Song 1. Index 2,3 -> Song 2.
             if(currentWishIndex === 0) {
                 s2.pause(); s2.currentTime = 0; 
-                s1.currentTime = 0; s1.volume = 0.7; s1.play().catch(e=>{});
+                if(s1.paused) { s1.currentTime = 0; s1.volume = 0.7; s1.play().catch(e=>{}); }
             } else if (currentWishIndex === 2) {
                 s1.pause(); 
-                s2.currentTime = 0; s2.volume = 0.7; s2.play().catch(e=>{});
+                if(s2.paused) { s2.currentTime = 0; s2.volume = 0.7; s2.play().catch(e=>{}); }
             }
 
             // 4. Button Logic
             const btn = document.getElementById('btn-next-wish');
             if(currentWishIndex === WISHES.length - 1) {
-                btn.style.display = 'none'; // End of experience
+                btn.style.display = 'none'; // Hide on last slide
             } else {
                 btn.style.display = 'inline-block';
             }
