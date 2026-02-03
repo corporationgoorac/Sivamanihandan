@@ -3,356 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Time Travel Chronicles</title>
+    <title>The Special Day</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. CORE VISUALS --- */
+        /* --- 1. LUXURY THEME --- */
         :root {
-            --primary: #ff0055; /* Neon Pink */
-            --accent: #00f2ea;  /* Cyan */
-            --gold: #ffd700;
-            --bg: #000;
+            --bg: #080808;
+            --surface: #121212;
+            --text-main: #e0e0e0;
+            --gold: #d4af37; /* Elegant Gold */
+            --gold-dim: #8a7030;
+            --accent: #ff4081; /* Soft Pink for emotions */
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             margin: 0;
             background-color: var(--bg);
-            color: white;
-            font-family: 'Rajdhani', sans-serif;
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
             height: 100dvh;
             overflow: hidden;
-            user-select: none;
-        }
-
-        /* Starfield Background Canvas */
-        #starfield {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #app {
+            width: 100%; height: 100%;
+            max-width: 480px;
+            background: radial-gradient(circle at top, #1a1a1a 0%, #000 70%);
             position: relative;
-            z-index: 10;
-            width: 100%;
-            height: 100%;
-            max-width: 500px;
-            margin: 0 auto;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
         }
 
-        /* --- 2. PAGE TRANSITIONS --- */
-        .page {
+        /* --- 2. TRANSITIONS --- */
+        .view {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s;
-            transform: scale(1.1);
-            background: rgba(0,0,0,0.2); /* Slight tint */
-            backdrop-filter: blur(2px);
+            transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+            transform: scale(0.95);
+            padding: 30px;
+            z-index: 1;
         }
 
-        .page.active {
+        .view.active {
             opacity: 1;
             pointer-events: all;
             transform: scale(1);
+            z-index: 10;
         }
 
-        /* --- 3. UI ELEMENTS --- */
-        /* Gift Box */
+        /* --- 3. GIFT BOX (START) --- */
         .gift-wrapper {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             cursor: pointer;
-        }
-        .gift-box {
-            font-size: 5rem;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px var(--primary));
-        }
-        .tap-text {
-            margin-top: 20px;
-            font-family: 'Orbitron', sans-serif;
-            color: var(--accent);
-            letter-spacing: 3px;
-            animation: pulse 1s infinite alternate;
-        }
-
-        /* Headers */
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0 0 10px 0;
-            text-shadow: 0 0 10px var(--primary);
+            text-align: center;
         }
         
-        .sub-text {
-            color: #ccc;
-            font-size: 1.1rem;
+        .gift-icon {
+            font-size: 5rem;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3));
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .tap-hint {
+            margin-top: 25px;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.8;
+            animation: pulse 2s infinite;
         }
 
-        /* Poetic Text */
-        .poetic-container {
+        /* --- 4. COUNTDOWN TIMELINE --- */
+        .counter-wrapper {
+            text-align: center;
+        }
+
+        .counter-label {
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* The Big Digital Number */
+        .big-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 6rem;
+            line-height: 1;
+            font-weight: 600;
+            color: var(--gold);
+            font-variant-numeric: tabular-nums; /* Prevents jitter */
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .counter-detail {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            color: #fff;
+            min-height: 1.5em;
+        }
+
+        /* --- 5. CONTENT PAGES --- */
+        .text-panel {
+            text-align: center;
+            margin-bottom: 20px;
             min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-        }
-        .typing-text {
-            font-size: 1.1rem;
-            line-height: 1.5;
-            color: var(--accent);
-            text-shadow: 0 0 5px rgba(0, 242, 234, 0.5);
-            font-style: italic;
         }
 
-        /* Video Frame */
+        .poetic-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #ddd;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        /* Video Frame - Perfect Fit */
         .video-box {
+            width: 100%;
             flex: 1;
-            margin: 15px 0;
-            border: 2px solid #222;
-            border-radius: 15px;
-            overflow: hidden;
             background: #000;
-            position: relative;
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.2);
+            border: 1px solid #222;
+            border-radius: 8px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        
-        /* Loading Text if video is slow */
-        .video-box::before {
-            content: 'Loading Memory...';
-            position: absolute;
-            color: #444;
-            font-family: 'Orbitron', sans-serif;
-            z-index: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         video {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            position: relative;
-            z-index: 1;
         }
 
-        /* Buttons */
-        .btn-row {
+        /* Navigation Buttons */
+        .nav-area {
+            width: 100%;
+            padding-top: 25px;
             display: flex;
             justify-content: center;
-            gap: 15px;
-            padding-bottom: 20px;
+            gap: 20px;
         }
 
         button {
-            background: rgba(0,0,0,0.5);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 12px 25px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 14px 32px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            cursor: pointer;
             border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-            transition: 0.3s;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 242, 234, 0.4), transparent);
-            transition: 0.5s;
-        }
-
-        button:hover::before { left: 100%; }
-        
         button.primary {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: #fff;
-            box-shadow: 0 0 15px var(--primary);
+            background: var(--gold);
+            color: #000;
+            border-color: var(--gold);
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
         }
 
-        /* --- 4. TIMELINE COMPONENT --- */
-        .timeline-ui {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
+        button:active { transform: scale(0.96); }
 
-        .timeline-window {
-            width: 200px;
-            height: 300px;
-            position: relative;
-            overflow: hidden;
-            /* Gradient Mask for fading top/bottom */
-            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-            -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-            border-left: 2px solid rgba(255,255,255,0.1);
-            border-right: 2px solid rgba(255,255,255,0.1);
+        /* Titles */
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin: 0;
+            color: var(--gold);
         }
-
-        .highlight-bar {
-            position: absolute;
-            top: 50%; left: 0;
-            width: 100%; height: 4px;
-            background: var(--primary);
-            box-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary);
-            transform: translateY(-50%);
-            z-index: 5;
-        }
-
-        .year-scroller {
-            position: absolute;
-            top: 50%; left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Transform handled by JS */
-        }
-
-        .t-year {
-            height: 80px; /* Tick Height */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            font-family: 'Orbitron', sans-serif;
-            color: #333;
-            transition: color 0.2s, text-shadow 0.2s;
-        }
-
-        .t-year.active {
-            color: #fff;
-            font-size: 3.5rem;
-            text-shadow: 0 0 15px var(--accent);
-        }
-
-        .tl-status {
-            margin-top: 30px;
-            font-family: 'Orbitron', sans-serif;
-            color: var(--primary);
-            font-size: 1.5rem;
-            text-shadow: 0 0 10px var(--primary);
-            min-height: 2rem;
+        h3 {
+            font-weight: 300;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin: 5px 0 0 0;
+            text-transform: uppercase;
+            color: #aaa;
         }
 
         /* --- ANIMATIONS --- */
-        @keyframes float { 0%, 100% {transform:translateY(0);} 50% {transform:translateY(-20px);} }
-        @keyframes pulse { 0% {opacity:0.4;} 100% {opacity:1;} }
+        @keyframes float { 0%, 100% {transform:translateY(0);} 50% {transform:translateY(-15px);} }
+        @keyframes pulse { 0%, 100% {opacity: 0.5;} 50% {opacity: 1;} }
+        @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
 
     </style>
 </head>
 <body>
 
-    <canvas id="starfield"></canvas>
-
     <div id="app">
-        
-        <div id="p-start" class="page active">
-            <div class="gift-wrapper" onclick="initExperience()">
-                <div class="gift-box">🎁</div>
-                <div class="tap-text">Tap to Unlock Time</div>
+
+        <div id="v-start" class="view active">
+            <div class="gift-wrapper" onclick="startJourney()">
+                <div class="gift-icon">🎁</div>
+                <div class="tap-hint">Tap to Open</div>
             </div>
         </div>
 
-        <div id="p-rewind" class="page">
-            <div class="timeline-ui">
-                <h2 style="color: var(--accent);">Time Travel</h2>
-                <div class="sub-text">Rewinding to the beginning...</div>
-                <br>
-                <div class="timeline-window">
-                    <div class="highlight-bar"></div>
-                    <div id="strip-rewind" class="year-scroller"></div>
+        <div id="v-rewind" class="view">
+            <div class="counter-wrapper">
+                <div class="counter-label">Rewinding Time</div>
+                <div id="num-rewind" class="big-number">2026</div>
+                <div id="detail-rewind" class="counter-detail"></div>
+            </div>
+        </div>
+
+        <div id="v-born" class="view">
+            <div class="text-panel">
+                <div class="poetic-text">
+                    "On that day, the sky was dark... Not because it was a new moon, but because the Moon itself had come down to Earth."
                 </div>
-                <div id="status-rewind" class="tl-status">2026</div>
-            </div>
-        </div>
-
-        <div id="p-born" class="page">
-            <div class="poetic-container">
-                <div id="txt-born" class="typing-text"></div>
             </div>
             <div class="video-box">
-                <video id="v-born" playsinline loop src="born.mp4"></video>
+                <video id="vid-born" playsinline loop src="born.mp4"></video>
             </div>
-            <div class="btn-row">
-                <button class="primary" onclick="startForwardJourney()">Start Journey</button>
-            </div>
-        </div>
-
-        <div id="p-forward" class="page">
-            <div class="timeline-ui">
-                <h2 style="color: var(--primary);">Growing Up</h2>
-                <div class="sub-text">Every second counts...</div>
-                <br>
-                <div class="timeline-window">
-                    <div class="highlight-bar"></div>
-                    <div id="strip-forward" class="year-scroller"></div>
-                </div>
-                <div id="status-forward" class="tl-status">Age: 0</div>
+            <div class="nav-area">
+                <button class="primary" onclick="startForward()">Start Journey</button>
             </div>
         </div>
 
-        <div id="p-wishes" class="page">
-            <div style="text-align:center;">
-                <h2 style="color:var(--primary); font-size: 2rem;">Happy Birthday</h2>
-                <div class="sub-text" style="color:white; letter-spacing:2px;">Fathima Sumaiya</div>
+        <div id="v-forward" class="view">
+            <div class="counter-wrapper">
+                <div class="counter-label">Growing Up</div>
+                <div id="num-forward" class="big-number">2005</div>
+                <div id="detail-forward" class="counter-detail">Age: 0</div>
+            </div>
+        </div>
+
+        <div id="v-wishes" class="view">
+            <div class="text-panel" style="flex-direction: column;">
+                <h2>Happy Birthday</h2>
+                <h3>Fathima Sumaiya</h3>
             </div>
             <div class="video-box">
-                <video id="v-wishes" playsinline loop src="wishes.mp4"></video>
+                <video id="vid-wishes" playsinline loop src="wishes.mp4"></video>
             </div>
-            <div class="btn-row">
-                <button onclick="goto('p-born')">Back</button>
-                <button class="primary" onclick="goto('p-aafika')">Next</button>
+            <div class="nav-area">
+                <button onclick="goto('v-born')">Back</button>
+                <button class="primary" onclick="goto('v-aafika')">Next</button>
             </div>
         </div>
 
-        <div id="p-aafika" class="page">
-            <div style="text-align:center;">
-                <h2 style="color:var(--accent);">Little Aafika</h2>
-                <div class="sub-text">Sending her love...</div>
+        <div id="v-aafika" class="view">
+            <div class="text-panel" style="flex-direction: column;">
+                <h2>Little Aafika</h2>
+                <h3>Sending Love</h3>
             </div>
             <div class="video-box">
-                <video id="v-aafika" playsinline loop src="aafika.mp4"></video>
+                <video id="vid-aafika" playsinline loop src="aafika.mp4"></video>
             </div>
-            <div class="btn-row">
-                <button onclick="goto('p-wishes')">Back</button>
-                <button class="primary" onclick="alert('More memories to be created...')">The End</button>
+            <div class="nav-area">
+                <button onclick="goto('v-wishes')">Back</button>
+                <button class="primary" onclick="alert('The End')">Done</button>
             </div>
         </div>
 
@@ -360,279 +290,122 @@
 
     <script>
         /* =========================================
-           1. AUDIO SYNTHESIZER (No MP3s needed)
+           AUDIO ENGINE (Internal - No Files Needed)
            ========================================= */
-        const AudioEngine = {
+        const AudioSys = {
             ctx: null,
-            init: function() {
-                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            init() {
+                if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if (this.ctx.state === 'suspended') this.ctx.resume();
             },
-            playTone: function(freq, type, duration, vol=0.1) {
+            playTone(freq, type, dur, vol=0.1) {
                 if(!this.ctx) return;
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.type = type;
                 osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
                 gain.gain.setValueAtTime(vol, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(this.ctx.currentTime + duration);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + dur);
             },
-            // Sound: High pitch blip for UI clicks
-            click: function() {
-                if(this.ctx?.state === 'suspended') this.ctx.resume();
-                this.playTone(1200, 'sine', 0.1, 0.05);
-            },
-            // Sound: Mechanical tick for timeline
-            tick: function() {
-                if(this.ctx?.state === 'suspended') this.ctx.resume();
-                this.playTone(800, 'square', 0.05, 0.02);
-            },
-            // Sound: Success chime
-            chime: function() {
-                if(this.ctx?.state === 'suspended') this.ctx.resume();
-                // Play a major chord arpeggio
-                const now = this.ctx.currentTime;
-                [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
-                    setTimeout(() => this.playTone(f, 'sine', 1.5, 0.1), i * 100);
-                });
-            },
-            // Sound: Deep drone for rewind
-            warp: function() {
-                if(this.ctx?.state === 'suspended') this.ctx.resume();
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.frequency.setValueAtTime(100, this.ctx.currentTime);
-                osc.frequency.linearRampToValueAtTime(50, this.ctx.currentTime + 3);
-                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 3);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(this.ctx.currentTime + 3);
+            tick() { this.playTone(600, 'sine', 0.05, 0.05); }, // Soft tick
+            click() { this.playTone(800, 'triangle', 0.1, 0.05); }, // Button click
+            chime() { 
+                // Play a nice chord
+                setTimeout(()=>this.playTone(523.25, 'sine', 1.5, 0.1), 0);
+                setTimeout(()=>this.playTone(659.25, 'sine', 1.5, 0.1), 100);
+                setTimeout(()=>this.playTone(783.99, 'sine', 1.5, 0.1), 200);
             }
         };
 
         /* =========================================
-           2. STARFIELD BACKGROUND ANIMATION
+           VIEW LOGIC
            ========================================= */
-        const canvas = document.getElementById('starfield');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        let speed = 2; // Normal speed
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        // Star Object
-        class Star {
-            constructor() {
-                this.x = Math.random() * canvas.width - canvas.width/2;
-                this.y = Math.random() * canvas.height - canvas.height/2;
-                this.z = Math.random() * canvas.width; 
-            }
-            update() {
-                this.z -= speed;
-                if (this.z <= 0) {
-                    this.z = canvas.width;
-                    this.x = Math.random() * canvas.width - canvas.width/2;
-                    this.y = Math.random() * canvas.height - canvas.height/2;
-                }
-            }
-            draw() {
-                let x = (this.x / this.z) * canvas.width/2 + canvas.width/2;
-                let y = (this.y / this.z) * canvas.height/2 + canvas.height/2;
-                let r = canvas.width / this.z; // Size based on depth
-                ctx.beginPath();
-                ctx.fillStyle = "white";
-                ctx.arc(x, y, r, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        // Init Stars
-        for(let i=0; i<400; i++) stars.push(new Star());
-
-        function animateStars() {
-            ctx.fillStyle = "black";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => { s.update(); s.draw(); });
-            requestAnimationFrame(animateStars);
-        }
-        animateStars();
-
-        /* =========================================
-           3. TIMELINE LOGIC
-           ========================================= */
-        const TICK_H = 80; // Height of one number
         
-        function initExperience() {
-            AudioEngine.init();
-            AudioEngine.chime();
-            
-            // Generate Timeline HTML
-            buildRewindStrip();
-            buildForwardStrip();
-            
-            // Start Sequence
-            runRewindSequence();
-        }
-
+        // Navigation Helper
         function goto(id) {
-            AudioEngine.click();
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            AudioSys.click();
+            // Stop all videos
             document.querySelectorAll('video').forEach(v => v.pause());
-            
-            const p = document.getElementById(id);
-            p.classList.add('active');
-            
-            const v = p.querySelector('video');
-            if(v) {
-                v.currentTime = 0;
-                v.play().catch(e=>console.log("Autoplay prevented"));
+            // Hide all views
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            // Show new view
+            const target = document.getElementById(id);
+            target.classList.add('active');
+
+            // Play video if present
+            const vid = target.querySelector('video');
+            if(vid) {
+                vid.currentTime = 0;
+                vid.play().catch(e => console.log('Auto-play restriction'));
             }
         }
 
-        // --- REWIND (2026 -> 2005) ---
-        function buildRewindStrip() {
-            const el = document.getElementById('strip-rewind');
-            let h = '';
-            // List: 2027 down to 2004
-            for(let y=2027; y>=2004; y--) {
-                h += `<div class="t-year" id="rw-${y}">${y}</div>`;
-            }
-            el.innerHTML = h;
+        // --- PHASE 1: REWIND (2026 -> 2005) ---
+        function startJourney() {
+            // Unlock audio on first tap
+            AudioSys.init();
+            AudioSys.click();
+            
+            goto('v-rewind');
+
+            const numEl = document.getElementById('num-rewind');
+            const detailEl = document.getElementById('detail-rewind');
+            
+            let year = 2026;
+            const endYear = 2005;
+            
+            // Fast Interval
+            const timer = setInterval(() => {
+                year--;
+                numEl.innerText = year;
+                AudioSys.tick();
+
+                if (year <= endYear) {
+                    clearInterval(timer);
+                    AudioSys.chime();
+                    detailEl.innerText = "FEB 08";
+                    detailEl.style.color = "var(--gold)";
+                    
+                    // Hold for a moment then show Born page
+                    setTimeout(() => {
+                        goto('v-born');
+                    }, 1500);
+                }
+            }, 150); // Speed of rewind
         }
 
-        function runRewindSequence() {
-            goto('p-rewind');
-            const strip = document.getElementById('strip-rewind');
-            const status = document.getElementById('status-rewind');
+        // --- PHASE 2: FORWARD (Age 0 -> 21) ---
+        function startForward() {
+            goto('v-forward');
+
+            const numEl = document.getElementById('num-forward');
+            const detailEl = document.getElementById('detail-forward');
             
-            // Center calculation: (Height/2) - (Tick/2) = 150 - 40 = 110 offset
-            const offset = 110;
-            const startIdx = 1; // 2026
-            const endIdx = 22; // 2005
+            let year = 2005;
+            let age = 0;
+            const targetAge = 21;
 
-            // Initial Pos
-            strip.style.transition = 'none';
-            strip.style.transform = `translateY(${offset - (startIdx * TICK_H)}px)`;
-            document.getElementById('rw-2026').classList.add('active');
+            const timer = setInterval(() => {
+                year++;
+                age++;
+                
+                numEl.innerText = year;
+                detailEl.innerText = "Age: " + age;
+                AudioSys.tick();
 
-            setTimeout(() => {
-                AudioEngine.warp(); // Play warp sound
-                speed = 20; // Increase Star speed
-
-                // Animate CSS
-                strip.style.transition = `transform 4s cubic-bezier(0.45, 0.05, 0.55, 0.95)`;
-                strip.style.transform = `translateY(${offset - (endIdx * TICK_H)}px)`;
-
-                // JS Interval for Ticking Sound and Visuals
-                let idx = startIdx;
-                const timer = setInterval(() => {
-                    if(idx < endIdx) {
-                        idx++;
-                        // AudioEngine.tick(); // Ticking sound
-                        // Simple visual update
-                        let y = 2027 - idx;
-                        status.innerText = y;
-                    } else {
-                        clearInterval(timer);
-                    }
-                }, 4000 / (endIdx - startIdx));
-
-                // Finish
-                setTimeout(() => {
-                    speed = 2; // Normal Star speed
-                    AudioEngine.chime();
-                    status.innerText = "FEB 08";
-                    status.style.color = "var(--primary)";
-                    document.getElementById('rw-2026').classList.remove('active');
-                    document.getElementById('rw-2005').classList.add('active');
+                if (age >= targetAge) {
+                    clearInterval(timer);
+                    AudioSys.chime();
+                    detailEl.innerText = "TURNING 21";
+                    detailEl.style.color = "var(--gold)";
                     
                     setTimeout(() => {
-                        goto('p-born');
-                        typewrite();
-                    }, 2000);
-                }, 4000);
-            }, 1000);
-        }
-
-        // --- FORWARD (2005 -> 2026) ---
-        function buildForwardStrip() {
-            const el = document.getElementById('strip-forward');
-            let h = '';
-            // List: 2004 up to 2027
-            for(let y=2004; y<=2027; y++) {
-                h += `<div class="t-year" id="fw-${y}">${y}</div>`;
-            }
-            el.innerHTML = h;
-        }
-
-        function startForwardJourney() {
-            goto('p-forward');
-            const strip = document.getElementById('strip-forward');
-            const status = document.getElementById('status-forward');
-            
-            const offset = 110;
-            const startIdx = 1; // 2005
-            const endIdx = 22; // 2026
-
-            strip.style.transition = 'none';
-            strip.style.transform = `translateY(${offset - (startIdx * TICK_H)}px)`;
-            document.getElementById('fw-2005').classList.add('active');
-
-            setTimeout(() => {
-                speed = 10; 
-                const duration = 5000;
-                
-                strip.style.transition = `transform ${duration}ms linear`;
-                strip.style.transform = `translateY(${offset - (endIdx * TICK_H)}px)`;
-
-                let currentAge = 0;
-                let stepTime = duration / 21;
-
-                const timer = setInterval(() => {
-                    if(currentAge < 21) {
-                        currentAge++;
-                        status.innerText = "Age: " + currentAge;
-                        AudioEngine.tick();
-                    } else {
-                        clearInterval(timer);
-                        speed = 2;
-                        AudioEngine.chime();
-                        status.innerText = "TURNING 21";
-                        document.getElementById('fw-2005').classList.remove('active');
-                        document.getElementById('fw-2026').classList.add('active');
-                        setTimeout(() => goto('p-wishes'), 2000);
-                    }
-                }, stepTime);
-
-            }, 500);
-        }
-
-        /* =========================================
-           4. TYPING EFFECT
-           ========================================= */
-        function typewrite() {
-            const el = document.getElementById('txt-born');
-            const txt = "On that day, the sky was dark... Not because of a new moon, but because the Moon itself had come down to Earth.";
-            el.innerHTML = "";
-            let i = 0;
-            function type() {
-                if(i < txt.length) {
-                    el.innerHTML += txt.charAt(i);
-                    i++;
-                    setTimeout(type, 50);
+                        goto('v-wishes');
+                    }, 1500);
                 }
-            }
-            type();
+            }, 200); // Speed of aging
         }
 
     </script>
