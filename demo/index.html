@@ -28,9 +28,9 @@
             background-color: var(--bg);
             color: var(--text-main);
             font-family: 'Montserrat', sans-serif;
-            height: 100dvh; /* Dynamic viewport height */
+            height: 100dvh;
             width: 100vw;
-            overflow: hidden; /* Prevent scrolling */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -88,7 +88,6 @@
         /* Video Frame */
         .video-box { width: 100%; flex: 1; background: #000; border: 1px solid #222; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
         
-        /* Video Fixes */
         video { 
             width: 100%; 
             height: 100%; 
@@ -224,7 +223,7 @@
                 </div>
             </div>
             <div class="video-box">
-                <video id="vid-born" playsinline webkit-playsinline loop muted preload="auto" src="born.mp4"></video>
+                <video id="vid-born" playsinline webkit-playsinline loop src="born.mp4"></video>
             </div>
             <div class="nav-area">
                 <button class="primary" onclick="startForward()">Start Journey</button>
@@ -245,7 +244,7 @@
                 <h3>Fathima Sumaiya</h3>
             </div>
             <div class="video-box">
-                <video id="vid-wishes" playsinline webkit-playsinline loop muted preload="auto" src="wishes.mp4"></video>
+                 <video id="vid-wishes" playsinline webkit-playsinline loop src="wishes.mp4"></video>
             </div>
             <div class="nav-area">
                 <button onclick="goto('v-born')">Back</button>
@@ -295,7 +294,7 @@
                 <h3>Sending Love</h3>
             </div>
             <div class="video-box">
-                <video id="vid-aafika" playsinline webkit-playsinline loop muted preload="auto" src="aafika.mp4"></video>
+                <video id="vid-aafika" playsinline webkit-playsinline loop src="aafika.mp4"></video>
             </div>
             <div class="nav-area">
                 <button onclick="goto('v-lanterns')">Back</button>
@@ -407,75 +406,81 @@
         };
 
         /* =========================================
-           VIEW MANAGER (FIXED VIDEO LOGIC)
+           VIEW MANAGER (FIXED: UNMUTED LOGIC)
            ========================================= */
         function goto(id) {
-            AudioSys.init(); // Ensure context is awake
             AudioSys.click();
             
-            // 1. Reset
+            // 1. Reset / Pause Logic
+            // Pause all videos first
             document.querySelectorAll('video').forEach(v => {
                 v.pause();
-                v.muted = true; // IMPORTANT: Always reset to muted
+                // Do NOT set muted = true here anymore.
             });
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             
-            // 2. Audio Control
-            const nasheed = document.getElementById('audio-nasheed');
+            // 2. Audio Control Elements
+            const nasheed = document.getElementById('audio-nasheed'); // duo.mp3
             const personality = document.getElementById('audio-personality');
             const song1 = document.getElementById('audio-song1');
             const song2 = document.getElementById('audio-song2');
 
-            const stopAllExcept = (exception) => {
-                if(exception !== nasheed) { nasheed.pause(); }
-                if(exception !== personality) { personality.pause(); }
-                if(exception !== song1) { song1.pause(); }
-                // Don't stop song2 if going to grand finale
-                if(exception !== song2 && id !== 'v-grand-finale') { song2.pause(); }
-            };
-
-            if (id === 'v-blessings') {
-                stopAllExcept(nasheed);
-                if(nasheed.paused) { nasheed.volume = 0.5; nasheed.play().catch(e=>{}); }
+            // 3. Logic by Page ID
+            if (id === 'v-born') {
+                // Video page: Pause background music so we can hear video
+                nasheed.pause();
+                song1.pause();
+            }
+            else if (id === 'v-wishes') {
+                // Video page: Pause background music
+                nasheed.pause();
+                song1.pause();
+            }
+            else if (id === 'v-aafika') {
+                // Video page: Pause background music
+                nasheed.pause();
+                song1.pause();
+            }
+            else if (id === 'v-blessings') {
+                // Background music on
+                song1.pause();
+                personality.pause();
+                if(nasheed.paused) { nasheed.currentTime=0; nasheed.volume = 0.5; nasheed.play().catch(e=>console.log(e)); }
             } 
             else if (id === 'v-personality') {
-                stopAllExcept(personality);
-                if(personality.paused) { personality.currentTime = 3; personality.volume = 0.8; personality.play().catch(e=>{}); }
+                // Specific Song
+                nasheed.pause();
+                song1.pause();
+                if(personality.paused) { personality.currentTime = 3; personality.volume = 0.8; personality.play().catch(e=>console.log(e)); }
             } 
             else if (id === 'v-final-wishes') {
-                stopAllExcept(null); 
+                nasheed.pause();
+                personality.pause();
                 currentWishIndex = 0;
                 renderFinalWishes();
             }
             else if (id === 'v-grand-finale') {
                 song1.pause(); 
             }
-            else {
-                stopAllExcept(null);
-            }
-
-            // 3. Page Logic
-            if(id === 'v-blessings') renderDua(0);
-            if(id === 'v-lanterns') initLanternPage();
 
             // 4. Show View
             const target = document.getElementById(id);
             target.classList.add('active');
 
-            // 5. Play Video (FIXED FOR INSTAGRAM)
+            // 5. Video Playback Logic (UNMUTED)
             const vid = target.querySelector('video');
             if(vid) { 
                 vid.currentTime = 0;
-                vid.muted = true; // Force mute to bypass autoplay block
+                vid.muted = false; // ENABLE SOUND
+                vid.volume = 1.0;  // MAX VOLUME
                 vid.playsInline = true; 
                 
-                var promise = vid.play();
-                if (promise !== undefined) {
-                    promise.catch(error => {
-                        console.log("Autoplay prevented:", error);
-                        // Optional: Add a "Tap to Play" overlay here if needed
-                    });
-                }
+                vid.play().catch(error => {
+                    console.log("Autoplay blocked or failed:", error);
+                    // Fallback: If browser blocks unmuted play, try muted
+                    // vid.muted = true; vid.play(); 
+                    // But we want sound, so we rely on the user click at start
+                });
             }
         }
 
@@ -532,7 +537,7 @@
         }
 
         /* =========================================
-           FINAL PAGE LOGIC (SLOW TYPING)
+           FINAL PAGE LOGIC (SLOW TYPING + AUDIO)
            ========================================= */
         function renderFinalWishes() {
             // 1. Image Switching
@@ -563,16 +568,18 @@
                 }
             }, 400); 
 
-            // 3. Audio Switching
+            // 3. Audio Switching for Final Section
             const s1 = document.getElementById('audio-song1');
             const s2 = document.getElementById('audio-song2');
 
+            // Force play song1 on first slide
             if(currentWishIndex === 0) {
                 s2.pause(); s2.currentTime = 0; 
-                if(s1.paused) { s1.currentTime = 0; s1.volume = 0.7; s1.play().catch(e=>{}); }
+                s1.currentTime = 0; s1.volume = 0.7; 
+                s1.play().catch(e=>console.log("Song1 play error", e));
             } else if (currentWishIndex === 2) {
                 s1.pause(); 
-                if(s2.paused) { s2.currentTime = 0; s2.volume = 0.7; s2.play().catch(e=>{}); }
+                if(s2.paused) { s2.currentTime = 0; s2.volume = 0.7; s2.play().catch(e=>console.log(e)); }
             }
 
             // 4. Button Logic
@@ -593,10 +600,17 @@
         }
 
         /* =========================================
-           TIMELINE LOGIC
+           TIMELINE LOGIC (START)
            ========================================= */
         function startJourney() {
-            AudioSys.init(); AudioSys.click(); goto('v-rewind');
+            // CRITICAL: Initialize Audio Context on FIRST User Click
+            AudioSys.init(); 
+            AudioSys.click(); 
+            
+            // Try to pre-warm videos (optional hack for iOS sometimes)
+            document.querySelectorAll('video').forEach(v => { v.load(); });
+
+            goto('v-rewind');
             const numEl = document.getElementById('num-rewind'); const detailEl = document.getElementById('detail-rewind');
             let year = 2026;
             const timer = setInterval(() => {
@@ -619,7 +633,6 @@
             goto('v-personality');
             const container = document.getElementById('personality-stream');
             if(container.innerHTML === "") {
-                // FALLBACK for missing variable
                 const text = (typeof PERSONALITY_TEXT !== 'undefined') ? PERSONALITY_TEXT : "You are the poetry the world forgot to write. Kind, smart, and truly wonderful. Happy Birthday!";
                 const words = text.split(/\s+/); let i = 0;
                 const interval = setInterval(() => {
