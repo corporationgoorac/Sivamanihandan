@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Advance Bday countdown| Sumaiya</title>
+    <style>
+        :root {
+            --moon-glow: #f5f3ce;
+            --accent: #c084fc; 
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --card-bg: rgba(8, 10, 24, 0.85);
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%); 
+            color: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+            cursor: none;
+        }
+
+        /* Custom Cursor Stardust */
+        #cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 15px var(--accent);
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+
+        /* Animated Star Background */
+        #star-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Fathima Sumaiya Name Animation - Lunar Orbit */
+        @keyframes moonRotate {
+            0% { text-shadow: 0 0 10px #f5f3ce, -2px -2px 0px rgba(255,255,255,0.2); }
+            50% { text-shadow: 0 0 25px #f5f3ce, 2px 2px 10px #c084fc; }
+            100% { text-shadow: 0 0 10px #f5f3ce, -2px -2px 0px rgba(255,255,255,0.2); }
+        }
+
+        .reveal {
+            opacity: 0;
+            animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .moon-wrapper {
+            margin: 40px auto 20px;
+            perspective: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation-delay: 0.2s;
+        }
+        
+        .moon-sphere {
+            width: 180px;
+            height: 180px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg');
+            background-size: cover;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 
+                0 0 60px rgba(192, 132, 252, 0.3), 
+                inset -20px -20px 50px #000;
+            overflow: hidden;
+            transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        #moon-shadow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #020617 0%, #050b1d 100%);
+            border-radius: 50%;
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.98;
+        }
+
+        .advance-wish {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin: 20px 0 10px;
+            color: var(--accent);
+            text-align: center;
+            animation: glow 3s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px var(--accent); opacity: 0.6; }
+            to { text-shadow: 0 0 15px var(--accent); opacity: 1; }
+        }
+
+        /* MOON STYLE FONT FOR THE NAME */
+        h1 {
+            font-size: clamp(1.8rem, 7vw, 3.5rem);
+            margin: 0 0 40px 0;
+            font-weight: 900;
+            letter-spacing: 6px;
+            background: radial-gradient(circle at 30% 30%, #fff 0%, #f5f3ce 40%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            padding: 0 20px;
+            line-height: 1.2;
+            animation: moonRotate 5s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px rgba(245, 243, 206, 0.5));
+            position: relative;
+        }
+
+        h1::before {
+            content: "FATHIMA SUMAIYA";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: -1;
+            -webkit-text-stroke: 1px rgba(245, 243, 206, 0.2);
+            -webkit-text-fill-color: transparent;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            width: 90%;
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+
+        .box {
+            background: var(--glass);
+            padding: 20px 5px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .box:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.08);
+            border-color: var(--accent);
+        }
+
+        .number { display: block; font-size: clamp(1.2rem, 4vw, 2.2rem); font-weight: 800; color: #fff; }
+        .label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.5; letter-spacing: 2px; }
+
+        .card {
+            width: 85%;
+            max-width: 550px;
+            background: var(--card-bg);
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .event-image-container {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #000;
+            position: relative;
+        }
+
+        .event-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.5s ease, opacity 0.5s ease;
+        }
+
+        .card:hover .event-image-container img {
+            transform: scale(1.1);
+        }
+
+        .card h3 {
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3::after {
+            content: '';
+            height: 1px;
+            flex-grow: 1;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        .event-text { font-size: 1rem; line-height: 1.7; color: #cbd5e1; }
+        .event-text span { color: #fff; font-weight: 700; background: rgba(192, 132, 252, 0.2); padding: 0 4px; border-radius: 4px; }
+
+        #moonDateLabel {
+            font-weight: 600;
+            background: rgba(255,255,255,0.05);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .countdown-grid { gap: 8px; }
+            .box { padding: 15px 2px; }
+            .card { padding: 20px; }
+            .event-image-container { height: 140px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor-dot"></div>
+    <canvas id="star-canvas"></canvas>
+
+    <div class="moon-wrapper reveal" style="animation-delay: 0.2s;">
+        <div class="moon-sphere">
+            <div id="moon-shadow"></div>
+        </div>
+        <p id="moonDateLabel" style="font-size: 0.7rem; opacity: 0.6; letter-spacing: 2px;"></p>
+    </div>
+
+    <div class="advance-wish reveal" style="animation-delay: 0.4s;">Advance Happy Birthday</div>
+    <h1 class="reveal" style="animation-delay: 0.5s;">FATHIMA SUMAIYA</h1>
+
+    <div class="countdown-grid reveal" style="animation-delay: 0.6s;">
+        <div class="box"><span class="number" id="days">00</span><span class="label">Days</span></div>
+        <div class="box"><span class="number" id="hours">00</span><span class="label">Hrs</span></div>
+        <div class="box"><span class="number" id="mins">00</span><span class="label">Min</span></div>
+        <div class="box"><span class="number" id="secs">00</span><span class="label">Sec</span></div>
+    </div>
+
+    <div class="card reveal" style="animation-delay: 0.7s;">
+        <div class="event-image-container">
+            <img id="eventImg" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop" alt="Space Event">
+        </div>
+        <h3 id="historyTitle">Space Memory</h3>
+        <div id="historyContent" class="event-text">
+            Connecting to 2005 satellite data...
+        </div>
+    </div>
+
+    <script>
+        const dot = document.getElementById('cursor-dot');
+        document.addEventListener('mousemove', (e) => {
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+        });
+
+        const historyData = {
+            24: "Exactly 15 days before you arrived, the Moon was a <span>Full Moon</span>. NASA's Opportunity rover on Mars celebrated its first year of discovery today!",
+            25: "The Moon began to lean into the shadows. In 2005, the world was mesmerized by the first color images of <span>Titan's frozen rivers</span>.",
+            26: "The 2005 sky was brilliantly clear. While you were counting down your final 13 days, the world was reaching for the stars with the <span>Huygens probe</span>.",
+            27: "Lunar orbital mission <span>Smart-1</span> began mapping the Moon's South Pole today in 2005, searching for the brightest peaks of light.",
+            28: "The air was filled with music. 2005's top hits were playing on every radio, creating the vibe for the world you were about to change.",
+            29: "A massive asteroid (Toutatis) was the talk of 2005 today, but the real star was getting ready to shine in just 10 days.",
+            30: "The Moon reached its <span>Last Quarter</span>. 2005 was a year of new beginnings, and your arrival was the most important one.",
+            31: "As January 2005 closed, the Moon grew thinner. You were now just 8 days away—the final week of the world without you.",
+            1: "February started with a cosmic glow. The <span>Deep Impact</span> mission was hurtling through space, just like you were headed toward us.",
+            2: "The universe was aligning. In 2005, space telescopes were capturing the birth of new stars, unaware that a <span>'Moon'</span> was coming to Earth.",
+            3: "The Moon was a silver sliver. YouTube was just a dream being coded by three friends today in 2005. A new era was starting.",
+            4: "4 days left! The 2005 atmosphere was electric. The stars were shifting to make room for your light.",
+            5: "The Moon turned almost invisible. A <span>Waning Crescent</span> signaled that something entirely new was about to begin.",
+            6: "48 hours to go. In 2005, the world was busy with the Super Bowl, but the stars were only looking at you.",
+            7: "The final night. The <span>New Moon</span> appeared, resetting the sky so you could be the brightest thing in it tomorrow.",
+            8: "HAPPY BIRTHDAY! On this day in 2005, Fathima Sumaiya brought a <span>New Light</span> to the world. Our Moon was born!"
+        };
+
+        const imageMapping = {
+            24: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?q=80&w=1000", 
+            25: "https://images.unsplash.com/photo-1614313913007-2b4ae8ce32d6?q=80&w=1000", 
+            26: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1000", 
+            27: "https://images.unsplash.com/photo-1538370965046-79c0d6907d47?q=80&w=1000", 
+            28: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1000", 
+            29: "https://images.unsplash.com/photo-1614726338864-123403561964?q=80&w=1000", 
+            30: "https://images.unsplash.com/photo-1532667449560-72a95c8d381b?q=80&w=1000", 
+            31: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?q=80&w=1000", 
+            1: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=1000", 
+            2: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=1000", 
+            3: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=1000", 
+            4: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1000", 
+            5: "https://images.unsplash.com/photo-1506318137071-a8e063b4bcc0?q=80&w=1000", 
+            6: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=1000", 
+            7: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?q=80&w=1000", 
+            8: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000"  
+        };
+
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function initStars() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for(let i=0; i<250; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.8,
+                    opacity: Math.random(),
+                    speed: Math.random() * 0.05
+                });
+            }
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                ctx.fill();
+                s.opacity += (Math.random() - 0.5) * 0.03;
+                if(s.opacity < 0) s.opacity = 0;
+                if(s.opacity > 1) s.opacity = 1;
+                s.y -= s.speed;
+                if(s.y < 0) s.y = canvas.height;
+            });
+            requestAnimationFrame(drawStars);
+        }
+
+        function updateContent() {
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.getMonth() + 1;
+            const year = 2005;
+
+            const monthName = month === 1 ? "Jan" : "Feb";
+            document.getElementById("historyTitle").innerText = `Flashback: ${year}.${month < 10 ? '0'+month : month}.${day < 10 ? '0'+day : day}`;
+            document.getElementById("moonDateLabel").innerText = `LUNAR PHASE • ${monthName} ${day}, 2005`;
+            
+            if (historyData[day]) {
+                document.getElementById("historyContent").innerHTML = historyData[day];
+            }
+
+            if (imageMapping[day]) {
+                const img = document.getElementById("eventImg");
+                img.style.opacity = '0';
+                setTimeout(() => {
+                    img.src = imageMapping[day];
+                    img.style.opacity = '1';
+                }, 300);
+            }
+
+            // Accurate 2005 Lunar Phase Logic
+            const shadow = document.getElementById("moon-shadow");
+            
+            // Reference: Jan 25, 2005 was roughly Full Moon (Lunar Age ~15)
+            // Full Moon 2005 dates: Jan 25, Feb 24
+            // New Moon 2005 dates: Jan 10, Feb 8
+            
+            let lunarAge = 0;
+            if (month === 1) {
+                // Calculation relative to Jan 25 (Full Moon)
+                lunarAge = 15 + (day - 25);
+            } else if (month === 2) {
+                // Calculation relative to Feb 8 (New Moon / Birthday)
+                lunarAge = day - 8;
+                if (lunarAge < 0) lunarAge += 29.5; 
+            }
+
+            // Map Lunar Age (0-29.5) to shadow position (0% - 100%)
+            // 0 = New Moon (Full shadow), 15 = Full Moon (No shadow)
+            let shadowPos;
+            if (lunarAge <= 15) {
+                // Waning towards New Moon (shadow comes from left)
+                shadowPos = (lunarAge / 15) * 100;
+            } else {
+                // Waxing towards Full Moon (shadow leaves to right)
+                shadowPos = 100 - ((lunarAge - 15) / 14.5) * 100;
+            }
+
+            // Apply constraints to prevent overflow
+            shadowPos = Math.max(0, Math.min(100, shadowPos));
+            shadow.style.left = `${shadowPos}%`;
+            
+            // Adjust opacity for realism: New Moon (Feb 8) should be darkest
+            if (month === 2 && day === 8) {
+                shadow.style.opacity = "0.98";
+                shadow.style.left = "0%"; 
+            } else if (month === 1 && day === 25) {
+                shadow.style.left = "100%"; // Full Moon
+            }
+        }
+
+        function updateTimer() {
+            const target = new Date("February 8, 2026 00:00:00").getTime();
+            const now = new Date().getTime();
+            const diff = target - now;
+
+            if (diff <= 0) {
+                document.querySelector(".countdown-grid").style.display = "none";
+                document.querySelector(".advance-wish").innerText = "Happy Birthday!";
+                return;
+            }
+
+            document.getElementById("days").innerHTML = Math.floor(diff / 86400000).toString().padStart(2, '0');
+            document.getElementById("hours").innerHTML = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
+            document.getElementById("mins").innerHTML = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            document.getElementById("secs").innerHTML = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+        }
+
+        window.addEventListener('resize', initStars);
+        initStars();
+        drawStars();
+        setInterval(updateTimer, 1000);
+        updateTimer();
+        updateContent();
+    </script>
+</body>
+</html>
