@@ -204,7 +204,7 @@
 <body>
 
     <audio id="bg-nasheed" preload="auto" loop>
-        <source src="https://archive.org/download/nasheed_202008/Heart%20Touching%20Nasheed.mp3" type="audio/mpeg">
+        <source src="duo.mp3" type="audio/mpeg">
     </audio>
 
     <div id="app">
@@ -294,7 +294,7 @@
         <div id="v-blessings" class="view">
             <div class="blessing-container">
                 <div class="moon-icon">☾</div>
-                <div class="header-title">The Prayers</div>
+                <div class="header-title" style="margin-bottom:20px;">The Prayers</div>
                 
                 <div id="dua-card-box" class="dua-display">
                     <div id="dua-ar" class="dua-arabic">...</div>
@@ -382,11 +382,11 @@
            ========================================= */
         function goto(id) {
             AudioSys.click();
-            // 1. Reset
+            // 1. Reset everything
             document.querySelectorAll('video').forEach(v => v.pause());
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             
-            // 2. Handle Religious Audio
+            // 2. Handle Religious Audio (Nasheed)
             const nasheed = document.getElementById('bg-nasheed');
             
             if(id === 'v-blessings') {
