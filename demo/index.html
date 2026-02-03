@@ -588,23 +588,23 @@
             AudioSys.init(); AudioSys.click(); goto('v-rewind');
             const numEl = document.getElementById('num-rewind'); const detailEl = document.getElementById('detail-rewind');
             let year = 2026;
+            // CHANGED SPEED TO 164ms (Total approx 3.45 seconds)
             const timer = setInterval(() => {
                 year--; numEl.innerText = year; AudioSys.tick();
                 if (year <= 2005) { clearInterval(timer); AudioSys.chime(); detailEl.innerText = "FEB 08"; detailEl.style.color = "var(--gold)"; setTimeout(() => goto('v-born'), 1500); }
-            }, 150);
+            }, 164);
         }
 
-        // FIXED FUNCTION HERE
         function startForward() {
             goto('v-forward');
-            // 1. PRELOAD VIDEO (Important!)
+            // 1. PRELOAD VIDEO
             const vid = document.getElementById('vid-wishes');
             if(vid) vid.load();
 
             const numEl = document.getElementById('num-forward'); const detailEl = document.getElementById('detail-forward');
             let year = 2005; let age = 0;
             
-            // 2. FASTER SPEED (80ms instead of 200ms)
+            // 2. FASTER SPEED for Autoplay
             const timer = setInterval(() => {
                 year++; age++; numEl.innerText = year; detailEl.innerText = "Age: " + age; AudioSys.tick();
                 if (age >= 21) { 
@@ -612,7 +612,7 @@
                     AudioSys.chime(); 
                     detailEl.innerText = "TURNING 21"; 
                     detailEl.style.color = "var(--gold)"; 
-                    // 3. SHORTER WAIT (500ms instead of 1500ms)
+                    // 3. SHORTER WAIT for Autoplay
                     setTimeout(() => goto('v-wishes'), 500); 
                 }
             }, 80);
