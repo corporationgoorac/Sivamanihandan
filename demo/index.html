@@ -15,9 +15,9 @@
             --bg: #080808;
             --surface: #121212;
             --text-main: #e0e0e0;
-            --gold: #d4af37; /* Elegant Gold */
+            --gold: #d4af37;
             --gold-dim: #8a7030;
-            --accent: #ff4081; /* Soft Pink for emotions */
+            --accent: #ff4081;
             --ease: cubic-bezier(0.25, 1, 0.5, 1);
         }
 
@@ -58,7 +58,7 @@
             pointer-events: none;
             transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
             transform: scale(0.95);
-            padding: 30px;
+            padding: 20px;
             z-index: 1;
         }
 
@@ -70,150 +70,112 @@
         }
 
         /* --- 3. GIFT BOX (START) --- */
-        .gift-wrapper {
-            cursor: pointer;
-            text-align: center;
-        }
-        
-        .gift-icon {
-            font-size: 5rem;
-            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3));
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .tap-hint {
-            margin-top: 25px;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--gold);
-            opacity: 0.8;
-            animation: pulse 2s infinite;
-        }
+        .gift-wrapper { cursor: pointer; text-align: center; }
+        .gift-icon { font-size: 5rem; filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3)); animation: float 3s ease-in-out infinite; }
+        .tap-hint { margin-top: 25px; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.8; animation: pulse 2s infinite; }
 
         /* --- 4. COUNTDOWN TIMELINE --- */
-        .counter-wrapper {
-            text-align: center;
-        }
-
-        .counter-label {
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        /* The Big Digital Number */
-        .big-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 6rem;
-            line-height: 1;
-            font-weight: 600;
-            color: var(--gold);
-            font-variant-numeric: tabular-nums; /* Prevents jitter */
-            text-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
-        }
-
-        .counter-detail {
-            margin-top: 15px;
-            font-size: 1.2rem;
-            color: #fff;
-            min-height: 1.5em;
-        }
+        .counter-wrapper { text-align: center; }
+        .counter-label { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: #666; margin-bottom: 20px; }
+        .big-number { font-family: 'Playfair Display', serif; font-size: 6rem; line-height: 1; font-weight: 600; color: var(--gold); font-variant-numeric: tabular-nums; text-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
+        .counter-detail { margin-top: 15px; font-size: 1.2rem; color: #fff; min-height: 1.5em; }
 
         /* --- 5. CONTENT PAGES --- */
-        .text-panel {
-            text-align: center;
-            margin-bottom: 20px;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .text-panel { text-align: center; margin-bottom: 20px; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+        .poetic-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; line-height: 1.6; color: #ddd; animation: fadeIn 1.5s ease forwards; }
 
-        .poetic-text {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #ddd;
-            animation: fadeIn 1.5s ease forwards;
-        }
+        /* Video Frame */
+        .video-box { width: 100%; flex: 1; background: #000; border: 1px solid #222; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        video { width: 100%; height: 100%; object-fit: contain; }
 
-        /* Video Frame - Perfect Fit */
-        .video-box {
-            width: 100%;
-            flex: 1;
-            background: #000;
-            border: 1px solid #222;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        /* Navigation Buttons */
-        .nav-area {
-            width: 100%;
-            padding-top: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        button {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.2);
-            color: #fff;
-            padding: 14px 32px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        button.primary {
-            background: var(--gold);
-            color: #000;
-            border-color: var(--gold);
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
-        }
-
+        /* Navigation */
+        .nav-area { width: 100%; padding-top: 20px; display: flex; justify-content: center; gap: 20px; }
+        button { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 24px; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; cursor: pointer; transition: all 0.3s; }
+        button.primary { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 600; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
         button:active { transform: scale(0.96); }
 
         /* Titles */
-        h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            margin: 0;
-            color: var(--gold);
+        h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; color: var(--gold); }
+        h3 { font-weight: 300; font-size: 1rem; letter-spacing: 2px; margin: 5px 0 0 0; text-transform: uppercase; color: #aaa; }
+
+        /* --- 6. PERSONALITY PAGE STYLES --- */
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
         }
-        h3 {
-            font-weight: 300;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            margin: 5px 0 0 0;
+
+        .profile-img-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            object-fit: cover;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+            animation: pulse-border 3s infinite;
+        }
+
+        .header-title {
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .header-sub {
+            color: #666;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        /* The Scrolling Text Container */
+        .scrolling-content {
+            flex: 1;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 2px solid var(--gold-dim);
+            padding: 15px;
+            overflow-y: auto;
+            text-align: left;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #ddd;
+            /* Scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold-dim) #111;
+        }
+
+        /* The Flashing Line Animation */
+        .flash-line {
+            opacity: 0;
+            transform: translateY(5px);
+            animation: decodeAnim 0.6s ease forwards;
+            margin-bottom: 8px;
+            display: block;
         }
 
         /* --- ANIMATIONS --- */
         @keyframes float { 0%, 100% {transform:translateY(0);} 50% {transform:translateY(-15px);} }
         @keyframes pulse { 0%, 100% {opacity: 0.5;} 50% {opacity: 1;} }
         @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+        @keyframes pulse-border { 0% {box-shadow:0 0 0 0 rgba(212,175,55,0.4);} 70% {box-shadow:0 0 0 10px transparent;} 100% {box-shadow:0 0 0 0 transparent;} }
+        
+        /* The "Data Decode" Effect */
+        @keyframes decodeAnim {
+            0% { opacity: 0; color: var(--gold); text-shadow: 0 0 10px var(--gold); transform: translateY(5px); }
+            50% { opacity: 1; color: #fff; }
+            100% { opacity: 0.9; color: #ddd; transform: translateY(0); }
+        }
 
     </style>
 </head>
@@ -282,15 +244,52 @@
             </div>
             <div class="nav-area">
                 <button onclick="goto('v-wishes')">Back</button>
-                <button class="primary" onclick="alert('The End')">Done</button>
+                <button class="primary" onclick="startPersonality()">Next</button>
+            </div>
+        </div>
+
+        <div id="v-personality" class="view">
+            <div class="profile-container">
+                <div class="profile-img-box">
+                    <img src="face.png" alt="Her Photo" class="profile-img">
+                </div>
+                <div class="header-title">The Perception</div>
+                <div class="header-sub">HOW I SEE YOU</div>
+                
+                <div id="personality-stream" class="scrolling-content"></div>
+
+                <div class="nav-area">
+                    <button onclick="goto('v-aafika')">Back</button>
+                    <button class="primary" onclick="alert('Next pages coming soon!')">Next</button>
+                </div>
             </div>
         </div>
 
     </div>
 
     <script>
+        /* --- PERSONALITY TEXT DATA --- 
+           PASTE YOUR LONG TEXT INSIDE THE BACKTICKS BELOW (`...`) 
+        */
+        const PERSONALITY_TEXT = `
+You are a person of rare kindness.
+Your smile lights up the room instantly.
+Even when things are tough, you stay strong.
+I admire the way you care for others.
+Your laughter is contagious and pure.
+You have a heart of gold.
+Every day with you is a blessing.
+You inspire me to be better.
+Your wisdom goes beyond your years.
+The way you see the world is beautiful.
+You are stronger than you know.
+(Paste the rest of your 1000 characters here...)
+(Keep adding lines...)
+(Each new line will flash in...)
+        `;
+
         /* =========================================
-           AUDIO ENGINE (Internal - No Files Needed)
+           AUDIO ENGINE
            ========================================= */
         const AudioSys = {
             ctx: null,
@@ -309,10 +308,10 @@
                 osc.connect(gain); gain.connect(this.ctx.destination);
                 osc.start(); osc.stop(this.ctx.currentTime + dur);
             },
-            tick() { this.playTone(600, 'sine', 0.05, 0.05); }, // Soft tick
-            click() { this.playTone(800, 'triangle', 0.1, 0.05); }, // Button click
+            tick() { this.playTone(600, 'sine', 0.05, 0.05); },
+            click() { this.playTone(800, 'triangle', 0.1, 0.05); },
+            data() { this.playTone(1000, 'square', 0.03, 0.02); }, // Computer data sound
             chime() { 
-                // Play a nice chord
                 setTimeout(()=>this.playTone(523.25, 'sine', 1.5, 0.1), 0);
                 setTimeout(()=>this.playTone(659.25, 'sine', 1.5, 0.1), 100);
                 setTimeout(()=>this.playTone(783.99, 'sine', 1.5, 0.1), 200);
@@ -322,90 +321,88 @@
         /* =========================================
            VIEW LOGIC
            ========================================= */
-        
-        // Navigation Helper
         function goto(id) {
             AudioSys.click();
-            // Stop all videos
             document.querySelectorAll('video').forEach(v => v.pause());
-            // Hide all views
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            // Show new view
             const target = document.getElementById(id);
             target.classList.add('active');
 
-            // Play video if present
             const vid = target.querySelector('video');
-            if(vid) {
-                vid.currentTime = 0;
-                vid.play().catch(e => console.log('Auto-play restriction'));
-            }
+            if(vid) { vid.currentTime = 0; vid.play().catch(e => {}); }
         }
 
-        // --- PHASE 1: REWIND (2026 -> 2005) ---
+        /* --- TIMELINE ANIMATIONS --- */
         function startJourney() {
-            // Unlock audio on first tap
             AudioSys.init();
             AudioSys.click();
-            
             goto('v-rewind');
-
             const numEl = document.getElementById('num-rewind');
             const detailEl = document.getElementById('detail-rewind');
-            
             let year = 2026;
-            const endYear = 2005;
-            
-            // Fast Interval
             const timer = setInterval(() => {
                 year--;
                 numEl.innerText = year;
                 AudioSys.tick();
-
-                if (year <= endYear) {
+                if (year <= 2005) {
                     clearInterval(timer);
                     AudioSys.chime();
                     detailEl.innerText = "FEB 08";
                     detailEl.style.color = "var(--gold)";
-                    
-                    // Hold for a moment then show Born page
-                    setTimeout(() => {
-                        goto('v-born');
-                    }, 1500);
+                    setTimeout(() => goto('v-born'), 1500);
                 }
-            }, 150); // Speed of rewind
+            }, 150);
         }
 
-        // --- PHASE 2: FORWARD (Age 0 -> 21) ---
         function startForward() {
             goto('v-forward');
-
             const numEl = document.getElementById('num-forward');
             const detailEl = document.getElementById('detail-forward');
-            
             let year = 2005;
             let age = 0;
-            const targetAge = 21;
-
             const timer = setInterval(() => {
-                year++;
-                age++;
-                
+                year++; age++;
                 numEl.innerText = year;
                 detailEl.innerText = "Age: " + age;
                 AudioSys.tick();
-
-                if (age >= targetAge) {
+                if (age >= 21) {
                     clearInterval(timer);
                     AudioSys.chime();
                     detailEl.innerText = "TURNING 21";
                     detailEl.style.color = "var(--gold)";
-                    
-                    setTimeout(() => {
-                        goto('v-wishes');
-                    }, 1500);
+                    setTimeout(() => goto('v-wishes'), 1500);
                 }
-            }, 200); // Speed of aging
+            }, 200);
+        }
+
+        /* --- PERSONALITY TEXT ANIMATION --- */
+        function startPersonality() {
+            goto('v-personality');
+            const container = document.getElementById('personality-stream');
+            container.innerHTML = ""; // Clear previous
+            
+            // Clean and split text
+            const lines = PERSONALITY_TEXT.trim().split('\n');
+            let i = 0;
+
+            const interval = setInterval(() => {
+                if (i < lines.length) {
+                    const lineStr = lines[i].trim();
+                    if(lineStr) {
+                        const p = document.createElement('div');
+                        p.className = 'flash-line';
+                        p.innerText = lineStr;
+                        container.appendChild(p);
+                        
+                        // Auto-scroll to bottom
+                        container.scrollTop = container.scrollHeight;
+                        AudioSys.data(); // Beep sound
+                    }
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 500); // Speed of each line appearing
         }
 
     </script>
