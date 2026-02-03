@@ -189,8 +189,8 @@
 
     <audio id="audio-nasheed" preload="auto" loop><source src="duo.mp3" type="audio/mpeg"></audio>
     <audio id="audio-personality" preload="auto"><source src="neenda_neenda_kalam.mp3" type="audio/mpeg"></audio>
-    <audio id="audio-song1" preload="auto"><source src="song1.mp3" type="audio/mpeg"></audio>
-    <audio id="audio-song2" preload="auto"><source src="song2.mp3" type="audio/mpeg"></audio>
+    <audio id="audio-song1" preload="auto" loop><source src="song1.mp3" type="audio/mpeg"></audio>
+    <audio id="audio-song2" preload="auto" loop><source src="song2.mp3" type="audio/mpeg"></audio>
 
     <div id="app">
 
@@ -320,10 +320,10 @@
             </div>
             
             <div class="media-box">
-                <img id="img-wish-1" src="pic1.jpg" class="wish-image" alt="Journey">
-                <img id="img-wish-2" src="pic2.jpg" class="wish-image" alt="Hope">
-                <img id="img-wish-3" src="pic3.jpg" class="wish-image" alt="School">
-                <img id="img-wish-4" src="pic4.jpg" class="wish-image" alt="Reading">
+                <img id="img-wish-1" src="pic1.jpg" class="wish-image" alt="School Steps">
+                <img id="img-wish-2" src="pic2.jpg" class="wish-image" alt="Reading">
+                <img id="img-wish-3" src="pic3.jpg" class="wish-image" alt="Hope">
+                <img id="img-wish-4" src="pic4.jpg" class="wish-image" alt="Window">
             </div>
 
             <div class="nav-area">
@@ -352,12 +352,19 @@
             { ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", en: "Oh Turner of hearts, keep her heart steadfast on Your faith and filled with peace." }
         ];
 
-        /* LONG, RELATABLE CAPTIONS FOR PHOTOS */
+        /* CAPTIONS MAPPED TO PHOTO CONTENT (Context: She is in college, photos are school) */
         const WISHES = [
-            { text: "As you look out the window of life, may every turn lead you to beautiful destinations, and may your journey be safe, peaceful, and filled with barakah." }, // pic1.jpg
-            { text: "Like the greenery around you, may your life always bloom with hope. Keep looking forward with that beautiful strength, for the best is yet to come." }, // pic2.jpg
-            { text: "Standing at the doors of knowledge, may you always find wisdom. May your path be easy, your burden light, and your success greater than you ever imagined." }, // pic3.jpg
-            { text: "In a world full of noise, may you always find your peace in knowledge and faith. Write your own story, chapter by chapter, with a heart full of light." } // pic4.jpg
+            // pic1.jpg: School Steps -> Foundation/Past
+            { text: "Looking back at where it all started... May the discipline and dreams of your school days continue to guide you to greatness in your college life and beyond." }, 
+            
+            // pic2.jpg: Reading Book -> Knowledge/Studying
+            { text: "Always lost in books, even back then. As you pursue higher education now, may your thirst for knowledge write a beautiful success story for your future." }, 
+            
+            // pic3.jpg: Greenery -> Growth/Hope
+            { text: "You have grown so much since this photo was taken. Like the nature around you, may your life always bloom with hope, resilience, and endless possibilities." }, 
+            
+            // pic4.jpg: Bus Window -> Journey/Dreams
+            { text: "From those school bus rides to the journey you are on now... May Allah protect you, guide your steps, and lead you to the most beautiful destinations." } 
         ];
 
         let currentDuaIndex = 0;
@@ -436,9 +443,8 @@
                 renderFinalWishes();
             }
             else if (id === 'v-grand-finale') {
-                // DO NOT STOP SONG 2
-                // Ensure song1 is stopped
-                song1.pause(); song1.currentTime = 0;
+                // Keep Song 2 playing
+                song1.pause(); 
             }
             else {
                 stopAllExcept(null);
