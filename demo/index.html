@@ -594,14 +594,28 @@
             }, 150);
         }
 
+        // FIXED FUNCTION HERE
         function startForward() {
             goto('v-forward');
+            // 1. PRELOAD VIDEO (Important!)
+            const vid = document.getElementById('vid-wishes');
+            if(vid) vid.load();
+
             const numEl = document.getElementById('num-forward'); const detailEl = document.getElementById('detail-forward');
             let year = 2005; let age = 0;
+            
+            // 2. FASTER SPEED (80ms instead of 200ms)
             const timer = setInterval(() => {
                 year++; age++; numEl.innerText = year; detailEl.innerText = "Age: " + age; AudioSys.tick();
-                if (age >= 21) { clearInterval(timer); AudioSys.chime(); detailEl.innerText = "TURNING 21"; detailEl.style.color = "var(--gold)"; setTimeout(() => goto('v-wishes'), 1500); }
-            }, 200);
+                if (age >= 21) { 
+                    clearInterval(timer); 
+                    AudioSys.chime(); 
+                    detailEl.innerText = "TURNING 21"; 
+                    detailEl.style.color = "var(--gold)"; 
+                    // 3. SHORTER WAIT (500ms instead of 1500ms)
+                    setTimeout(() => goto('v-wishes'), 500); 
+                }
+            }, 80);
         }
 
         function startPersonality() {
