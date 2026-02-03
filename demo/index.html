@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Fathima Sumaiya</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary-color: #ff4081; /* Pink accent */
+            --bg-color: #000000;      /* Dark Mode */
+            --text-color: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace; /* Typewriter feel */
+            overflow: hidden; /* Prevent scrolling */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Container for all pages */
+        #app-container {
+            width: 100%;
+            max-width: 500px; /* Mobile frame size */
+            height: 100%;
+            position: relative;
+        }
+
+        /* Generic Page Style */
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex; /* Flexbox for centering */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            background: #000;
+            z-index: 1;
+        }
+
+        .active {
+            opacity: 1;
+            pointer-events: all;
+            z-index: 10;
+        }
+
+        /* Timeline Styles */
+        .timeline-text {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+        .timeline-sub {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            color: #aaa;
+        }
+
+        /* Content Styling */
+        h1, h2, p {
+            margin: 0 0 15px 0;
+            padding: 0 20px;
+        }
+
+        .poetic-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        /* Video Frame - Portrait Optimized */
+        .video-wrapper {
+            width: 90%;
+            height: 60vh; /* Takes up 60% of vertical height */
+            border: 2px solid #333;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #111;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(255, 64, 129, 0.2);
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures portrait fills the frame */
+        }
+
+        /* Buttons */
+        .nav-buttons {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+            transition: transform 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button.secondary {
+            background-color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="sfx-sound" src="timeline_sfx.mp3" preload="auto"></audio>
+
+    <div id="app-container">
+        
+        <div id="scene-intro" class="page active">
+            <div class="timeline-text" id="intro-year">2006</div>
+            <div class="timeline-sub" id="intro-date">Loading...</div>
+        </div>
+
+        <div id="scene-page1" class="page">
+            <div class="poetic-text">
+                "On that day, the sky was dark...<br>
+                Not because it was a new moon,<br>
+                but because the Moon itself<br>
+                had come down to Earth."
+            </div>
+            
+            <div class="video-wrapper">
+                <video id="vid-born" src="born.mp4" loop playsinline muted></video>
+            </div>
+            
+            <div class="nav-buttons">
+                <button onclick="startAgeTransition()">Next &rarr;</button>
+            </div>
+        </div>
+
+        <div id="scene-transition" class="page">
+            <div class="timeline-text" id="trans-year">2005</div>
+            <div class="timeline-sub" id="trans-age">Age: 0</div>
+        </div>
+
+        <div id="scene-page2" class="page">
+            <h2>Happy Birthday<br>Fathima Sumaiya!</h2>
+            
+            <div class="video-wrapper">
+                <video id="vid-wishes" src="wishes.mp4" loop playsinline></video>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="secondary" onclick="navigate('scene-page1')">&larr; Back</button>
+                <button onclick="navigate('scene-page3')">Next &rarr;</button>
+            </div>
+        </div>
+
+        <div id="scene-page3" class="page">
+            <h2>Little Aafika's Wishes</h2>
+            
+            <div class="video-wrapper">
+                <video id="vid-aafika" src="aafika.mp4" loop playsinline></video>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="secondary" onclick="navigate('scene-page2')">&larr; Back</button>
+                <button onclick="alert('Next pages coming soon!')">Next &rarr;</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+
+        // Audio Reference
+        const sfx = document.getElementById('sfx-sound');
+
+        // Helper to switch pages
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            // Handle Video Autoplay logic
+            document.querySelectorAll('video').forEach(v => v.pause()); // Pause all
+            const activePage = document.getElementById(pageId);
+            const video = activePage.querySelector('video');
+            if(video) {
+                video.currentTime = 0;
+                video.play().catch(e => console.log("Autoplay blocked until interaction"));
+            }
+        }
+
+        // Generic navigation function for Back/Next buttons (skips timelines)
+        function navigate(targetId) {
+            switchPage(targetId);
+        }
+
+        // 1. INTRO TIMELINE LOGIC
+        window.onload = function() {
+            setTimeout(runIntroTimeline, 1000);
+        };
+
+        function runIntroTimeline() {
+            const yearEl = document.getElementById('intro-year');
+            const dateEl = document.getElementById('intro-date');
+            
+            // Play sound
+            if(sfx) sfx.play().catch(e => console.log("Audio requires interaction"));
+
+            let currentYear = 2006;
+            let interval = setInterval(() => {
+                currentYear--;
+                yearEl.innerText = currentYear;
+                
+                // Trigger tactile vibration on mobile
+                if (navigator.vibrate) navigator.vibrate(50);
+
+                if(currentYear <= 2005) {
+                    clearInterval(interval);
+                    dateEl.innerText = "FEB 08";
+                    yearEl.style.color = "#fff"; // Flash white
+                    
+                    setTimeout(() => {
+                        switchPage('scene-page1');
+                    }, 1500); // Hold for 1.5s then show Page 1
+                }
+            }, 800); // Speed of count down
+        }
+
+        // 2. AGE TRANSITION LOGIC
+        function startAgeTransition() {
+            switchPage('scene-transition');
+            
+            const yearEl = document.getElementById('trans-year');
+            const ageEl = document.getElementById('trans-age');
+            
+            let year = 2005;
+            let age = 0;
+            const targetYear = 2026;
+
+            if(sfx) sfx.play();
+
+            let interval = setInterval(() => {
+                year++;
+                age++;
+                
+                yearEl.innerText = year;
+                ageEl.innerText = "Age: " + age;
+
+                // Trigger vibration
+                if (navigator.vibrate) navigator.vibrate(20);
+
+                if(year >= targetYear) {
+                    clearInterval(interval);
+                    yearEl.innerText = "2026 FEB 08";
+                    ageEl.innerText = "Turning 21";
+                    
+                    setTimeout(() => {
+                        switchPage('scene-page2');
+                    }, 1500);
+                }
+            }, 150); // Fast counting speed
+        }
+
+    </script>
+</body>
+</html>
