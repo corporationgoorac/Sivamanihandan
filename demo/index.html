@@ -2,54 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Fathima Sumaiya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Special Day</title>
     <style>
-        /* --- CSS STYLES --- */
+        /* --- CORE CSS --- */
         :root {
-            --primary-color: #ff4081; /* Pink accent */
-            --bg-color: #000000;      /* Dark Mode */
-            --text-color: #ffffff;
+            --primary: #ff2e63; /* Pink */
+            --accent: #08d9d6;  /* Teal/Cyan */
+            --bg: #000000;
+            --text: #eaeaea;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
             padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Courier New', Courier, monospace; /* Typewriter feel */
-            overflow: hidden; /* Prevent scrolling */
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', monospace; 
+            overflow: hidden; 
+            /* 100dvh handles mobile address bars correctly */
+            height: 100dvh; 
+            width: 100vw;
         }
 
-        /* Container for all pages */
-        #app-container {
+        #app {
             width: 100%;
-            max-width: 500px; /* Mobile frame size */
             height: 100%;
             position: relative;
+            max-width: 500px; /* Mobile constraint */
+            margin: 0 auto;
+            background: #050505;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
-        /* Generic Page Style */
+        /* --- PAGES --- */
         .page {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex; /* Flexbox for centering */
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            justify-content: space-between; /* Space out top, mid, bot */
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.5s ease;
-            background: #000;
+            transition: opacity 0.6s ease;
             z-index: 1;
+            padding: 20px 10px;
         }
 
         .active {
@@ -58,237 +60,306 @@
             z-index: 10;
         }
 
-        /* Timeline Styles */
-        .timeline-text {
-            font-size: 4rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-shadow: 0 0 10px var(--primary-color);
+        /* --- GIFT BOX (START SCREEN) --- */
+        .gift-container {
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
         }
-        .timeline-sub {
-            font-size: 1.5rem;
-            margin-top: 10px;
-            color: #aaa;
+        
+        .gift-box {
+            font-size: 5rem;
+            animation: bounce 2s infinite;
         }
-
-        /* Content Styling */
-        h1, h2, p {
-            margin: 0 0 15px 0;
-            padding: 0 20px;
-        }
-
-        .poetic-text {
+        
+        .click-hint {
+            margin-top: 20px;
+            color: var(--primary);
             font-size: 1.2rem;
-            line-height: 1.6;
-            font-style: italic;
-            margin-bottom: 20px;
-            color: #ddd;
+            animation: pulse 1.5s infinite;
         }
 
-        /* Video Frame - Portrait Optimized */
-        .video-wrapper {
-            width: 90%;
-            height: 60vh; /* Takes up 60% of vertical height */
-            border: 2px solid #333;
-            border-radius: 15px;
+        /* --- TIMELINE STYLES --- */
+        .timeline-container {
+            justify-content: center;
+            align-items: center;
+        }
+        .year-display {
+            font-size: 5rem;
+            font-weight: bold;
+            color: var(--primary);
+            line-height: 1;
+        }
+        .date-display {
+            font-size: 2rem;
+            color: #fff;
+            margin-top: 10px;
+        }
+        .age-counter {
+            font-size: 1.5rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* --- CONTENT PAGES --- */
+        .header-text {
+            flex: 0 0 auto; /* Don't stretch */
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .poetic {
+            font-size: 1rem;
+            color: #ccc;
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        /* VIDEO CONTAINER - THE FIX */
+        .video-frame {
+            flex: 1 1 auto; /* Grow to fill space */
+            width: 100%;
+            position: relative;
             overflow: hidden;
-            background: #111;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(255, 64, 129, 0.2);
+            background: #000;
+            border-radius: 10px;
+            border: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures portrait fills the frame */
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            /* contain ensures the whole video fits inside without cropping */
+            object-fit: contain; 
         }
 
-        /* Buttons */
-        .nav-buttons {
-            position: absolute;
-            bottom: 30px;
+        /* BUTTONS */
+        .controls {
+            flex: 0 0 auto; /* Don't stretch */
             width: 100%;
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
+            padding-top: 15px;
+            padding-bottom: 10px; /* Safe area from bottom */
         }
 
         button {
-            background-color: var(--primary-color);
-            color: white;
+            background: var(--primary);
+            color: #fff;
             border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
+            padding: 12px 25px;
             font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
-            transition: transform 0.2s;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(255, 46, 99, 0.4);
+            transition: transform 0.1s;
         }
 
-        button:active {
-            transform: scale(0.95);
-        }
+        button:active { transform: scale(0.95); }
+        .btn-back { background: #333; }
 
-        button.secondary {
-            background-color: #333;
+        /* --- ANIMATIONS --- */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
         }
 
     </style>
 </head>
 <body>
 
-    <audio id="sfx-sound" src="timeline_sfx.mp3" preload="auto"></audio>
+    <audio id="sfx" src="timeline_sfx.mp3" preload="auto"></audio>
 
-    <div id="app-container">
-        
-        <div id="scene-intro" class="page active">
-            <div class="timeline-text" id="intro-year">2006</div>
-            <div class="timeline-sub" id="intro-date">Loading...</div>
+    <div id="app">
+
+        <div id="p-gift" class="page active gift-container" onclick="openGift()">
+            <div class="gift-box">🎁</div>
+            <div class="click-hint">Tap to Open</div>
         </div>
 
-        <div id="scene-page1" class="page">
-            <div class="poetic-text">
+        <div id="p-timeline-intro" class="page timeline-container">
+            <div id="intro-year" class="year-display">2006</div>
+            <div id="intro-date" class="date-display">Loading...</div>
+        </div>
+
+        <div id="p-born" class="page">
+            <div class="header-text poetic">
                 "On that day, the sky was dark...<br>
-                Not because it was a new moon,<br>
+                Not because of a new moon,<br>
                 but because the Moon itself<br>
                 had come down to Earth."
             </div>
             
-            <div class="video-wrapper">
-                <video id="vid-born" src="born.mp4" loop playsinline muted></video>
-            </div>
-            
-            <div class="nav-buttons">
-                <button onclick="startAgeTransition()">Next &rarr;</button>
-            </div>
-        </div>
-
-        <div id="scene-transition" class="page">
-            <div class="timeline-text" id="trans-year">2005</div>
-            <div class="timeline-sub" id="trans-age">Age: 0</div>
-        </div>
-
-        <div id="scene-page2" class="page">
-            <h2>Happy Birthday<br>Fathima Sumaiya!</h2>
-            
-            <div class="video-wrapper">
-                <video id="vid-wishes" src="wishes.mp4" loop playsinline></video>
+            <div class="video-frame">
+                <video id="v-born" playsinline loop src="born.mp4"></video>
             </div>
 
-            <div class="nav-buttons">
-                <button class="secondary" onclick="navigate('scene-page1')">&larr; Back</button>
-                <button onclick="navigate('scene-page3')">Next &rarr;</button>
+            <div class="controls">
+                <button onclick="startAgeTimeline()">Next &rarr;</button>
             </div>
         </div>
 
-        <div id="scene-page3" class="page">
-            <h2>Little Aafika's Wishes</h2>
-            
-            <div class="video-wrapper">
-                <video id="vid-aafika" src="aafika.mp4" loop playsinline></video>
+        <div id="p-timeline-trans" class="page timeline-container">
+            <div id="trans-year" class="year-display">2005</div>
+            <div id="trans-age" class="age-counter">Age: 0</div>
+        </div>
+
+        <div id="p-wishes" class="page">
+            <div class="header-text">
+                <h2 style="margin:0; color:var(--primary)">Happy Birthday!</h2>
+                <p style="margin:5px 0 0 0">Fathima Sumaiya</p>
             </div>
 
-            <div class="nav-buttons">
-                <button class="secondary" onclick="navigate('scene-page2')">&larr; Back</button>
-                <button onclick="alert('Next pages coming soon!')">Next &rarr;</button>
+            <div class="video-frame">
+                <video id="v-wishes" playsinline loop src="wishes.mp4"></video>
+            </div>
+
+            <div class="controls">
+                <button class="btn-back" onclick="gotoPage('p-born')">&larr; Back</button>
+                <button onclick="gotoPage('p-aafika')">Next &rarr;</button>
+            </div>
+        </div>
+
+        <div id="p-aafika" class="page">
+            <div class="header-text">
+                <h2 style="margin:0; color:var(--accent)">Little Aafika</h2>
+                <p style="margin:5px 0 0 0">Sending her love...</p>
+            </div>
+
+            <div class="video-frame">
+                <video id="v-aafika" playsinline loop src="aafika.mp4"></video>
+            </div>
+
+            <div class="controls">
+                <button class="btn-back" onclick="gotoPage('p-wishes')">&larr; Back</button>
+                <button onclick="alert('More surprises coming soon!')">Next &rarr;</button>
             </div>
         </div>
 
     </div>
 
     <script>
-        /* --- JAVASCRIPT LOGIC --- */
+        // --- JAVASCRIPT ---
 
-        // Audio Reference
-        const sfx = document.getElementById('sfx-sound');
+        const sfx = document.getElementById('sfx');
 
-        // Helper to switch pages
-        function switchPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
+        // 1. OPEN GIFT (Unlocks Audio Context)
+        function openGift() {
+            // This click enables audio for the whole session
+            sfx.volume = 0.5;
+            sfx.play().then(() => {
+                sfx.pause();
+                sfx.currentTime = 0;
+            }).catch(e => console.log("Audio permission error"));
+
+            // Start Intro Animation
+            gotoPage('p-timeline-intro');
+            setTimeout(runIntroTimeline, 500);
+        }
+
+        // NAVIGATION HANDLER
+        function gotoPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
             
-            // Handle Video Autoplay logic
-            document.querySelectorAll('video').forEach(v => v.pause()); // Pause all
-            const activePage = document.getElementById(pageId);
-            const video = activePage.querySelector('video');
-            if(video) {
+            // Stop all videos
+            document.querySelectorAll('video').forEach(vid => vid.pause());
+
+            // Show target page
+            const target = document.getElementById(pageId);
+            target.classList.add('active');
+
+            // If page has a video, play it
+            const video = target.querySelector('video');
+            if (video) {
                 video.currentTime = 0;
-                video.play().catch(e => console.log("Autoplay blocked until interaction"));
+                video.volume = 1.0; // Ensure volume is up
+                video.play().catch(e => console.log("Video play error:", e));
             }
         }
 
-        // Generic navigation function for Back/Next buttons (skips timelines)
-        function navigate(targetId) {
-            switchPage(targetId);
-        }
-
-        // 1. INTRO TIMELINE LOGIC
-        window.onload = function() {
-            setTimeout(runIntroTimeline, 1000);
-        };
-
+        // TIMELINE 1: 2006 -> 2005
         function runIntroTimeline() {
             const yearEl = document.getElementById('intro-year');
             const dateEl = document.getElementById('intro-date');
             
-            // Play sound
-            if(sfx) sfx.play().catch(e => console.log("Audio requires interaction"));
+            // Loop sound effect briefly
+            sfx.currentTime = 0;
+            sfx.loop = true;
+            sfx.play();
 
-            let currentYear = 2006;
-            let interval = setInterval(() => {
-                currentYear--;
-                yearEl.innerText = currentYear;
-                
-                // Trigger tactile vibration on mobile
-                if (navigator.vibrate) navigator.vibrate(50);
+            let year = 2006;
+            let count = 0;
+            
+            let timer = setInterval(() => {
+                count++;
+                // Flicker year effect
+                if(count % 2 === 0) year--;
+                else year = 2006;
 
-                if(currentYear <= 2005) {
-                    clearInterval(interval);
+                // Final State
+                if (count > 4) {
+                    clearInterval(timer);
+                    sfx.pause();
+                    yearEl.innerText = "2005";
                     dateEl.innerText = "FEB 08";
-                    yearEl.style.color = "#fff"; // Flash white
+                    dateEl.style.color = "var(--primary)";
                     
                     setTimeout(() => {
-                        switchPage('scene-page1');
-                    }, 1500); // Hold for 1.5s then show Page 1
+                        gotoPage('p-born');
+                    }, 1500);
+                } else {
+                    yearEl.innerText = year;
                 }
-            }, 800); // Speed of count down
+            }, 600);
         }
 
-        // 2. AGE TRANSITION LOGIC
-        function startAgeTransition() {
-            switchPage('scene-transition');
+        // TIMELINE 2: Age Counter
+        function startAgeTimeline() {
+            gotoPage('p-timeline-trans');
             
             const yearEl = document.getElementById('trans-year');
             const ageEl = document.getElementById('trans-age');
             
-            let year = 2005;
+            sfx.loop = true;
+            sfx.play();
+
+            let curYear = 2005;
             let age = 0;
-            const targetYear = 2026;
+            let endYear = 2026;
 
-            if(sfx) sfx.play();
-
-            let interval = setInterval(() => {
-                year++;
+            let timer = setInterval(() => {
+                curYear++;
                 age++;
                 
-                yearEl.innerText = year;
+                yearEl.innerText = curYear;
                 ageEl.innerText = "Age: " + age;
 
-                // Trigger vibration
-                if (navigator.vibrate) navigator.vibrate(20);
-
-                if(year >= targetYear) {
-                    clearInterval(interval);
-                    yearEl.innerText = "2026 FEB 08";
-                    ageEl.innerText = "Turning 21";
+                if (curYear >= endYear) {
+                    clearInterval(timer);
+                    sfx.pause();
+                    yearEl.innerText = "2026";
+                    yearEl.style.color = "#fff";
+                    ageEl.innerText = "FEB 08 - Turning 21";
+                    ageEl.style.color = "var(--primary)";
                     
                     setTimeout(() => {
-                        switchPage('scene-page2');
-                    }, 1500);
+                        gotoPage('p-wishes');
+                    }, 2000);
                 }
-            }, 150); // Fast counting speed
+            }, 100); // Fast count
         }
-
     </script>
 </body>
 </html>
