@@ -267,27 +267,9 @@
 
     </div>
 
-    <script>
-        /* --- PERSONALITY TEXT DATA --- 
-           PASTE YOUR LONG TEXT INSIDE THE BACKTICKS BELOW (`...`) 
-        */
-        const PERSONALITY_TEXT = `
-You are a person of rare kindness.
-Your smile lights up the room instantly.
-Even when things are tough, you stay strong.
-I admire the way you care for others.
-Your laughter is contagious and pure.
-You have a heart of gold.
-Every day with you is a blessing.
-You inspire me to be better.
-Your wisdom goes beyond your years.
-The way you see the world is beautiful.
-You are stronger than you know.
-(Paste the rest of your 1000 characters here...)
-(Keep adding lines...)
-(Each new line will flash in...)
-        `;
+    <script src="data.js"></script>
 
+    <script>
         /* =========================================
            AUDIO ENGINE
            ========================================= */
@@ -381,6 +363,12 @@ You are stronger than you know.
             const container = document.getElementById('personality-stream');
             container.innerHTML = ""; // Clear previous
             
+            // Check if PERSONALITY_TEXT is loaded
+            if (typeof PERSONALITY_TEXT === 'undefined') {
+                container.innerText = "Error: data.js not found or empty.";
+                return;
+            }
+
             // Clean and split text
             const lines = PERSONALITY_TEXT.trim().split('\n');
             let i = 0;
