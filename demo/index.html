@@ -81,7 +81,7 @@
         .counter-detail { margin-top: 15px; font-size: 1.2rem; color: #fff; min-height: 1.5em; }
 
         /* --- 5. CONTENT PAGES --- */
-        .text-panel { text-align: center; margin-bottom: 20px; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+        .text-panel { text-align: center; margin-bottom: 20px; min-height: 60px; display: flex; align-items: center; justify-content: center; z-index: 20; }
         .poetic-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; line-height: 1.6; color: #ddd; animation: fadeIn 1.5s ease forwards; }
 
         /* Video Frame */
@@ -89,7 +89,7 @@
         video { width: 100%; height: 100%; object-fit: contain; }
 
         /* Navigation */
-        .nav-area { width: 100%; padding-top: 20px; display: flex; justify-content: center; gap: 20px; position: relative; z-index: 20; }
+        .nav-area { width: 100%; padding-top: 20px; display: flex; justify-content: center; gap: 20px; position: relative; z-index: 50; }
         button { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 24px; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; cursor: pointer; transition: all 0.3s; }
         button.primary { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 600; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
         button:active { transform: scale(0.96); }
@@ -144,7 +144,7 @@
         }
         
         /* Floating particles (extra lanterns) */
-        .bg-lantern { position: absolute; width: 20px; height: 30px; background: radial-gradient(circle, #fff, #ffcc00); border-radius: 4px; opacity: 0; box-shadow: 0 0 10px #ffcc00; }
+        .bg-lantern { position: absolute; width: 20px; height: 30px; background: radial-gradient(circle, #fff, #ffcc00); border-radius: 4px; opacity: 0; box-shadow: 0 0 10px #ffcc00; pointer-events: none; z-index: 2; }
         .bg-lantern.rise { animation: riseUp 10s linear forwards; }
         
         @keyframes riseUp {
@@ -152,9 +152,6 @@
             20% { opacity: 0.8; }
             100% { transform: translateY(-20vh) scale(0.2); opacity: 0; }
         }
-
-        .fade-hidden { opacity: 0; pointer-events: none; transition: opacity 1s ease; }
-        .fade-visible { opacity: 1; pointer-events: all; }
 
         /* Fade Animation */
         .fade-in { animation: fadeInDua 0.5s ease forwards; }
@@ -258,10 +255,11 @@
         <div id="v-lanterns" class="view">
             <div class="lantern-scene" id="lantern-scene">
                 <div id="lantern-msg" class="lantern-text">Close your eyes and make a wish...</div>
-                <div id="sky-container"></div> <div class="water-reflection"></div>
+                <div id="sky-container"></div> 
+                <div class="water-reflection"></div>
                 <div id="main-lantern" class="lantern main-lantern" onclick="releaseLantern()"></div>
             </div>
-            <div id="lantern-nav" class="nav-area fade-hidden">
+            <div id="lantern-nav" class="nav-area">
                 <button onclick="goto('v-blessings')">Back</button>
                 <button class="primary" onclick="goto('v-aafika')">Next</button>
             </div>
@@ -338,8 +336,10 @@
         const AudioSys = {
             ctx: null,
             init() {
-                if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-                if (this.ctx.state === 'suspended') this.ctx.resume();
+                try {
+                    if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                } catch (e) { console.log("Audio Init Error", e); }
             },
             playTone(freq, type, dur, vol=0.1) {
                 if(!this.ctx) return;
@@ -356,9 +356,11 @@
             click() { this.playTone(800, 'triangle', 0.1, 0.05); },
             data() { this.playTone(1000, 'square', 0.03, 0.02); }, 
             chime() { 
+                // A magical rising chime sound
                 setTimeout(()=>this.playTone(523.25, 'sine', 1.5, 0.1), 0);
                 setTimeout(()=>this.playTone(659.25, 'sine', 1.5, 0.1), 100);
                 setTimeout(()=>this.playTone(783.99, 'sine', 1.5, 0.1), 200);
+                setTimeout(()=>this.playTone(1046.5, 'sine', 2.0, 0.05), 300);
             }
         };
 
@@ -375,29 +377,31 @@
             const nasheed = document.getElementById('audio-nasheed');
             const personalityAudio = document.getElementById('audio-personality');
             
-            // Logic: Lantern page shares the same audio as Blessings (Duo)
-            if (id === 'v-blessings' || id === 'v-lanterns') {
+            // Logic: 
+            // - Play nasheed ONLY on v-blessings.
+            // - Stop it immediately on v-lanterns.
+            if(id === 'v-blessings') {
                 if(nasheed.paused) {
                     nasheed.volume = 0.5;
+                    nasheed.currentTime = 0;
                     nasheed.play().catch(e => console.log("Audio block:", e));
                 }
                 // Ensure personality song is off
                 if (!personalityAudio.paused) { personalityAudio.pause(); personalityAudio.currentTime = 0; }
             }
             else if(id === 'v-personality') {
-                // Stop nasheed, start personality song
+                // Stop nasheed
                 if (!nasheed.paused) { nasheed.pause(); nasheed.currentTime = 0; }
+                
+                // Play personality song
                 personalityAudio.currentTime = 3;
                 personalityAudio.volume = 0.8;
                 personalityAudio.play().catch(e => console.log("Audio block:", e));
             }
             else {
-                // Stop all if going back to start or other pages (optional, depends on preference. 
-                // Usually we keep music playing, but sticking to strict reset for earlier pages)
-                if(id === 'v-start' || id === 'v-rewind' || id === 'v-born') {
-                     if (!nasheed.paused) { nasheed.pause(); nasheed.currentTime = 0; }
-                     if (!personalityAudio.paused) { personalityAudio.pause(); personalityAudio.currentTime = 0; }
-                }
+                // For Lanterns, Aafika, and others: STOP ALL AUDIO
+                 if (!nasheed.paused) { nasheed.pause(); nasheed.currentTime = 0; }
+                 if (!personalityAudio.paused) { personalityAudio.pause(); personalityAudio.currentTime = 0; }
             }
 
             // 3. Handle Page-Specific Logic
@@ -458,13 +462,10 @@
             const lantern = document.getElementById('main-lantern');
             const msg = document.getElementById('lantern-msg');
             const sky = document.getElementById('sky-container');
-            const nav = document.getElementById('lantern-nav');
 
             lantern.className = 'lantern main-lantern'; // Remove lit/fly classes
             lantern.style.pointerEvents = 'none'; // Disable click initially
             sky.innerHTML = ''; // Clear old background lanterns
-            nav.classList.remove('fade-visible');
-            nav.classList.add('fade-hidden');
             
             // Text Sequence
             msg.style.opacity = '0';
@@ -505,23 +506,19 @@
                 setTimeout(() => {
                     msg.innerText = "Your wish has reached the heavens";
                     msg.style.opacity = '1';
-                    
-                    // Show Next Button
-                    document.getElementById('lantern-nav').classList.remove('fade-hidden');
-                    document.getElementById('lantern-nav').classList.add('fade-visible');
                 }, 2000);
             }, 500);
         }
 
         function spawnSkyLanterns() {
             const sky = document.getElementById('sky-container');
-            const count = 40; // Number of background lanterns
+            const count = 30; // Number of background lanterns
             
             for(let i=0; i<count; i++) {
                 const l = document.createElement('div');
                 l.className = 'bg-lantern';
                 // Random positioning
-                const left = Math.random() * 100;
+                const left = Math.random() * 90 + 5; // keep within screen
                 const delay = Math.random() * 3;
                 const dur = 8 + Math.random() * 5;
                 const scale = 0.5 + Math.random() * 0.5;
@@ -529,6 +526,7 @@
                 l.style.left = left + '%';
                 l.style.animationDelay = delay + 's';
                 l.style.animationDuration = dur + 's';
+                l.style.transform = `scale(${scale})`;
                 
                 l.classList.add('rise');
                 sky.appendChild(l);
@@ -588,7 +586,8 @@
             // Only load if empty
             if(container.innerHTML === "") {
                 if (typeof PERSONALITY_TEXT === 'undefined') {
-                    container.innerText = "Data file missing...";
+                    // Fallback text if data.js is missing or empty
+                    container.innerText = "You are kind, smart, and wonderful. Happy Birthday!";
                     return;
                 }
                 
