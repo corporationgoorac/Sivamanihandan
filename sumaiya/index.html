@@ -146,7 +146,7 @@
             position: relative; 
         }
         .wish-image { 
-            max-width: 85%; /* Bit small on screen */
+            max-width: 85%; 
             max-height: 60vh;
             width: auto; 
             height: auto; 
@@ -162,7 +162,62 @@
             animation: floatImage 3s ease-in-out infinite alternate;
         }
 
-        /* --- 10. GRAND FINALE STYLES --- */
+        /* --- 10. STORY ALBUM STYLES (NEW) --- */
+        .story-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+        }
+        .story-photo-frame {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            perspective: 1000px;
+        }
+        .story-img {
+            max-width: 90%;
+            max-height: 50vh;
+            border-radius: 12px;
+            border: 1px solid var(--gold-dim);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.8s var(--ease);
+        }
+        .story-img.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.2);
+        }
+        .story-text-box {
+            width: 90%;
+            min-height: 120px;
+            background: rgba(255,255,255,0.05);
+            border-left: 3px solid var(--gold);
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 0 10px 10px 0;
+            backdrop-filter: blur(5px);
+        }
+        .story-caption {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #eee;
+        }
+
+        /* --- 11. GRAND FINALE STYLES --- */
         .grand-title { 
             font-family: 'Playfair Display', serif; 
             font-size: 4rem; 
@@ -191,6 +246,11 @@
     <audio id="audio-personality" preload="auto"><source src="neenda_neenda_kalam.mp3" type="audio/mpeg"></audio>
     <audio id="audio-song1" preload="auto" loop><source src="song1.mp3" type="audio/mpeg"></audio>
     <audio id="audio-song2" preload="auto" loop><source src="song2.mp3" type="audio/mpeg"></audio>
+
+    <audio id="story-audio-1" preload="auto" loop><source src="1.mp3" type="audio/mpeg"></audio>
+    <audio id="story-audio-2" preload="auto" loop><source src="2.mp3" type="audio/mpeg"></audio>
+    <audio id="story-audio-3" preload="auto" loop><source src="3.mp3" type="audio/mpeg"></audio>
+    <audio id="story-audio-4" preload="auto" loop><source src="4.mp3" type="audio/mpeg"></audio>
 
     <div id="app">
 
@@ -332,6 +392,24 @@
             </div>
         </div>
 
+        <div id="v-story-album" class="view">
+            <div class="story-container">
+                <div class="story-photo-frame">
+                    <img id="story-main-img" src="" alt="Memory" class="story-img">
+                </div>
+                
+                <div class="story-text-box">
+                    <div id="story-text-content" class="story-caption">
+                        Loading...
+                    </div>
+                </div>
+
+                <div class="nav-area">
+                    <button id="btn-story-next" class="primary" onclick="nextStorySlide()">Next</button>
+                </div>
+            </div>
+        </div>
+
         <div id="v-grand-finale" class="view">
             <h1 class="grand-title">Happy Birthday<br>21</h1>
         </div>
@@ -339,8 +417,7 @@
     </div>
 
     <script src="data.js"></script>
-
-    <script>
+    <script src="data1.js"></script> <script>
         /* =========================================
            DATA: DUAS & WISHES
            ========================================= */
@@ -352,18 +429,11 @@
             { ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", en: "Oh Turner of hearts, keep her heart steadfast on Your faith and filled with peace." }
         ];
 
-        /* CAPTIONS MAPPED TO PHOTO CONTENT (Context: She is in college, photos are school) */
+        /* CAPTIONS MAPPED TO PHOTO CONTENT */
         const WISHES = [
-            // pic1.jpg: School Steps -> Foundation/Past
             { text: "Looking back at where it all started... May the discipline and dreams of your school days continue to guide you to greatness in your college life and beyond." }, 
-            
-            // pic2.jpg: Reading Book -> Knowledge/Studying
             { text: "Always lost in books, even back then. As you pursue higher education now, may your thirst for knowledge write a beautiful success story for your future." }, 
-            
-            // pic3.jpg: Greenery -> Growth/Hope
             { text: "You have grown so much since this photo was taken. Like the nature around you, may your life always bloom with hope, resilience, and endless possibilities." }, 
-            
-            // pic4.jpg: Bus Window -> Journey/Dreams
             { text: "From those school bus rides to the journey you are on now... May Allah protect you, guide your steps, and lead you to the most beautiful destinations." } 
         ];
 
@@ -371,6 +441,9 @@
         let lanternReleased = false;
         let currentWishIndex = 0;
         let typingInterval = null; 
+        
+        // NEW STATE FOR STORIES
+        let currentStoryIndex = 0;
 
         /* =========================================
            AUDIO ENGINE (UI Sounds)
@@ -411,7 +484,7 @@
         function goto(id) {
             AudioSys.click();
             
-            // 1. Reset
+            // 1. Reset Videos & Views
             document.querySelectorAll('video').forEach(v => v.pause());
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             
@@ -420,45 +493,60 @@
             const personality = document.getElementById('audio-personality');
             const song1 = document.getElementById('audio-song1');
             const song2 = document.getElementById('audio-song2');
-
-            const stopAllExcept = (exception) => {
+            
+            // Helper to stop everything including story songs
+            const stopAllMain = (exception) => {
                 if(exception !== nasheed) { nasheed.pause(); nasheed.currentTime = 0; }
                 if(exception !== personality) { personality.pause(); personality.currentTime = 0; }
                 if(exception !== song1) { song1.pause(); song1.currentTime = 0; }
-                // Don't stop song2 if going to grand finale
-                if(exception !== song2 && id !== 'v-grand-finale') { song2.pause(); song2.currentTime = 0; }
+                if(exception !== song2) { song2.pause(); song2.currentTime = 0; }
             };
 
+            // 3. Logic per View
             if (id === 'v-blessings') {
-                stopAllExcept(nasheed);
+                stopAllMain(nasheed);
+                stopStoryAudio(); // Ensure story audio is off
                 if(nasheed.paused) { nasheed.volume = 0.5; nasheed.play().catch(e=>{}); }
+                renderDua(0);
             } 
             else if (id === 'v-personality') {
-                stopAllExcept(personality);
+                stopAllMain(personality);
                 if(personality.paused) { personality.currentTime = 3; personality.volume = 0.8; personality.play().catch(e=>{}); }
             } 
             else if (id === 'v-final-wishes') {
-                stopAllExcept(null); 
+                stopAllMain(null); 
+                stopStoryAudio();
                 currentWishIndex = 0;
                 renderFinalWishes();
             }
+            else if (id === 'v-story-album') {
+                // Stop previous background music
+                stopAllMain(null);
+                // Start Story Logic
+                currentStoryIndex = 0;
+                renderStorySlide();
+            }
             else if (id === 'v-grand-finale') {
-                // Keep Song 2 playing
-                song1.pause(); 
+                // Keep the last story song playing if desired, or stop it?
+                // Request said "Change songs... 4 songs". 
+                // Let's assume the last song (4.mp3) keeps playing into the finale.
+                // So we do NOT call stopStoryAudio() here.
+                stopAllMain(null);
             }
             else {
-                stopAllExcept(null);
+                // Default clean slate
+                stopAllMain(null);
+                stopStoryAudio();
             }
 
-            // 3. Page Logic
-            if(id === 'v-blessings') renderDua(0);
+            // 4. Page Specific Inits
             if(id === 'v-lanterns') initLanternPage();
 
-            // 4. Show View
+            // 5. Show View
             const target = document.getElementById(id);
             target.classList.add('active');
 
-            // 5. Play Video
+            // 6. Play Video if present
             const vid = target.querySelector('video');
             if(vid) { vid.currentTime = 0; vid.play().catch(e => {}); }
         }
@@ -516,14 +604,12 @@
         }
 
         /* =========================================
-           FINAL PAGE LOGIC (SLOW TYPING)
+           PAGE: FINAL WISHES (Before Story)
            ========================================= */
         function renderFinalWishes() {
-            // 1. Image Switching
             for(let i=1; i<=4; i++) { document.getElementById(`img-wish-${i}`).classList.remove('active-img'); }
             document.getElementById(`img-wish-${currentWishIndex+1}`).classList.add('active-img');
 
-            // 2. Slow Word-by-Word Typing Effect
             const captionBox = document.getElementById('final-caption');
             captionBox.innerHTML = ""; 
             if(typingInterval) clearInterval(typingInterval);
@@ -531,7 +617,6 @@
             const words = WISHES[currentWishIndex].text.split(" ");
             let i = 0;
             
-            // 400ms delay per word = very slow reading
             typingInterval = setInterval(() => {
                 if(i < words.length) {
                     const span = document.createElement("span");
@@ -542,20 +627,19 @@
                     i++;
                 } else {
                     clearInterval(typingInterval);
-                    // CHECK IF LAST SLIDE
+                    // On last slide, wait then go to Story Album
                     if(currentWishIndex === WISHES.length - 1) {
                         setTimeout(() => {
-                            goto('v-grand-finale');
-                        }, 3000); // Wait 3 seconds then go to new page
+                            goto('v-story-album');
+                        }, 3000); 
                     }
                 }
             }, 400); 
 
-            // 3. Audio Switching
+            // Audio for Final Wishes (Song 1 & 2)
             const s1 = document.getElementById('audio-song1');
             const s2 = document.getElementById('audio-song2');
 
-            // Index 0,1 -> Song 1. Index 2,3 -> Song 2.
             if(currentWishIndex === 0) {
                 s2.pause(); s2.currentTime = 0; 
                 if(s1.paused) { s1.currentTime = 0; s1.volume = 0.7; s1.play().catch(e=>{}); }
@@ -564,10 +648,9 @@
                 if(s2.paused) { s2.currentTime = 0; s2.volume = 0.7; s2.play().catch(e=>{}); }
             }
 
-            // 4. Button Logic
             const btn = document.getElementById('btn-next-wish');
             if(currentWishIndex === WISHES.length - 1) {
-                btn.style.display = 'none'; // Hide on last slide
+                btn.style.display = 'none'; 
             } else {
                 btn.style.display = 'inline-block';
             }
@@ -582,13 +665,95 @@
         }
 
         /* =========================================
+           PAGE: STORY ALBUM (12 Photos, 4 Songs)
+           ========================================= */
+        
+        function stopStoryAudio() {
+            for(let i=1; i<=4; i++) {
+                const audio = document.getElementById(`story-audio-${i}`);
+                if(audio) { audio.pause(); audio.currentTime = 0; }
+            }
+        }
+
+        function playStoryAudio(groupIndex) {
+            // Group Index: 0 -> Song 1, 1 -> Song 2, 2 -> Song 3, 3 -> Song 4
+            const targetId = `story-audio-${groupIndex + 1}`;
+            
+            // Pause others
+            for(let i=1; i<=4; i++) {
+                if(i !== (groupIndex + 1)) {
+                    const el = document.getElementById(`story-audio-${i}`);
+                    if(!el.paused) {
+                        // Simple fade out could be added here, but direct pause for simplicity
+                        el.pause(); 
+                    }
+                }
+            }
+
+            // Play target
+            const target = document.getElementById(targetId);
+            if(target && target.paused) {
+                target.volume = 0.8;
+                target.play().catch(e => console.log("Audio Play Error", e));
+            }
+        }
+
+        function renderStorySlide() {
+            // 1. Calculate Song Group (0, 1, 2, 3)
+            const group = Math.floor(currentStoryIndex / 3);
+            playStoryAudio(group);
+
+            // 2. Update Image
+            const img = document.getElementById('story-main-img');
+            img.classList.remove('visible'); // Hide
+            
+            // Short delay to allow fade out
+            setTimeout(() => {
+                // Images: 1.png to 12.png
+                img.src = `${currentStoryIndex + 1}.png`; 
+                img.onload = () => {
+                    img.classList.add('visible'); // Show with animation
+                };
+            }, 300);
+
+            // 3. Update Text
+            const txt = document.getElementById('story-text-content');
+            // Fade text
+            txt.style.opacity = 0;
+            setTimeout(() => {
+                txt.innerText = STORY_DATA[currentStoryIndex] || "Happy Birthday!";
+                txt.style.opacity = 1;
+                txt.style.transition = "opacity 1s ease";
+            }, 300);
+
+            // 4. Update Button State
+            const btn = document.getElementById('btn-story-next');
+            // If it's the last slide (index 11), hide button because we auto-transition? 
+            // Or keep button? The request said: "In the last photo don't show back button automatically show the Happy Birthday 21"
+            // So on slide 12, the user clicks Next -> goes to Finale. 
+            // Actually, let's keep the Next button on all slides.
+            btn.innerText = (currentStoryIndex === 11) ? "Finish" : "Next";
+        }
+
+        function nextStorySlide() {
+            AudioSys.click();
+            if (currentStoryIndex < 11) {
+                currentStoryIndex++;
+                renderStorySlide();
+            } else {
+                // End of stories -> Go to Finale
+                goto('v-grand-finale');
+            }
+        }
+
+
+        /* =========================================
            TIMELINE LOGIC
            ========================================= */
         function startJourney() {
             AudioSys.init(); AudioSys.click(); goto('v-rewind');
             const numEl = document.getElementById('num-rewind'); const detailEl = document.getElementById('detail-rewind');
             let year = 2026;
-            // SET REWIND TO 164ms (Total ~3.45s)
             const timer = setInterval(() => {
                 year--; numEl.innerText = year; AudioSys.tick();
                 if (year <= 2005) { clearInterval(timer); AudioSys.chime(); detailEl.innerText = "FEB 08"; detailEl.style.color = "var(--gold)"; setTimeout(() => goto('v-born'), 1500); }
@@ -597,14 +762,12 @@
 
         function startForward() {
             goto('v-forward');
-            // 1. PRELOAD VIDEO
             const vid = document.getElementById('vid-wishes');
             if(vid) vid.load();
 
             const numEl = document.getElementById('num-forward'); const detailEl = document.getElementById('detail-forward');
             let year = 2005; let age = 0;
             
-            // 2. SET FORWARD TO 164ms (Total ~3.45s)
             const timer = setInterval(() => {
                 year++; age++; numEl.innerText = year; detailEl.innerText = "Age: " + age; AudioSys.tick();
                 if (age >= 21) { 
@@ -612,7 +775,6 @@
                     AudioSys.chime(); 
                     detailEl.innerText = "TURNING 21"; 
                     detailEl.style.color = "var(--gold)"; 
-                    // 3. Keep Short Wait (500ms) for Audio Safety
                     setTimeout(() => goto('v-wishes'), 500); 
                 }
             }, 164);
