@@ -3,43 +3,43 @@
    ========================================= */
 
 const STORY_DATA = [
-    // --- PART 1: THE BEGINNING (2021) ---
+    // --- PART 1: THE SCHOOL DAYS (2021-2022) ---
     // Photo 1
-    "2021. The world was waking up from silence, and there you were—silent yet radiant. That first glimpse of you in the 11th-grade Biology class remains etched in my mind.",
+    "It started in 2021, right after the lockdown. I saw you for the first time in the school bus—11th standard, Biology group. You were so silent, yet so radiant.",
     
     // Photo 2
-    "2022 brought us closer, sitting opposite each other on the school bus. You never spoke to me then, but watching you laugh and play with little Aarisha became my daily joy.",
+    "By 2022, we were sitting opposite each other on the bus. We didn't speak a word, but your presence slowly became my comfort in the silence.",
     
     // Photo 3
-    "I never told you then, but your voice became a melody I waited for. Even without words between us, just your presence became my quiet comfort zone.",
+    "I used to watch you play and talk to little Aarisha. That’s how your voice became familiar to me, a sound that brought peace to my chaotic days.",
 
-    // --- PART 2: THE SCHOOL DAYS & COINCIDENCES ---
+    // --- PART 2: THE COINCIDENCES (2022-2023) ---
     // Photo 4
-    "Was it fate or just coincidence? From 2022 to 2023, exam after exam, finding you sitting on the very next bench felt like the universe was keeping us aligned.",
+    "2022 and 2023 were full of coincidences. Same exam halls, sitting on the very next bench... two school toppers always placed near each other by fate.",
     
     // Photo 5
-    "Even the evenings had a pattern. Standing in the same spot waiting for the bus, two school toppers sharing the same space, separated by silence but connected by time.",
+    "Even in the evenings, waiting for the school bus, we stood in the same area. We were close in distance, yet so far in words.",
     
     // Photo 6
-    "March 4, 2023. The last bell rang. For the first time, I gathered the courage to ask, 'Did you cry?' Your soft 'Yes, a little' broke my heart and healed it all at once.",
+    "March 4, 2023. The last day I saw you at school. You had completed your journey there, and my heart felt a strange sadness knowing I wouldn't see you daily.",
 
-    // --- PART 3: RECONNECTION & THE BOND ---
+    // --- PART 3: THE FAREWELL & HOPE ---
     // Photo 7
-    "Then came the silence. Days turned into months without seeing you. But deep down, I held onto a quiet hope—a belief that our paths were destined to cross again.",
+    "I finally broke the silence that last day. 'Did you cry?' I asked. 'Yes, a little,' you replied. It was a small moment, but it meant the world to me.",
     
     // Photo 8
-    "August 2024. The universe answered. You joined Instagram because of your college advisor, and suddenly, the distance vanished. My comfort zone returned.",
+    "After that, a long gap followed. I didn't see you for a long time, but I kept hoping that life would circle back and bring your presence to me again.",
     
     // Photo 9
-    "Those days were magic. Talking four times a day, sharing stories, feeling your care. Knowing you were praying for me made me feel protected and cherished.",
+    "August 2024. The wait ended. I found you on Instagram—you only joined because of your college advisor—and just like that, you were back in my life.",
 
-    // --- PART 4: THE PRESENT & THE WISH ---
+    // --- PART 4: THE BOND & THE HEARTBREAK ---
     // Photo 10
-    "But tides change. You say we shouldn't be close anymore, and I feel the distance growing. My heart is heavy, missing the beautiful bond we built so carefully.",
+    "You became my comfort zone all over again. The way you cared for me, the way you prayed for me... I felt truly blessed.",
     
     // Photo 11
-    "Yet, on this special day, I choose to celebrate gratitude. Thank you for being my comfort, my quiet companion, and the most beautiful chapter of my life.",
+    "We used to talk four times a day, building a bond so strong. It felt like we were making up for all the silence in the school bus.",
     
     // Photo 12
-    "No matter where life takes us, or how much distance grows between us, my prayer for you remains unchanged. Be happy, be radiant, always. Happy Birthday, Sumaiya."
+    "But now you say, 'Don't be close.' The bond is closing slowly, and I am very sad. Yet, on your birthday, I only wish you happiness, even from a distance."
 ];
