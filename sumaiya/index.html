@@ -75,6 +75,24 @@
         .gift-icon { font-size: 5rem; filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3)); animation: float 3s ease-in-out infinite; }
         .tap-hint { margin-top: 25px; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.8; animation: pulse 2s infinite; }
 
+        /* Volume Hint Style */
+        .volume-hint {
+            position: absolute;
+            bottom: 50px;
+            color: #888;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: pulse 2s infinite;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: rgba(0,0,0,0.5);
+        }
+
         /* --- 4. COUNTER --- */
         .counter-wrapper { text-align: center; }
         .counter-label { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: #666; margin-bottom: 20px; }
@@ -278,6 +296,9 @@
                 <div class="gift-icon">🎁</div>
                 <div class="tap-hint">Tap to Open</div>
             </div>
+            <div class="volume-hint">
+                <span>🔊</span> Turn Up Volume
+            </div>
         </div>
 
         <div id="v-rewind" class="view">
@@ -456,6 +477,8 @@
             { text: "You have grown so much since this photo was taken. Like the nature around you, may your life always bloom with hope, resilience, and endless possibilities." }, 
             { text: "From those school bus rides to the journey you are on now... May Allah protect you, guide your steps, and lead you to the most beautiful destinations." } 
         ];
+
+        /* NOTE: STORY_DATA IS LOADED EXTERNALLY FROM data1.js */
 
         const PERSONALITY_TEXT = "You are kind, smart, and wonderful. Happy Birthday!";
 
