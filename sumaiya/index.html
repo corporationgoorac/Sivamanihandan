@@ -457,6 +457,7 @@
     </div>
 
     <script src="data1.js"></script>
+    <script src="data.js"></script>
 
     <script>
         /* =========================================
@@ -479,8 +480,9 @@
         ];
 
         /* NOTE: STORY_DATA IS LOADED EXTERNALLY FROM data1.js */
+        /* NOTE: PERSONALITY_TEXT IS LOADED EXTERNALLY FROM data.js */
 
-        const PERSONALITY_TEXT = "You are kind, smart, and wonderful. Happy Birthday!";
+        // Removed hardcoded PERSONALITY_TEXT variable here to allow data.js to define it.
 
         let currentDuaIndex = 0;
         let lanternReleased = false;
