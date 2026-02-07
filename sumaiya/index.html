@@ -477,14 +477,16 @@
             },
             playTone(freq, type, dur, vol=0.1) {
                 if(!this.ctx) return;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-                gain.gain.setValueAtTime(vol, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
-                osc.connect(gain); gain.connect(this.ctx.destination);
-                osc.start(); osc.stop(this.ctx.currentTime + dur);
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
+                    osc.connect(gain); gain.connect(this.ctx.destination);
+                    osc.start(); osc.stop(this.ctx.currentTime + dur);
+                } catch(e) { console.warn("Tone play failed", e); }
             },
             tick() { this.playTone(600, 'sine', 0.05, 0.05); },
             click() { this.playTone(800, 'triangle', 0.1, 0.05); },
@@ -525,13 +527,13 @@
             if (id === 'v-blessings') {
                 stopAllMain(nasheed);
                 stopStoryAudio(); // Ensure story audio is off
-                if(nasheed.paused) { nasheed.volume = 0.5; nasheed.play().catch(e=>{}); }
+                if(nasheed.paused) { nasheed.volume = 0.5; nasheed.play().catch(e=>{ console.warn("Audio blocked", e); }); }
                 renderDua(0);
             } 
             else if (id === 'v-personality') {
                 stopAllMain(personality);
                 stopStoryAudio();
-                if(personality.paused) { personality.currentTime = 3; personality.volume = 0.8; personality.play().catch(e=>{}); }
+                if(personality.paused) { personality.currentTime = 3; personality.volume = 0.8; personality.play().catch(e=>{ console.warn("Audio blocked", e); }); }
             } 
             else if (id === 'v-final-wishes') {
                 stopAllMain(null); 
@@ -561,11 +563,15 @@
 
             // 5. Show View
             const target = document.getElementById(id);
-            target.classList.add('active');
-
-            // 6. Play Video if present
-            const vid = target.querySelector('video');
-            if(vid) { vid.currentTime = 0; vid.play().catch(e => {}); }
+            if(target) {
+                target.classList.add('active');
+                // 6. Play Video if present (safely)
+                const vid = target.querySelector('video');
+                if(vid) { 
+                    vid.currentTime = 0; 
+                    vid.play().catch(e => { console.warn("Video autoplay blocked", e); }); 
+                }
+            }
         }
 
         /* =========================================
@@ -765,7 +771,12 @@
            TIMELINE LOGIC
            ========================================= */
         function startJourney() {
-            AudioSys.init(); AudioSys.click(); goto('v-rewind');
+            // CRITICAL FIX: Ensure Audio Context is resumed on USER INTERACTION
+            AudioSys.init(); 
+            AudioSys.click(); 
+
+            // Proceed even if audio fails
+            goto('v-rewind');
             const numEl = document.getElementById('num-rewind'); const detailEl = document.getElementById('detail-rewind');
             let year = 2026;
             const timer = setInterval(() => {
