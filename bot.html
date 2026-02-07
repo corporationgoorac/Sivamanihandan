@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sumaiya Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --bubble-me: #371b3a;
+            --bubble-bot: #262626;
+            --text-primary: #ffffff;
+            --text-secondary: #a8a8a8;
+            --accent-color: #0095f6;
+            --danger-color: #ff3040;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { background-color: black; color: var(--text-primary); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* Header */
+        header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px); z-index: 50; border-bottom: 1px solid #1c1c1c; }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .avatar-header { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+        .header-info h4 { font-size: 16px; font-weight: 600; margin: 0; }
+        .header-info span { font-size: 12px; color: var(--text-secondary); }
+        .active-dot { width: 8px; height: 8px; background: #31a24c; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .header-right { font-size: 22px; display: flex; gap: 25px; }
+
+        /* Chat */
+        #chat-container { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 15px; display: flex; flex-direction: column; gap: 2px; }
+        
+        /* Profile */
+        .profile-hero { display: flex; flex-direction: column; align-items: center; margin: 20px 0 50px 0; text-align: center; }
+        .hero-img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #262626; margin-bottom: 10px; object-fit: cover; }
+        .hero-name { font-size: 20px; font-weight: 600; }
+        .hero-handle { color: var(--text-secondary); font-size: 14px; margin-bottom: 10px; }
+        .view-profile { background: #262626; padding: 6px 12px; border-radius: 8px; font-weight: 600; font-size: 13px; border: none; color: white; }
+
+        /* Messages */
+        .msg-row { display: flex; width: 100%; margin-bottom: 2px; position: relative; transition: transform 0.2s ease-out; }
+        .msg-row.me { justify-content: flex-end; }
+        .msg-row.bot { justify-content: flex-start; }
+        .bot-avi-small { width: 28px; height: 28px; border-radius: 50%; margin-right: 8px; align-self: flex-end; margin-bottom: 5px; object-fit: cover; }
+        .bubble-wrapper { max-width: 75%; position: relative; display: flex; flex-direction: column; }
+        .reply-context { background: rgba(255,255,255,0.1); border-left: 4px solid var(--accent-color); padding: 8px 10px; border-radius: 12px 12px 0 0; margin-bottom: -5px; font-size: 12px; color: #ccc; }
+        .bubble { padding: 12px 16px; border-radius: 22px; font-size: 15px; line-height: 1.4; color: white; position: relative; z-index: 1; word-wrap: break-word; }
+        .me .bubble { background-color: var(--bubble-me); border-bottom-right-radius: 4px; }
+        .bot .bubble { background-color: var(--bubble-bot); border-bottom-left-radius: 4px; }
+        .reaction-badge { position: absolute; bottom: -8px; background: #262626; border-radius: 10px; padding: 2px 4px; font-size: 11px; border: 2px solid black; min-width: 20px; text-align: center; }
+        .me .reaction-badge { left: -5px; } .bot .reaction-badge { right: -5px; }
+        .seen-status { font-size: 11px; color: var(--text-secondary); text-align: right; margin-top: 2px; margin-bottom: 10px; padding-right: 5px; }
+        .swipe-icon { position: absolute; left: -40px; top: 50%; transform: translateY(-50%); background: #262626; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; opacity: 0; transition: opacity 0.2s; }
+
+        /* Footer */
+        footer { background: black; padding: 0 10px 10px 10px; position: relative; z-index: 50; }
+        #reply-preview-bar { display: none; background: #1c1c1c; padding: 10px 15px; border-radius: 15px 15px 0 0; justify-content: space-between; align-items: center; margin-bottom: -10px; border-bottom: 1px solid #333; }
+        .reply-info { font-size: 13px; color: #aaa; }
+        .input-area { display: flex; align-items: center; gap: 12px; padding: 10px 5px; }
+        .cam-btn { background: #262626; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; flex-shrink: 0; }
+        .msg-box { flex: 1; background: #262626; border-radius: 22px; height: 44px; display: flex; align-items: center; padding: 0 15px; position: relative; }
+        .msg-box input { background: transparent; border: none; color: white; font-size: 15px; width: 100%; height: 100%; outline: none; padding-right: 50px; }
+        .send-txt { color: var(--accent-color); font-weight: 600; font-size: 15px; cursor: pointer; display: none; }
+        .heart-btn { font-size: 24px; padding: 5px; }
+
+        /* Context Menu */
+        #context-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 100; display: none; flex-direction: column; justify-content: flex-end; }
+        .context-menu { background: #262626; border-radius: 20px 20px 0 0; padding: 20px; animation: slideUp 0.2s ease-out; }
+        .reaction-row { display: flex; justify-content: space-between; margin-bottom: 20px; background: #1c1c1c; padding: 10px 15px; border-radius: 30px; }
+        .emoji-opt { font-size: 28px; transition: transform 0.1s; }
+        .emoji-opt:active { transform: scale(1.4); }
+        .menu-options { display: flex; flex-direction: column; gap: 10px; }
+        .menu-btn { background: #1c1c1c; padding: 15px; border-radius: 12px; text-align: center; font-size: 15px; font-weight: 500; }
+        .menu-btn.red { color: var(--danger-color); }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <i class="fas fa-arrow-left" style="font-size: 20px;"></i>
+            <div class="header-info">
+                <h4><img src="sumaiya/pic3.jpg" onerror="this.src='https://ui-avatars.com/api/?name=S'" class="avatar-header"> ☜سمية☞ </h4>
+                <span id="header-status">itz_sumai_here</span>
+            </div>
+        </div>
+        <div class="header-right"><i class="fas fa-phone-alt"></i><i class="fas fa-video"></i></div>
+    </header>
+
+    <div id="chat-container">
+        <div class="profile-hero">
+            <img src="sumaiya/pic3.jpg" onerror="this.src='https://ui-avatars.com/api/?name=S'" class="hero-img">
+            <div class="hero-name">☜سمية☞</div>
+            <div class="hero-handle">itz_sumai_here</div>
+            <button class="view-profile">View Profile</button>
+        </div>
+        <div id="msg-list"></div>
+    </div>
+
+    <footer>
+        <div id="reply-preview-bar">
+            <div class="reply-info"><b id="reply-to-name">Replying to...</b><span id="reply-to-text">Message...</span></div>
+            <i class="fas fa-times" onclick="cancelReply()" style="padding: 10px;"></i>
+        </div>
+        <div class="input-area">
+            <div class="cam-btn"><i class="fas fa-camera"></i></div>
+            <div class="msg-box">
+                <input type="text" id="main-input" placeholder="Message..." autocomplete="off">
+                <div style="position: absolute; right: 15px; color:white; display:flex; gap:10px;" id="box-icons"><i class="far fa-image"></i><i class="far fa-sticky-note"></i></div>
+                <div class="send-txt" id="send-btn">Send</div>
+            </div>
+            <div class="heart-btn" id="like-btn"><i class="far fa-heart"></i></div>
+        </div>
+    </footer>
+
+    <div id="context-overlay" onclick="closeContextMenu(event)">
+        <div class="context-menu" onclick="event.stopPropagation()">
+            <div class="reaction-row">
+                <div class="emoji-opt" onclick="addReaction('❤️')">❤️</div>
+                <div class="emoji-opt" onclick="addReaction('😂')">😂</div>
+                <div class="emoji-opt" onclick="addReaction('😮')">😮</div>
+                <div class="emoji-opt" onclick="addReaction('😢')">😢</div>
+                <div class="emoji-opt" onclick="addReaction('😡')">😡</div>
+                <div class="emoji-opt" onclick="addReaction('👍')">👍</div>
+            </div>
+            <div class="menu-options">
+                <div class="menu-btn" onclick="replyFromMenu()">Reply</div>
+                <div class="menu-btn" onclick="copyText()">Copy</div>
+                <div class="menu-btn red" id="unsend-btn" onclick="unsendMsg()">Unsend</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONSTANTS ---
+        const DB_KEY = 'insta_v12_db';
+        const QUEUE_KEY = 'insta_v12_queue';
+        const META_KEY = 'insta_v12_meta';
+        const ME = 'me';
+        const BOT = 'bot';
+
+        // --- STATE ---
+        let messages = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+        let eventQueue = JSON.parse(localStorage.getItem(QUEUE_KEY)) || [];
+        let meta = JSON.parse(localStorage.getItem(META_KEY)) || { lastBotReply: 0, lastUserMsg: 0, lastMorningDate: null, lastEveningDate: null, scheduledGreetingTime: null };
+        let replyingToId = null, selectedMsgId = null;
+
+        // --- FALLBACK OFFLINE LIBRARY ---
+        const offlineBase = {
+            greetings: { keys: ['hi', 'hello', 'hey'], ans: ["Hey! 👋", "Hello there ✨"] },
+            status: { keys: ['how are you', 'how r u'], ans: ["I'm doing great! 💖", "Just chilling, wbu?"] },
+            love: { keys: ['love you', 'miss you'], ans: ["Aww, love you too! ❤️", "Miss you more! 🥺"] }
+        };
+
+        // --- DOM ---
+        const list = document.getElementById('msg-list');
+        const input = document.getElementById('main-input');
+        const sendBtn = document.getElementById('send-btn');
+        const boxIcons = document.getElementById('box-icons');
+        const likeBtn = document.getElementById('like-btn');
+        const replyBar = document.getElementById('reply-preview-bar');
+        const contextOverlay = document.getElementById('context-overlay');
+        const unsendBtn = document.getElementById('unsend-btn');
+        const headerStatus = document.getElementById('header-status');
+
+        // --- RENDER & INIT ---
+        function render() {
+            list.innerHTML = '';
+            let lastSender = null;
+            messages.forEach((msg, idx) => {
+                const isMe = msg.sender === ME;
+                const row = document.createElement('div');
+                row.className = `msg-row ${isMe ? 'me' : 'bot'}`;
+                row.id = `msg-${msg.id}`;
+                attachSwipeListeners(row, msg); attachLongPressListeners(row, msg);
+
+                const showAvi = !isMe && lastSender !== BOT;
+                const aviHTML = !isMe ? `<img src="sumaiya/pic3.jpg" onerror="this.src='https://ui-avatars.com/api/?name=S'" class="bot-avi-small" style="opacity:${showAvi?1:0}">` : '';
+                
+                let replyContextHTML = msg.replyTo ? (messages.find(m=>m.id===msg.replyTo) ? `<div class="reply-context"><b>${messages.find(m=>m.id===msg.replyTo).sender===ME?'You':'Sumaiya'}</b><br>${messages.find(m=>m.id===msg.replyTo).text.substring(0,25)}...</div>` : `<div class="reply-context"><i>Message unsent</i></div>`) : '';
+                let reactionsHTML = msg.reaction ? `<div class="reaction-badge">${msg.reaction}</div>` : '';
+
+                row.innerHTML = `<div class="swipe-icon"><i class="fas fa-reply"></i></div>${aviHTML}<div class="bubble-wrapper">${replyContextHTML}<div class="bubble" ondblclick="quickLike('${msg.id}')">${msg.text}</div>${reactionsHTML}</div>`;
+                list.appendChild(row);
+
+                if (isMe && msg.seenTime) {
+                    const newer = messages.slice(idx+1).filter(m=>m.sender===ME);
+                    if (newer.length===0) { const d=document.createElement('div'); d.className='seen-status'; d.innerText=formatSeen(msg.seenTime); list.appendChild(d); }
+                }
+                lastSender = msg.sender;
+            });
+            const c = document.getElementById('chat-container'); c.scrollTop = c.scrollHeight;
+        }
+
+        function addMessage(text, sender) {
+            messages.push({ id: Date.now().toString(36)+Math.random(), text: text, sender: sender, timestamp: Date.now(), seenTime: sender===ME?null:Date.now(), reaction: null, replyTo: replyingToId });
+            if(sender===BOT){ meta.lastBotReply=Date.now(); save(); updateHeaderStatus(); }
+            if(sender===ME){ meta.lastUserMsg=Date.now(); scheduleBot(text); }
+            cancelReply(); save(); render();
+        }
+
+        // --- ONLINE INTELLIGENCE ENGINE ---
+        async function fetchOnlineReply(prompt) {
+            // Pollinations AI (Free, No Key)
+            const persona = "You are Sumaiya, a casual girl texting on Instagram. Keep it short, use lowercase mostly, use emojis like ✨❤️🥺. Don't be robotic. Reply to:";
+            try {
+                const url = `https://text.pollinations.ai/${encodeURIComponent(persona + prompt)}`;
+                const response = await fetch(url);
+                const text = await response.text();
+                return text;
+            } catch (e) {
+                return null; // Fallback to offline
+            }
+        }
+
+        async function scheduleBot(userText) {
+            const txt = userText.toLowerCase();
+            const now = Date.now();
+            
+            // 1. Priority Triggers (Hardcoded Logic Override)
+            const isNight = txt.includes("good night") || txt.includes("gn");
+            const isAfternoon = txt.includes("good afternoon");
+            const isBye = txt.includes("bye") || txt.includes("see ya");
+
+            let replyTxt = null;
+            let useOnline = true;
+
+            if (isNight) { replyTxt = "Good night 🌉, sweet dreams!"; useOnline = false; }
+            else if (isAfternoon) { replyTxt = "Good afternoon! ☀️"; useOnline = false; }
+            else if (isBye) { replyTxt = "Bye! 👋 See you soon."; useOnline = false; }
+
+            // 2. Fetch Online (If no trigger)
+            if (useOnline) {
+                // Determine timing before fetching
+                const isOnline = (now - meta.lastBotReply) < 2*60*1000;
+                let seenDelay = isOnline ? rand(2000, 6000) : rand(10000, 40000);
+                
+                // Queue "Seen"
+                eventQueue.push({ type: 'seen', time: now + seenDelay, done: false });
+                save();
+
+                // Fetch AI (Async)
+                const onlineRes = await fetchOnlineReply(userText);
+                
+                // Fallback if offline
+                if (!onlineRes) {
+                    for (const cat in offlineBase) {
+                        if (offlineBase[cat].keys.some(k => txt.includes(k))) replyTxt = offlineBase[cat].ans[0];
+                    }
+                    if(!replyTxt) replyTxt = "Oh really? Tell me more!";
+                } else {
+                    replyTxt = onlineRes;
+                }
+
+                // Schedule Reply
+                eventQueue.push({ type: 'reply', text: replyTxt, time: now + seenDelay + rand(3000, 8000), done: false });
+                save();
+            } else {
+                // Logic for hardcoded triggers (Longer delays for gn/afternoon)
+                let seenDelay = (isNight || isAfternoon) ? rand(60*60*1000, 90*60*1000) : rand(2000, 5000);
+                eventQueue.push({ type: 'seen', time: now + seenDelay, done: false });
+                if(isBye || isNight) eventQueue.push({ type: 'like_last', time: now + seenDelay + 1000, done: false });
+                eventQueue.push({ type: 'reply', text: replyTxt, time: now + seenDelay + rand(3000, 6000), done: false });
+                save();
+            }
+        }
+
+        // --- QUEUE & ROUTINE ---
+        function processQueue() {
+            const now = Date.now();
+            let dirty = false;
+            updateHeaderStatus();
+            eventQueue.forEach(evt => {
+                if (!evt.done && now >= evt.time) {
+                    if(evt.type==='seen') messages.forEach(m=>{if(m.sender===ME && !m.seenTime) m.seenTime=now});
+                    else if(evt.type==='like_last') { const m=messages.filter(msg=>msg.sender===ME); if(m.length) m[m.length-1].reaction='❤️'; }
+                    else if(evt.type==='reply') addMessage(evt.text, BOT);
+                    evt.done = true; dirty = true;
+                }
+            });
+            if (dirty) { eventQueue = eventQueue.filter(e => !e.done); save(); render(); }
+        }
+
+        function checkDailyRoutine() {
+            const now = new Date(); const h = now.getHours(); const d = now.toLocaleDateString();
+            if (h >= 6 && h < 12 && meta.lastMorningDate !== d) triggerDaily(d, 'morning', ["Good morning 🌄", "Morning! ☀️"], 2, 45);
+            if (h >= 18 && h < 22 && meta.lastEveningDate !== d) triggerDaily(d, 'evening', ["Good evening 🌆", "Evening! ✨"], 5, 30);
+        }
+        function triggerDaily(date, type, msgs, minM, maxM) {
+            if (!meta.scheduledGreetingTime) { meta.scheduledGreetingTime = Date.now() + rand(minM*60000, maxM*60000); save(); }
+            else if (Date.now() >= meta.scheduledGreetingTime) {
+                eventQueue.push({ type: 'reply', text: msgs[Math.floor(Math.random()*msgs.length)], time: Date.now()+3000, done: false });
+                if(type==='morning') meta.lastMorningDate=date; else meta.lastEveningDate=date;
+                meta.scheduledGreetingTime=null; save();
+            }
+        }
+
+        // --- UTILS ---
+        function save() { localStorage.setItem(DB_KEY, JSON.stringify(messages)); localStorage.setItem(QUEUE_KEY, JSON.stringify(eventQueue)); localStorage.setItem(META_KEY, JSON.stringify(meta)); }
+        function rand(min, max) { return Math.floor(Math.random() * (max - min + 1) + min); }
+        function formatSeen(ts) { const m = Math.floor((Date.now()-ts)/60000); return m<1?'Seen just now':m<60?`Seen ${m}m ago`:`Seen ${Math.floor(m/60)}h ago`; }
+        function updateHeaderStatus() {
+            const t = Date.now()-meta.lastBotReply; const typing = eventQueue.some(e=>e.type==='reply'&&!e.done&&e.time-Date.now()<10000);
+            headerStatus.innerHTML = typing ? "<span style='color:#0095f6'>Typing...</span>" : (t<60000 ? "<span class='active-dot'></span>Active now" : (t<3600000?`Active ${Math.floor(t/60000)}m ago`:"itz_sumai_here"));
+        }
+
+        // --- INPUT & GESTURES ---
+        function attachSwipeListeners(el, msg) {
+            let s=0, c=0; el.addEventListener('touchstart',e=>s=e.touches[0].clientX,{passive:true});
+            el.addEventListener('touchmove',e=>{c=e.touches[0].clientX; if(c-s>0&&c-s<150){el.style.transform=`translateX(${c-s}px)`; el.querySelector('.swipe-icon').style.opacity=Math.min((c-s)/50,1);}},{passive:true});
+            el.addEventListener('touchend',()=>{if(c-s>70)initiateReply(msg); el.style.transform='translateX(0)'; el.querySelector('.swipe-icon').style.opacity=0;});
+        }
+        function attachLongPressListeners(el, msg) { let t; el.addEventListener('touchstart',()=>t=setTimeout(()=>openCM(msg),500)); el.addEventListener('touchend',()=>clearTimeout(t)); el.addEventListener('touchmove',()=>clearTimeout(t)); el.addEventListener('mousedown',()=>t=setTimeout(()=>openCM(msg),500)); el.addEventListener('mouseup',()=>clearTimeout(t)); }
+        function openCM(msg){selectedMsgId=msg.id; contextOverlay.style.display='flex'; unsendBtn.style.display=msg.sender===ME?'block':'none'; navigator.vibrate?.(50);}
+        function closeContextMenu(e){if(e&&e.target.id!=='context-overlay')return; contextOverlay.style.display='none'; selectedMsgId=null;}
+        function addReaction(e){const m=messages.find(x=>x.id===selectedMsgId); if(m){m.reaction=m.reaction===e?null:e; save(); render();} closeContextMenu();}
+        function quickLike(id){const m=messages.find(x=>x.id===id); if(m){m.reaction='❤️'; save(); render();}}
+        function unsendMsg(){messages=messages.filter(x=>x.id!==selectedMsgId); save(); render(); closeContextMenu();}
+        function copyText(){const m=messages.find(x=>x.id===selectedMsgId); if(m)navigator.clipboard.writeText(m.text); closeContextMenu();}
+        function replyFromMenu(){const m=messages.find(x=>x.id===selectedMsgId); if(m)initiateReply(m); closeContextMenu();}
+        function initiateReply(msg){replyingToId=msg.id; replyBar.style.display='flex'; document.getElementById('reply-to-text').innerText=msg.text; input.focus();}
+        function cancelReply(){replyingToId=null; replyBar.style.display='none';}
+
+        input.addEventListener('input',()=>{const h=input.value.trim().length>0; sendBtn.style.display=h?'block':'none'; boxIcons.style.display=h?'none':'flex'; likeBtn.style.display=h?'none':'block';});
+        sendBtn.addEventListener('click',()=>{if(input.value.trim()){addMessage(input.value.trim(),ME); input.value=''; sendBtn.style.display='none'; boxIcons.style.display='flex'; likeBtn.style.display='block';}});
+        likeBtn.addEventListener('click',()=>addMessage('❤️',ME));
+        input.addEventListener('keypress',e=>{if(e.key==='Enter')sendBtn.click();});
+
+        render(); updateHeaderStatus(); checkDailyRoutine();
+        setInterval(processQueue, 1000); setInterval(()=>{updateHeaderStatus(); checkDailyRoutine();}, 60000);
+    </script>
+</body>
+</html>
