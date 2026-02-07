@@ -70,18 +70,17 @@
         }
 
         /* --- 3. GIFT BOX (Start Button) --- */
+        /* Fixed z-index to ensure tapping always works */
         .gift-wrapper { 
             cursor: pointer; 
             text-align: center; 
-            position: relative; 
-            z-index: 100; /* Ensures tap works on mobile */
-            padding: 40px;
-            width: 100%;
-            height: 100%;
+            position: absolute;
+            inset: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            z-index: 999; 
         }
         .gift-icon { font-size: 5rem; filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.4)); animation: float 3s ease-in-out infinite; }
         .tap-hint { margin-top: 25px; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.8; animation: pulse 2s infinite; }
@@ -192,6 +191,7 @@
             perspective: 1200px;
         }
         
+        /* NEW: 3D Animation for Story Images */
         .story-img {
             max-width: 90%;
             max-height: 55vh;
@@ -469,10 +469,10 @@
         let currentWishIndex = 0;
         let currentStoryIndex = 0;
         let typingInterval = null; 
-        let storyTimeout = null; 
+        let storyTimeout = null; // To prevent phantom transitions
 
         /* =========================================
-           AUDIO ENGINE
+           AUDIO ENGINE (UI Sounds)
            ========================================= */
         const AudioSys = {
             ctx: null,
@@ -510,14 +510,14 @@
         function goto(id) {
             AudioSys.click();
             
-            // 1. Clear Timeouts
+            // 1. Clear Phantom Timeouts (Fixes ghost transitions)
             if(storyTimeout) { clearTimeout(storyTimeout); storyTimeout = null; }
 
-            // 2. Pause/Reset Elements
+            // 2. Reset Videos & Views
             document.querySelectorAll('video').forEach(v => v.pause());
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             
-            // 3. STRICT Audio Cleanup (Stop everything first)
+            // 3. Audio Control Logic (Strict Cleanup)
             const nasheed = document.getElementById('audio-nasheed');
             const personality = document.getElementById('audio-personality');
             const song1 = document.getElementById('audio-song1');
@@ -530,7 +530,7 @@
                 if(exception !== song2) { song2.pause(); song2.currentTime = 0; }
             };
 
-            // 4. View Logic & Asset Playing
+            // 4. View Specific Logic
             if (id === 'v-blessings') {
                 stopAllMain(nasheed);
                 stopStoryAudio();
@@ -553,7 +553,7 @@
                 renderStorySlide();
             }
             else if (id === 'v-grand-finale') {
-                // Keep audio playing, just show finale
+                // Keep the last story song playing
                 stopAllMain(null);
             }
             else {
@@ -561,10 +561,10 @@
                 stopStoryAudio();
             }
 
-            // 5. Init Lanterns
+            // 5. Initialize Lanterns if needed
             if(id === 'v-lanterns') initLanternPage();
 
-            // 6. Show View
+            // 6. Activate View
             const target = document.getElementById(id);
             target.classList.add('active');
 
@@ -572,8 +572,7 @@
             const vid = target.querySelector('video');
             if(vid) { 
                 vid.currentTime = 0; 
-                // We mute initially to allow autoplay on strict browsers, 
-                // but since we rely on audio files for sound, this is fine.
+                // Mute initially to allow autoplay on strict browsers
                 vid.play().catch(e => console.log("Video Play Error:", e)); 
             }
         }
@@ -669,6 +668,7 @@
                 if(s2.paused) { s2.currentTime = 0; s2.volume = 0.7; s2.play().catch(e=>{}); }
             }
 
+            // Update Button Text Logic
             const btn = document.getElementById('btn-next-wish');
             if (currentWishIndex === WISHES.length - 1) {
                 btn.innerText = "Open Memories >";
@@ -683,6 +683,7 @@
                 currentWishIndex++;
                 renderFinalWishes();
             } else {
+                // Navigate to Story Album on last click
                 goto('v-story-album');
             }
         }
@@ -713,20 +714,19 @@
         }
 
         function renderStorySlide() {
-            // Audio Group (0, 1, 2, 3)
             const group = Math.floor(currentStoryIndex / 3);
             playStoryAudio(group);
 
-            // Image Animation
             const img = document.getElementById('story-main-img');
             img.classList.remove('active-story-img');
-            void img.offsetWidth; // Force Reflow
+            
+            // Trigger Reflow to restart animation
+            void img.offsetWidth;
+
             img.src = `${currentStoryIndex + 1}.png`; 
             img.onload = () => { img.classList.add('active-story-img'); };
-            // Fallback
             setTimeout(() => img.classList.add('active-story-img'), 100);
 
-            // Text
             const txt = document.getElementById('story-text-content');
             txt.style.opacity = 0;
             setTimeout(() => {
@@ -735,12 +735,12 @@
                 txt.style.transition = "opacity 1s ease";
             }, 300);
 
-            // LAST PHOTO LOGIC (Index 11 -> 12th Photo)
+            // LAST PHOTO LOGIC (Index 11)
             const navArea = document.getElementById('nav-story-area');
             if (currentStoryIndex === 11) {
-                navArea.style.display = 'none'; // Hide "Next" button
+                navArea.style.display = 'none'; // Hide Button
                 
-                // Auto Transition after 6 seconds
+                // Auto transition after 6 seconds
                 storyTimeout = setTimeout(() => {
                     goto('v-grand-finale');
                 }, 6000); 
@@ -761,10 +761,9 @@
            TIMELINE & START LOGIC
            ========================================= */
         function startJourney() {
-            // 1. Change View IMMEDIATELLY so interaction works
+            // Fix: Change view first, then try audio
+            // This ensures tapping ALWAYS works even if audio is blocked
             goto('v-rewind');
-            
-            // 2. Try Init Audio (might fail on some browsers if gesture is lost, but view changes)
             AudioSys.init(); 
 
             const numEl = document.getElementById('num-rewind'); 
@@ -785,7 +784,9 @@
 
         function startForward() {
             goto('v-forward');
-            
+            const vid = document.getElementById('vid-wishes');
+            if(vid) vid.load();
+
             const numEl = document.getElementById('num-forward'); 
             const detailEl = document.getElementById('detail-forward');
             let year = 2005; let age = 0;
