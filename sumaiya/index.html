@@ -455,20 +455,29 @@
             { text: "From those school bus rides to the journey you are on now... May Allah protect you, guide your steps, and lead you to the most beautiful destinations." } 
         ];
 
-        /* CAPTIONS FOR STORY ALBUM (12 PHOTOS) */
-        const STORY_CAPTIONS = [
-            "Every smile of yours tells a story of kindness.",
-            "A heart so pure, a soul so rare.",
-            "May your journey be as beautiful as your dreams.",
-            "Shining brighter with every passing year.",
-            "Your laughter is the sweetest melody.",
-            "Courage and grace define who you are.",
-            "Capturing moments, creating memories.",
-            "May you always find reasons to smile.",
-            "Walking towards a future full of light.",
-            "Blessings follow you wherever you go.",
-            "Twenty-one years of being wonderful.",
-            "And here begins the best chapter of your life."
+        /* =========================================
+           DATA: THE PHOTO STORY (From data1.js)
+           ========================================= */
+        const STORY_DATA = [
+            // Photos 1-3 (Plays 1.mp3)
+            "Do you remember this moment? It feels like just yesterday we were laughing about nothing, yet it meant everything.",
+            "Small steps, big dreams. Looking at this photo, I see the determination that has always defined you.",
+            "Some memories never fade. This specific day had a magic to it that I hope you carry with you forever.",
+
+            // Photos 4-6 (Plays 2.mp3)
+            "Through the ups and downs, your smile remained constant. It is the light that guides everyone around you.",
+            "Growing up isn't easy, but you made it look graceful. Each chapter of your life has added a new layer of beauty.",
+            "Captured in time. I love this picture because it shows the pure, unfiltered joy that lives inside your heart.",
+
+            // Photos 7-9 (Plays 3.mp3)
+            "The world is big, but you are ready for it. This moment captured your courage to face whatever comes next.",
+            "Friendship, love, and laughter. These are the ingredients of your life, and this photo is the perfect recipe.",
+            "Quiet moments speak the loudest. In the silence of this picture, I hear the strength of your character.",
+
+            // Photos 10-12 (Plays 4.mp3)
+            "Almost there. Looking back at how far you have come, I am overwhelmingly proud of the person you are.",
+            "Every picture tells a story, but this one is my favorite. It captures the essence of the wonderful soul you are.",
+            "And here we are. Standing on the edge of a new beginning. The past was beautiful, but your future will be legendary."
         ];
 
         const PERSONALITY_TEXT = "You are kind, smart, and wonderful. Happy Birthday!";
@@ -712,16 +721,13 @@
         function playStoryAudio(groupIndex) {
             // Group Index: 0 -> Song 1, 1 -> Song 2, 2 -> Song 3, 3 -> Song 4
             // Since we have 12 photos, change song every 3 photos.
-            // 0,1,2 -> Song 1
-            // 3,4,5 -> Song 2
-            // 6,7,8 -> Song 3
-            // 9,10,11 -> Song 4
-            
-            const targetId = `story-audio-${groupIndex + 1}`;
+            // Safe guard: Max audio is 4. If more photos added (e.g. 13th), keep playing song 4.
+            const safeGroupIndex = Math.min(groupIndex, 3); 
+            const targetId = `story-audio-${safeGroupIndex + 1}`;
             
             // Pause others
             for(let i=1; i<=4; i++) {
-                if(i !== (groupIndex + 1)) {
+                if(i !== (safeGroupIndex + 1)) {
                     const el = document.getElementById(`story-audio-${i}`);
                     if(!el.paused) { el.pause(); }
                 }
@@ -745,7 +751,7 @@
             img.classList.remove('visible'); // Start exit/reset
             
             setTimeout(() => {
-                // Images: 1.png to 12.png
+                // Images: 1.png to 12.png (or 13.png if user adds it)
                 img.src = `${currentStoryIndex + 1}.png`; 
                 img.onload = () => {
                     img.classList.add('visible'); // Trigger Entrance
@@ -759,14 +765,15 @@
             txtBox.classList.remove('show-text');
             
             setTimeout(() => {
-                txtContent.innerText = STORY_CAPTIONS[currentStoryIndex] || "Happy Birthday!";
+                txtContent.innerText = STORY_DATA[currentStoryIndex] || "Happy Birthday!";
                 txtBox.classList.add('show-text');
             }, 600);
 
-            // 4. Update Button Logic
+            // 4. Update Button Logic - DYNAMIC LAST PHOTO CHECK
             const btn = document.getElementById('btn-story-next');
-            if (currentStoryIndex === 11) {
-                // LAST SLIDE (12th Photo)
+            // Check if this is the last item in the list
+            if (currentStoryIndex === STORY_DATA.length - 1) {
+                // LAST SLIDE
                 btn.style.display = 'none'; // Hide Button
                 
                 // Auto-Transition after 6 seconds
@@ -781,11 +788,11 @@
 
         function nextStorySlide() {
             AudioSys.click();
-            if (currentStoryIndex < 11) {
+            if (currentStoryIndex < STORY_DATA.length - 1) {
                 currentStoryIndex++;
                 renderStorySlide();
             } 
-            // Note: Button is hidden on index 11, so this won't be clicked
+            // Note: Button is hidden on last index, so this won't be clicked
         }
 
 
