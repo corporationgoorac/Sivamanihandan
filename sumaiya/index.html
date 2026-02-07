@@ -19,6 +19,7 @@
             --gold-dim: #8a7030;
             --accent: #ff4081;
             --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --slow-ease: cubic-bezier(0.19, 1, 0.22, 1); /* New Premium Ease */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -162,7 +163,7 @@
             animation: floatImage 3s ease-in-out infinite alternate;
         }
 
-        /* --- 10. STORY ALBUM STYLES (NEW) --- */
+        /* --- 10. STORY ALBUM STYLES (NEW ANIMATIONS) --- */
         .story-container {
             width: 100%;
             height: 100%;
@@ -179,45 +180,55 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            perspective: 1000px;
+            perspective: 1200px; /* For 3D Effect */
         }
         
-        /* NEW ANIMATION CLASS FOR PHOTOS */
+        /* NEW PHOTO ANIMATION: 3D Flip & Blur Entrance */
         .story-img {
             max-width: 90%;
-            max-height: 50vh;
+            max-height: 55vh;
             border-radius: 12px;
-            border: 2px solid var(--gold);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            border: 1px solid var(--gold-dim);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            
+            /* Initial State */
             opacity: 0;
-            transform: scale(0.8) rotate(-5deg);
-            transition: all 0.5s ease;
-        }
-        
-        .story-img.enter-photo {
-            opacity: 1;
-            animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform: rotateX(15deg) translateY(40px) scale(0.9);
+            filter: blur(10px);
+            transition: all 1.2s var(--slow-ease);
         }
 
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.5) translateY(50px) rotate(-10deg); }
-            100% { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); }
+        .story-img.visible {
+            opacity: 1;
+            transform: rotateX(0deg) translateY(0) scale(1);
+            filter: blur(0px);
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.15);
         }
 
         .story-text-box {
             width: 90%;
-            min-height: 120px;
-            background: rgba(255,255,255,0.05);
+            min-height: 110px;
+            background: linear-gradient(to right, rgba(255,255,255,0.05), transparent);
             border-left: 3px solid var(--gold);
             padding: 20px;
-            margin: 20px 0;
+            margin: 15px 0;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             border-radius: 0 10px 10px 0;
             backdrop-filter: blur(5px);
+            
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 1s var(--ease);
         }
+
+        .story-text-box.show-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
         .story-caption {
             font-family: 'Playfair Display', serif;
             font-size: 1rem;
@@ -406,7 +417,7 @@
                     <img id="story-main-img" src="" alt="Memory" class="story-img">
                 </div>
                 
-                <div class="story-text-box">
+                <div id="story-text-container" class="story-text-box">
                     <div id="story-text-content" class="story-caption">
                         Loading...
                     </div>
@@ -424,12 +435,9 @@
 
     </div>
 
-    <script src="data.js"></script>
-    <script src="data1.js"></script> 
-    
     <script>
         /* =========================================
-           DATA: DUAS & WISHES
+           DATA CONFIGURATION
            ========================================= */
         const DUAS = [
             { ar: "بَارَكَ اللَّهُ فِي عُمْرِكِ", en: "May Allah bless your life with barakah, light, and endless happiness." },
@@ -439,7 +447,7 @@
             { ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", en: "Oh Turner of hearts, keep her heart steadfast on Your faith and filled with peace." }
         ];
 
-        /* CAPTIONS MAPPED TO PHOTO CONTENT (FIRST ALBUM) */
+        /* CAPTIONS MAPPED TO PHOTO CONTENT */
         const WISHES = [
             { text: "Looking back at where it all started... May the discipline and dreams of your school days continue to guide you to greatness in your college life and beyond." }, 
             { text: "Always lost in books, even back then. As you pursue higher education now, may your thirst for knowledge write a beautiful success story for your future." }, 
@@ -447,14 +455,23 @@
             { text: "From those school bus rides to the journey you are on now... May Allah protect you, guide your steps, and lead you to the most beautiful destinations." } 
         ];
 
-        /* STORY CAPTIONS (SECOND ALBUM - 12 PHOTOS) 
-           Ensure STORY_DATA is defined. If not in data.js, define here. */
-        const STORY_DATA = [
-            "Memory 1: The Beginning", "Memory 2: Laughter", "Memory 3: Joy",
-            "Memory 4: Growth", "Memory 5: Adventure", "Memory 6: Friendship",
-            "Memory 7: Dreams", "Memory 8: Hope", "Memory 9: Light",
-            "Memory 10: Grace", "Memory 11: Strength", "Memory 12: The Future"
+        /* CAPTIONS FOR STORY ALBUM (12 PHOTOS) */
+        const STORY_CAPTIONS = [
+            "Every smile of yours tells a story of kindness.",
+            "A heart so pure, a soul so rare.",
+            "May your journey be as beautiful as your dreams.",
+            "Shining brighter with every passing year.",
+            "Your laughter is the sweetest melody.",
+            "Courage and grace define who you are.",
+            "Capturing moments, creating memories.",
+            "May you always find reasons to smile.",
+            "Walking towards a future full of light.",
+            "Blessings follow you wherever you go.",
+            "Twenty-one years of being wonderful.",
+            "And here begins the best chapter of your life."
         ];
+
+        const PERSONALITY_TEXT = "You are kind, smart, and wonderful. Happy Birthday!";
 
         let currentDuaIndex = 0;
         let lanternReleased = false;
@@ -477,16 +494,14 @@
             },
             playTone(freq, type, dur, vol=0.1) {
                 if(!this.ctx) return;
-                try {
-                    const osc = this.ctx.createOscillator();
-                    const gain = this.ctx.createGain();
-                    osc.type = type;
-                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-                    gain.gain.setValueAtTime(vol, this.ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
-                    osc.connect(gain); gain.connect(this.ctx.destination);
-                    osc.start(); osc.stop(this.ctx.currentTime + dur);
-                } catch(e) { console.warn("Tone play failed", e); }
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + dur);
             },
             tick() { this.playTone(600, 'sine', 0.05, 0.05); },
             click() { this.playTone(800, 'triangle', 0.1, 0.05); },
@@ -527,13 +542,12 @@
             if (id === 'v-blessings') {
                 stopAllMain(nasheed);
                 stopStoryAudio(); // Ensure story audio is off
-                if(nasheed.paused) { nasheed.volume = 0.5; nasheed.play().catch(e=>{ console.warn("Audio blocked", e); }); }
+                if(nasheed.paused) { nasheed.volume = 0.5; nasheed.play().catch(e=>{}); }
                 renderDua(0);
             } 
             else if (id === 'v-personality') {
                 stopAllMain(personality);
-                stopStoryAudio();
-                if(personality.paused) { personality.currentTime = 3; personality.volume = 0.8; personality.play().catch(e=>{ console.warn("Audio blocked", e); }); }
+                if(personality.paused) { personality.currentTime = 3; personality.volume = 0.8; personality.play().catch(e=>{}); }
             } 
             else if (id === 'v-final-wishes') {
                 stopAllMain(null); 
@@ -549,7 +563,9 @@
                 renderStorySlide();
             }
             else if (id === 'v-grand-finale') {
-                // Keep the last story song playing
+                // Stop everything except the last song playing from story (optional, but clean is better)
+                // If you want last song to continue, comment out stopStoryAudio()
+                // stopStoryAudio(); 
                 stopAllMain(null);
             }
             else {
@@ -563,15 +579,11 @@
 
             // 5. Show View
             const target = document.getElementById(id);
-            if(target) {
-                target.classList.add('active');
-                // 6. Play Video if present (safely)
-                const vid = target.querySelector('video');
-                if(vid) { 
-                    vid.currentTime = 0; 
-                    vid.play().catch(e => { console.warn("Video autoplay blocked", e); }); 
-                }
-            }
+            target.classList.add('active');
+
+            // 6. Play Video if present
+            const vid = target.querySelector('video');
+            if(vid) { vid.currentTime = 0; vid.play().catch(e => {}); }
         }
 
         /* =========================================
@@ -627,7 +639,7 @@
         }
 
         /* =========================================
-           PAGE: FINAL WISHES (First Album - 4 Photos)
+           PAGE: FINAL WISHES (Before Story)
            ========================================= */
         function renderFinalWishes() {
             for(let i=1; i<=4; i++) { document.getElementById(`img-wish-${i}`).classList.remove('active-img'); }
@@ -651,7 +663,7 @@
                 } else {
                     clearInterval(typingInterval);
                 }
-            }, 100); 
+            }, 300); // Slightly faster than before (300ms)
 
             // Audio for Final Wishes (Song 1 & 2)
             const s1 = document.getElementById('audio-song1');
@@ -665,11 +677,11 @@
                 if(s2.paused) { s2.currentTime = 0; s2.volume = 0.7; s2.play().catch(e=>{}); }
             }
 
-            // BUTTON LOGIC FOR FIRST ALBUM
+            // Update button Text
             const btn = document.getElementById('btn-next-wish');
             btn.style.display = 'inline-block';
-            if (currentWishIndex === 3) {
-                btn.innerText = "Open Memories";
+            if(currentWishIndex === WISHES.length - 1) {
+                btn.innerText = "Continue Journey"; // Indicates moving to next section
             } else {
                 btn.innerText = "Next Wish";
             }
@@ -681,7 +693,7 @@
                 currentWishIndex++;
                 renderFinalWishes();
             } else {
-                // If on last slide (index 3), go to next album
+                // Move to Story Album
                 goto('v-story-album');
             }
         }
@@ -699,6 +711,12 @@
 
         function playStoryAudio(groupIndex) {
             // Group Index: 0 -> Song 1, 1 -> Song 2, 2 -> Song 3, 3 -> Song 4
+            // Since we have 12 photos, change song every 3 photos.
+            // 0,1,2 -> Song 1
+            // 3,4,5 -> Song 2
+            // 6,7,8 -> Song 3
+            // 9,10,11 -> Song 4
+            
             const targetId = `story-audio-${groupIndex + 1}`;
             
             // Pause others
@@ -724,37 +742,40 @@
 
             // 2. Update Image with NEW Animation
             const img = document.getElementById('story-main-img');
-            img.classList.remove('enter-photo'); 
-            void img.offsetWidth; // Trigger reflow
-            img.src = `${currentStoryIndex + 1}.png`; 
-            img.onload = () => {
-                img.classList.add('enter-photo'); 
-            };
-
-            // 3. Update Text
-            const txt = document.getElementById('story-text-content');
-            txt.style.opacity = 0;
-            setTimeout(() => {
-                txt.innerText = STORY_DATA[currentStoryIndex] || "Happy Birthday!";
-                txt.style.opacity = 1;
-                txt.style.transition = "opacity 1s ease";
-            }, 300);
-
-            // 4. Button & Auto-Transition Logic
-            const btn = document.getElementById('btn-story-next');
+            img.classList.remove('visible'); // Start exit/reset
             
+            setTimeout(() => {
+                // Images: 1.png to 12.png
+                img.src = `${currentStoryIndex + 1}.png`; 
+                img.onload = () => {
+                    img.classList.add('visible'); // Trigger Entrance
+                };
+            }, 500);
+
+            // 3. Update Text with Animation
+            const txtBox = document.getElementById('story-text-container');
+            const txtContent = document.getElementById('story-text-content');
+            
+            txtBox.classList.remove('show-text');
+            
+            setTimeout(() => {
+                txtContent.innerText = STORY_CAPTIONS[currentStoryIndex] || "Happy Birthday!";
+                txtBox.classList.add('show-text');
+            }, 600);
+
+            // 4. Update Button Logic
+            const btn = document.getElementById('btn-story-next');
             if (currentStoryIndex === 11) {
-                // LAST PHOTO (Index 11) - HIDE BUTTON
-                btn.style.display = 'none';
+                // LAST SLIDE (12th Photo)
+                btn.style.display = 'none'; // Hide Button
                 
-                // Automatically go to Finale after 6 seconds
+                // Auto-Transition after 6 seconds
                 setTimeout(() => {
                     goto('v-grand-finale');
                 }, 6000);
             } else {
-                // Normal slide
                 btn.style.display = 'inline-block';
-                btn.innerText = "Next";
+                btn.innerText = "Next Memory";
             }
         }
 
@@ -763,7 +784,8 @@
             if (currentStoryIndex < 11) {
                 currentStoryIndex++;
                 renderStorySlide();
-            }
+            } 
+            // Note: Button is hidden on index 11, so this won't be clicked
         }
 
 
@@ -771,12 +793,7 @@
            TIMELINE LOGIC
            ========================================= */
         function startJourney() {
-            // CRITICAL FIX: Ensure Audio Context is resumed on USER INTERACTION
-            AudioSys.init(); 
-            AudioSys.click(); 
-
-            // Proceed even if audio fails
-            goto('v-rewind');
+            AudioSys.init(); AudioSys.click(); goto('v-rewind');
             const numEl = document.getElementById('num-rewind'); const detailEl = document.getElementById('detail-rewind');
             let year = 2026;
             const timer = setInterval(() => {
@@ -809,8 +826,7 @@
             goto('v-personality');
             const container = document.getElementById('personality-stream');
             if(container.innerHTML === "") {
-                const text = (typeof PERSONALITY_TEXT !== 'undefined') ? PERSONALITY_TEXT : "You are kind, smart, and wonderful. Happy Birthday!";
-                const words = text.split(/\s+/); let i = 0;
+                const words = PERSONALITY_TEXT.split(/\s+/); let i = 0;
                 const interval = setInterval(() => {
                     if (i < words.length) {
                         const span = document.createElement('span'); span.className = 'word-span'; span.innerText = words[i] + " ";
