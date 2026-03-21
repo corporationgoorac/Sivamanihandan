@@ -3,30 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goorac Corporation | Products</title>
+    <title>Goorac Corporation | Apps</title>
     <style>
-        /* Sleek Dark Mode Aesthetics */
+        /* Sleek, Premium Dark Mode */
         :root {
-            --primary-bg: #000000;
-            --card-bg: #1c1c1e;
-            --text-main: #f5f5f7;
-            --text-muted: #86868b;
+            --bg-color: #000000;
+            --surface-color: #151516;
+            --surface-hover: #1e1e1f;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
             --accent-blue: #0a84ff;
-            --border-light: rgba(255, 255, 255, 0.08);
-            --card-hover-border: rgba(255, 255, 255, 0.15);
+            --btn-bg: rgba(255, 255, 255, 0.1);
+            --btn-hover: rgba(255, 255, 255, 0.2);
+            --border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--primary-bg);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Glassmorphism Header */
+        /* Glassmorphism Navigation */
         header {
             background-color: rgba(0, 0, 0, 0.7);
             backdrop-filter: saturate(180%) blur(20px);
@@ -34,180 +41,223 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid var(--border-light);
-            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.2rem 2rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
             color: #ffffff;
         }
 
-        /* Hero Section */
+        /* Hero Section with Glow Effect */
         .hero {
             text-align: center;
-            padding: 6rem 2rem 3rem;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(10,132,255,0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
         }
 
         .hero h1 {
             font-size: 3.5rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
-            letter-spacing: -1.5px;
-            /* Subtle text gradient for premium feel */
-            background: linear-gradient(135deg, #ffffff 0%, #a1a1a6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.04em;
         }
 
         .hero p {
             font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 600px;
+            color: var(--text-secondary);
+            max-width: 500px;
             margin: 0 auto;
+            font-weight: 400;
         }
 
         /* App Store Grid */
         .app-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            padding: 2rem 2rem 5rem;
-            max-width: 1100px;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+            padding: 0 2rem 6rem;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
         /* Individual App Cards */
         .app-card {
-            background-color: var(--card-bg);
-            border-radius: 24px;
+            background-color: var(--surface-color);
+            border-radius: 20px;
             padding: 1.5rem;
             display: flex;
             align-items: center;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: fadeUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* Animation delays for a staggered entrance */
+        .app-card:nth-child(1) { animation-delay: 0.1s; }
+        .app-card:nth-child(2) { animation-delay: 0.2s; }
+        .app-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .app-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--card-hover-border);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+            background-color: var(--surface-hover);
+            transform: scale(1.02);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .app-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 16px;
             object-fit: cover;
             background-color: #2c2c2e;
             margin-right: 1.2rem;
             flex-shrink: 0;
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
         }
 
         .app-info {
             flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .app-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-blue);
+            font-weight: 600;
+            margin-bottom: 0.2rem;
         }
 
         .app-info h2 {
-            font-size: 1.2rem;
-            margin: 0 0 0.2rem 0;
+            font-size: 1.25rem;
+            margin: 0 0 0.1rem 0;
             font-weight: 600;
-            color: #ffffff;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
         .app-info p {
             font-size: 0.9rem;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             margin: 0;
         }
 
-        /* Download Button */
+        /* App Store Style Download Button */
         .download-btn {
-            background-color: rgba(255, 255, 255, 0.08);
+            background-color: var(--btn-bg);
             color: var(--accent-blue);
             text-decoration: none;
             font-weight: 700;
             font-size: 0.95rem;
-            padding: 8px 24px;
+            padding: 8px 22px;
             border-radius: 20px;
             transition: all 0.2s ease;
+            margin-left: 1rem;
         }
 
         .download-btn:hover {
-            background-color: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
+            background-color: var(--btn-hover);
         }
 
         /* Footer & Contact Section */
         footer {
-            background-color: #121212;
             padding: 4rem 2rem;
             text-align: center;
-            border-top: 1px solid var(--border-light);
+            border-top: 1px solid var(--border-color);
         }
 
         .contact-info {
             display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            align-items: center;
-            margin-bottom: 2.5rem;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
         .contact-link {
             display: inline-flex;
             align-items: center;
-            color: var(--text-main);
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
             transition: color 0.2s;
-            padding: 0.5rem 1rem;
-            border-radius: 12px;
         }
 
         .contact-link:hover {
-            color: var(--accent-blue);
-            background-color: rgba(255,255,255,0.03);
+            color: var(--text-primary);
         }
 
         .contact-icon {
-            margin-right: 10px;
-            opacity: 0.7;
+            margin-right: 8px;
+            font-size: 1.2rem;
         }
 
         .copyright {
-            color: var(--text-muted);
-            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 2.5rem; }
-            .app-card { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
-            .app-icon { margin-right: 0; margin-bottom: 1rem; width: 100px; height: 100px; }
-            .download-btn { margin-top: 1.5rem; width: 100%; box-sizing: border-box; }
+        /* Mobile Responsiveness - True App Store Layout */
+        @media (max-width: 768px) {
+            .hero { padding: 4rem 1.5rem 3rem; }
+            .hero h1 { font-size: 2.8rem; }
+            .hero p { font-size: 1.1rem; }
+            .app-grid { padding: 0 1.5rem 4rem; grid-template-columns: 1fr; }
+            
+            /* Keeps Icon, Text, and Button in a single row on mobile */
+            .app-card { padding: 1rem; }
+            .app-icon { width: 60px; height: 60px; border-radius: 14px; margin-right: 1rem; }
+            .app-info h2 { font-size: 1.1rem; }
+            .app-info p { font-size: 0.85rem; }
+            .download-btn { padding: 6px 18px; font-size: 0.9rem; margin-left: 0.5rem; }
+            
+            .contact-info { flex-direction: column; gap: 1rem; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1 class="logo">Goorac Corporation</h1>
+        <div class="logo">Goorac Corporation</div>
     </header>
 
     <main>
         <section class="hero">
-            <h1>Our Ecosystem</h1>
-            <p>Discover the latest applications designed to connect, assist, and entertain.</p>
+            <h1>Apps by Goorac</h1>
+            <p>Innovative software designed to connect, assist, and entertain.</p>
         </section>
 
         <section class="app-grid">
@@ -215,17 +265,19 @@
             <div class="app-card">
                 <img src="https://www.goorac.biz/images/icon.png" alt="Quantum Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMmMwYzJlIi8+PC9zdmc+'">
                 <div class="app-info">
+                    <div class="app-category">Social</div>
                     <h2>Quantum</h2>
-                    <p>Social Media & Messaging App</p>
+                    <p>Messaging redefined.</p>
                 </div>
-                <a href="https://www.goorac.biz" class="download-btn">Get</a>
+                <a href="https://www.goorac.biz/download.html" class="download-btn">Get</a>
             </div>
 
             <div class="app-card">
                 <img src="https://quan.goorac.biz/images/icon.png" alt="Quan AI Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMmMwYzJlIi8+PC9zdmc+'">
                 <div class="app-info">
+                    <div class="app-category">Productivity</div>
                     <h2>Quan AI</h2>
-                    <p>Your Intelligent Assistant</p>
+                    <p>Your intelligent assistant.</p>
                 </div>
                 <a href="https://quan.goorac.biz/download" class="download-btn">Get</a>
             </div>
@@ -233,8 +285,9 @@
             <div class="app-card">
                 <img src="https://quanic.goorac.biz/images/icon.png" alt="Quanic Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMmMwYzJlIi8+PC9zdmc+'">
                 <div class="app-info">
+                    <div class="app-category">Music</div>
                     <h2>Quanic</h2>
-                    <p>Digital Music Store</p>
+                    <p>Digital music store.</p>
                 </div>
                 <a href="https://quanic.goorac.biz/download" class="download-btn">Get</a>
             </div>
@@ -248,7 +301,7 @@
                 <span class="contact-icon">✉️</span> corporationgoorac@gmail.com
             </a>
             <a href="tel:+919443042733" class="contact-link">
-                <span class="contact-icon">📞</span> 9443042733
+                <span class="contact-icon">📞</span> +91 94430 42733
             </a>
         </div>
         <p class="copyright">© 2026 Goorac Corporation. All rights reserved.</p>
