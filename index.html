@@ -6,49 +6,49 @@
     <title>Goorac Corporation | Apps</title>
     <style>
         /* ========================================================
-           TRUE META DESIGN SYSTEM (Auto Light/Dark Mode)
+           FULL-SCREEN IMMERSIVE META DESIGN (Auto Light/Dark)
            ======================================================== */
         
-        /* Light Mode Defaults */
         :root {
-            --bg-color: #f0f2f5; /* Classic Meta off-white background */
-            --surface-color: #ffffff;
-            --surface-hover: #f7f8fa;
+            /* Light Mode Default Variables */
             --text-primary: #1c1e21;
-            --text-secondary: #65676b;
-            --text-muted: #8a8d91;
-            --accent-blue: #0064e0; /* Meta Blue */
-            --btn-bg: #e4e6eb;
-            --btn-hover: #d8dadf;
-            --btn-text: #050505;
-            --border-color: #ced0d4;
+            --text-secondary: #4b4c4f;
+            --text-muted: #65676b;
+            --accent-blue: #0064e0;
             --meta-gradient: linear-gradient(115deg, #0064e0, #c92bb8, #ff2a7e);
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.12);
-            --shadow-glow: 0 8px 24px rgba(0, 100, 224, 0.15);
-            --icon-bg: #f0f2f5;
+            
+            /* Glassmorphism - Light */
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            --btn-bg: rgba(255, 255, 255, 0.9);
+            --btn-hover: #ffffff;
+            --btn-text: #050505;
+            --icon-bg: rgba(255, 255, 255, 0.9);
+            
+            /* Stunning High-Res Abstract Light Background */
+            --bg-image: url('https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=2629&auto=format&fit=crop');
         }
 
-        /* Dark Mode Override */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-color: #18191a; /* Classic Meta dark background */
-                --surface-color: #242526;
-                --surface-hover: #3a3b3c;
-                --text-primary: #e4e6eb;
-                --text-secondary: #b0b3b8;
-                --text-muted: #8c8f93;
-                --accent-blue: #2d88ff; /* Lighter blue for dark mode */
-                --btn-bg: #3a3b3c;
+                /* Dark Mode Variables */
+                --text-primary: #ffffff;
+                --text-secondary: #e4e6eb;
+                --text-muted: #b0b3b8;
+                --accent-blue: #2d88ff;
+                
+                /* Glassmorphism - Dark */
+                --glass-bg: rgba(18, 18, 18, 0.65);
+                --glass-border: rgba(255, 255, 255, 0.15);
+                --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+                --btn-bg: rgba(50, 50, 50, 0.8);
                 --btn-hover: #4e4f50;
-                --btn-text: #e4e6eb;
-                --border-color: #3e4042;
-                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-                --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-                --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.6);
-                --shadow-glow: 0 8px 24px rgba(45, 136, 255, 0.15);
-                --icon-bg: #18191a;
+                --btn-text: #ffffff;
+                --icon-bg: rgba(30, 30, 30, 0.8);
+                
+                /* Stunning High-Res 3D Dark Background */
+                --bg-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
             }
         }
 
@@ -61,34 +61,43 @@
 
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
             color: var(--text-primary);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            
+            /* Full Screen Background Setup */
+            background-image: var(--bg-image);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            transition: color 0.3s ease;
         }
 
-        /* Hide scrollbars but keep functionality */
+        /* Hide scrollbars but keep swipe/scroll functionality */
         html::-webkit-scrollbar, body::-webkit-scrollbar { display: none !important; }
-        html, body { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+        html, body { -ms-overflow-style: none !important; scrollbar-width: none !important; scroll-behavior: smooth; }
 
-        /* Header Layout - NO LONGER STICKY */
+        /* Floating Glass Header */
         header {
-            background-color: var(--surface-color);
-            position: relative; /* Changed from sticky */
-            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0); /* Invisible to let Glass rule */
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            background-color: var(--glass-bg);
+            border-bottom: 1px solid var(--glass-border);
             padding: 1.2rem 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: var(--shadow-sm);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-            z-index: 10;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             background: var(--meta-gradient);
@@ -97,39 +106,31 @@
         }
 
         /* ========================================================
-           CUSTOM APP / BUSINESS SECTION (MOVED TO TOP)
+           FULL SCREEN SECTION 1: CUSTOM APP / BUSINESS
            ======================================================== */
         .custom-app-section {
-            padding: 4rem 2rem 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-            animation: fadeInDown 0.8s ease-out;
+            min-height: 100vh; /* Full screen height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 2rem 2rem; /* Account for fixed header */
+            width: 100%;
+            animation: fadeInDown 1s ease-out;
         }
 
         .custom-card {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 4rem 3rem;
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 5rem 3rem;
             text-align: center;
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--glass-shadow);
+            max-width: 900px;
+            width: 100%;
             position: relative;
             overflow: hidden;
-        }
-
-        /* Subtle Background Glow */
-        .custom-card::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            right: -100px;
-            width: 300px;
-            height: 300px;
-            background: var(--meta-gradient);
-            filter: blur(100px);
-            opacity: 0.1;
-            z-index: 0;
-            border-radius: 50%;
         }
 
         .custom-card-content {
@@ -138,19 +139,21 @@
         }
 
         .custom-card h2 {
-            font-size: 2.8rem;
+            font-size: 3.5rem;
             font-weight: 800;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
             color: var(--text-primary);
-            letter-spacing: -0.03em;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
         }
 
         .custom-card p {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             color: var(--text-secondary);
-            max-width: 650px;
-            margin: 0 auto 2.5rem;
+            max-width: 700px;
+            margin: 0 auto 3rem;
             line-height: 1.6;
+            font-weight: 500;
         }
 
         /* Highlight Text Feature */
@@ -164,7 +167,7 @@
         .action-buttons {
             display: flex;
             justify-content: center;
-            gap: 1.2rem;
+            gap: 1.5rem;
             flex-wrap: wrap;
         }
 
@@ -173,53 +176,49 @@
             align-items: center;
             text-decoration: none;
             font-weight: 700;
-            font-size: 1.05rem;
-            padding: 14px 32px;
-            border-radius: 12px;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-sm);
+            font-size: 1.1rem;
+            padding: 16px 36px;
+            border-radius: 50px; /* Highly rounded Meta style */
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .btn-action svg {
-            width: 22px;
-            height: 22px;
-            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
             fill: currentColor;
         }
 
         .whatsapp {
             background-color: #25D366; 
             color: #ffffff;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
         }
-        .whatsapp:hover { background-color: #20bd5a; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .whatsapp:hover { background-color: #20bd5a; transform: translateY(-3px); box-shadow: 0 12px 24px rgba(37, 211, 102, 0.4); }
 
         .email-btn {
-            background-color: var(--accent-blue);
+            background: var(--meta-gradient);
             color: #ffffff;
             box-shadow: var(--shadow-glow);
         }
-        .email-btn:hover { background-color: #0056c2; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .email-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(201, 43, 184, 0.4); }
 
-        /* Divider */
+        /* Hide divider to maintain seamless full-screen flow */
         .section-divider {
-            height: 1px;
-            background-color: var(--border-color);
-            margin: 3rem auto;
-            max-width: 800px;
-            opacity: 0.5;
+            display: none; 
         }
 
         /* ========================================================
-           APP STORE SECTION (MOVED TO BOTTOM)
+           FULL SCREEN SECTION 2: APP DIRECTORY
            ======================================================== */
         .hero {
             text-align: center;
-            padding: 2rem 2rem 3rem;
+            padding: 15vh 2rem 3rem; /* Pushes to a new visual screen */
             position: relative;
         }
 
         .hero h1 {
-            font-size: 2.4rem;
+            font-size: 3rem;
             font-weight: 800;
             margin-bottom: 0.5rem;
             letter-spacing: -0.03em;
@@ -227,7 +226,7 @@
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-secondary);
             max-width: 500px;
             margin: 0 auto;
@@ -238,50 +237,46 @@
         .app-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            padding: 0 2rem 5rem;
-            max-width: 1000px;
+            gap: 2rem;
+            padding: 0 2rem 15vh;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Individual App Cards */
+        /* Glass App Cards */
         .app-card {
-            background-color: var(--surface-color);
-            border-radius: 16px;
-            padding: 1.5rem;
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 2rem;
             display: flex;
             align-items: center;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.2s ease;
-            animation: fadeUp 0.6s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        .app-card:nth-child(1) { animation-delay: 0.1s; }
-        .app-card:nth-child(2) { animation-delay: 0.2s; }
-        .app-card:nth-child(3) { animation-delay: 0.3s; }
-
-        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-
         .app-card:hover {
-            background-color: var(--surface-hover);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.4);
+            background-color: rgba(255, 255, 255, 0.85); /* Slightly brighter on hover */
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            .app-card:hover { background-color: rgba(40, 40, 40, 0.8); border-color: rgba(255,255,255,0.3); }
         }
 
         .app-icon {
-            width: 72px;
-            height: 72px;
-            border-radius: 18px;
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
             object-fit: cover;
             background-color: var(--icon-bg);
-            margin-right: 1.2rem;
+            margin-right: 1.5rem;
             flex-shrink: 0;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border: 1px solid var(--glass-border);
         }
 
         .app-info {
@@ -292,122 +287,127 @@
         }
 
         .app-category {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            font-weight: 700;
-            margin-bottom: 0.2rem;
+            letter-spacing: 0.08em;
+            color: var(--accent-blue);
+            font-weight: 800;
+            margin-bottom: 0.3rem;
         }
 
         .app-info h2 {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             margin: 0 0 0.2rem 0;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--text-primary);
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
         }
 
         .app-info p {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-secondary);
             margin: 0;
-            font-weight: 400;
+            font-weight: 500;
         }
 
-        /* Meta-Style Download Button */
+        /* Glass Download Button */
         .download-btn {
             background-color: var(--btn-bg);
             color: var(--btn-text);
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.95rem;
-            padding: 8px 24px;
-            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1rem;
+            padding: 10px 28px;
+            border-radius: 50px;
             transition: all 0.2s ease;
             margin-left: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .download-btn:hover {
             background-color: var(--btn-hover);
+            transform: scale(1.05);
         }
 
         /* ========================================================
-           PROFESSIONAL FOOTER (REDESIGNED)
+           PROFESSIONAL GLASS FOOTER
            ======================================================== */
         footer {
-            background-color: var(--surface-color);
-            padding: 4rem 2rem 2rem;
-            border-top: 1px solid var(--border-color);
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 5rem 2rem 2rem;
+            border-top: 1px solid var(--glass-border);
         }
 
         .footer-content {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1.5fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
+            gap: 4rem;
+            margin-bottom: 4rem;
         }
 
         .footer-about h3 {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--text-primary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         .footer-about p {
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            max-width: 400px;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 450px;
+            font-weight: 500;
         }
 
         .footer-contact h3 {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--text-primary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         .contact-info {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.2rem;
         }
 
         .contact-link {
             display: inline-flex;
             align-items: center;
-            background-color: var(--bg-color);
+            background-color: var(--btn-bg);
             color: var(--text-primary);
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            padding: 12px 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 14px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             width: fit-content;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .contact-link:hover {
-            background-color: var(--surface-hover);
-            border-color: var(--text-secondary);
-            transform: translateX(5px);
+            transform: translateX(8px);
+            box-shadow: var(--glass-shadow);
         }
 
         .contact-icon {
-            margin-right: 10px;
-            font-size: 1.2rem;
+            margin-right: 12px;
+            font-size: 1.3rem;
         }
 
         .footer-bottom {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -415,31 +415,33 @@
 
         .copyright {
             color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 500;
+            font-size: 0.95rem;
+            font-weight: 600;
         }
+
+        /* Animations */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            .custom-app-section { padding: 2rem 1.5rem; }
-            .custom-card { padding: 2.5rem 1.5rem; }
-            .custom-card h2 { font-size: 2rem; }
+            .custom-app-section { padding: 6rem 1.5rem 2rem; }
+            .custom-card { padding: 3rem 1.5rem; border-radius: 24px; }
+            .custom-card h2 { font-size: 2.2rem; }
+            .custom-card p { font-size: 1.05rem; }
             
             .action-buttons { flex-direction: column; width: 100%; }
             .btn-action { width: 100%; justify-content: center; }
             
-            .hero { padding: 1rem 1.5rem 2rem; }
-            .hero h1 { font-size: 2rem; }
+            .hero { padding: 10vh 1.5rem 2rem; }
+            .hero h1 { font-size: 2.2rem; }
             
-            .app-grid { padding: 0 1.5rem 3rem; grid-template-columns: 1fr; }
-            .app-card { padding: 1rem; }
-            .app-icon { width: 64px; height: 64px; border-radius: 14px; margin-right: 1rem; }
-            .app-info h2 { font-size: 1.1rem; }
-            .app-info p { font-size: 0.9rem; }
-            .download-btn { padding: 8px 16px; font-size: 0.9rem; margin-left: 0.5rem; }
+            .app-grid { padding: 0 1.5rem 5rem; grid-template-columns: 1fr; }
+            .app-card { padding: 1.5rem; flex-direction: column; text-align: center; }
+            .app-icon { margin: 0 0 1rem 0; width: 90px; height: 90px; }
+            .download-btn { margin: 1rem 0 0 0; width: 100%; }
             
-            .footer-content { grid-template-columns: 1fr; gap: 2rem; }
-            .footer-bottom { flex-direction: column; text-align: center; gap: 1rem; }
+            .footer-content { grid-template-columns: 1fr; gap: 3rem; }
+            .footer-bottom { flex-direction: column; text-align: center; gap: 1.5rem; }
             .contact-link { width: 100%; justify-content: center; }
             .contact-link:hover { transform: translateY(-3px); }
         }
