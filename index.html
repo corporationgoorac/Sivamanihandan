@@ -6,46 +6,48 @@
     <title>Goorac Corporation | Apps</title>
     <style>
         /* ========================================================
-           META DESIGN SYSTEM (Auto Light/Dark Mode)
+           TRUE META DESIGN SYSTEM (Auto Light/Dark Mode)
            ======================================================== */
         
-        /* Light Mode Defaults (Meta Style) */
+        /* Light Mode Defaults */
         :root {
-            --bg-color: #f0f2f5;
+            --bg-color: #f0f2f5; /* Classic Meta off-white background */
             --surface-color: #ffffff;
             --surface-hover: #f7f8fa;
             --text-primary: #1c1e21;
             --text-secondary: #65676b;
-            --accent-blue: #0064e0;
+            --text-muted: #8a8d91;
+            --accent-blue: #0064e0; /* Meta Blue */
             --btn-bg: #e4e6eb;
             --btn-hover: #d8dadf;
             --btn-text: #050505;
             --border-color: #ced0d4;
             --meta-gradient: linear-gradient(115deg, #0064e0, #c92bb8, #ff2a7e);
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.12);
             --shadow-glow: 0 8px 24px rgba(0, 100, 224, 0.15);
-            --custom-card-bg: #ffffff;
             --icon-bg: #f0f2f5;
         }
 
-        /* Dark Mode Override (Meta Style) */
+        /* Dark Mode Override */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-color: #18191a;
+                --bg-color: #18191a; /* Classic Meta dark background */
                 --surface-color: #242526;
                 --surface-hover: #3a3b3c;
                 --text-primary: #e4e6eb;
                 --text-secondary: #b0b3b8;
-                --accent-blue: #2d88ff;
+                --text-muted: #8c8f93;
+                --accent-blue: #2d88ff; /* Lighter blue for dark mode */
                 --btn-bg: #3a3b3c;
                 --btn-hover: #4e4f50;
                 --btn-text: #e4e6eb;
                 --border-color: #3e4042;
                 --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-                --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+                --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+                --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.6);
                 --shadow-glow: 0 8px 24px rgba(45, 136, 255, 0.15);
-                --custom-card-bg: #242526;
                 --icon-bg: #18191a;
             }
         }
@@ -67,23 +69,26 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Header Layout */
+        /* Hide scrollbars but keep functionality */
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none !important; }
+        html, body { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+
+        /* Header Layout - NO LONGER STICKY */
         header {
             background-color: var(--surface-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            position: relative; /* Changed from sticky */
             border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
+            padding: 1.2rem 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
             box-shadow: var(--shadow-sm);
             transition: background-color 0.3s ease, border-color 0.3s ease;
+            z-index: 10;
         }
 
         .logo {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             background: var(--meta-gradient);
@@ -91,23 +96,138 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Hero Section */
+        /* ========================================================
+           CUSTOM APP / BUSINESS SECTION (MOVED TO TOP)
+           ======================================================== */
+        .custom-app-section {
+            padding: 4rem 2rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .custom-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 4rem 3rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle Background Glow */
+        .custom-card::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: var(--meta-gradient);
+            filter: blur(100px);
+            opacity: 0.1;
+            z-index: 0;
+            border-radius: 50%;
+        }
+
+        .custom-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .custom-card h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1.2rem;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+        }
+
+        .custom-card p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+
+        /* Highlight Text Feature */
+        .highlight-text {
+            font-weight: 800;
+            background: var(--meta-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 14px 32px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-action svg {
+            width: 22px;
+            height: 22px;
+            margin-right: 10px;
+            fill: currentColor;
+        }
+
+        .whatsapp {
+            background-color: #25D366; 
+            color: #ffffff;
+        }
+        .whatsapp:hover { background-color: #20bd5a; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+        .email-btn {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            box-shadow: var(--shadow-glow);
+        }
+        .email-btn:hover { background-color: #0056c2; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+        /* Divider */
+        .section-divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 3rem auto;
+            max-width: 800px;
+            opacity: 0.5;
+        }
+
+        /* ========================================================
+           APP STORE SECTION (MOVED TO BOTTOM)
+           ======================================================== */
         .hero {
             text-align: center;
-            padding: 5rem 2rem 3rem;
+            padding: 2rem 2rem 3rem;
             position: relative;
         }
 
         .hero h1 {
-            font-size: 3.2rem;
+            font-size: 2.4rem;
             font-weight: 800;
-            margin-bottom: 0.8rem;
-            letter-spacing: -0.04em;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
             color: var(--text-primary);
         }
 
         .hero p {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
             max-width: 500px;
             margin: 0 auto;
@@ -119,7 +239,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
-            padding: 0 2rem 3rem;
+            padding: 0 2rem 5rem;
             max-width: 1000px;
             margin: 0 auto;
         }
@@ -143,9 +263,8 @@
         .app-card:nth-child(2) { animation-delay: 0.2s; }
         .app-card:nth-child(3) { animation-delay: 0.3s; }
 
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
         .app-card:hover {
             background-color: var(--surface-hover);
@@ -204,7 +323,7 @@
             font-weight: 700;
             font-size: 0.95rem;
             padding: 8px 24px;
-            border-radius: 8px; /* Meta style slightly rounded */
+            border-radius: 8px;
             transition: all 0.2s ease;
             margin-left: 1rem;
         }
@@ -214,116 +333,50 @@
         }
 
         /* ========================================================
-           NEW CUSTOM APP / BUSINESS SECTION
+           PROFESSIONAL FOOTER (REDESIGNED)
            ======================================================== */
-        .custom-app-section {
-            padding: 2rem;
-            max-width: 1000px;
-            margin: 0 auto 5rem;
-        }
-
-        .custom-card {
-            background-color: var(--custom-card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            text-align: center;
-            box-shadow: var(--shadow-md);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Subtle Background Glow */
-        .custom-card::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            background: var(--meta-gradient);
-            filter: blur(80px);
-            opacity: 0.15;
-            z-index: 0;
-        }
-
-        .custom-card-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .custom-card h2 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-            letter-spacing: -0.03em;
-        }
-
-        .custom-card p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            line-height: 1.6;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-action {
-            display: inline-flex;
-            align-items: center;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
-            padding: 12px 28px;
-            border-radius: 12px;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-action svg {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
-            fill: currentColor;
-        }
-
-        .whatsapp {
-            background-color: #25D366; /* Official WhatsApp Green */
-            color: #ffffff;
-        }
-        .whatsapp:hover { background-color: #20bd5a; transform: translateY(-2px); }
-
-        .email-btn {
-            background-color: var(--accent-blue);
-            color: #ffffff;
-            box-shadow: var(--shadow-glow);
-        }
-        .email-btn:hover { background-color: #0056c2; transform: translateY(-2px); }
-
-        /* Footer & Contact Section */
         footer {
             background-color: var(--surface-color);
-            padding: 4rem 2rem;
-            text-align: center;
+            padding: 4rem 2rem 2rem;
             border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-about h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-about p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 400px;
+        }
+
+        .footer-contact h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
         }
 
         .contact-info {
             display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        /* Redesigned existing footer links */
         .contact-link {
             display: inline-flex;
             align-items: center;
@@ -332,50 +385,63 @@
             text-decoration: none;
             font-size: 0.95rem;
             font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 50px;
+            padding: 12px 20px;
+            border-radius: 12px;
             border: 1px solid var(--border-color);
             transition: all 0.2s ease;
+            width: fit-content;
         }
 
         .contact-link:hover {
             background-color: var(--surface-hover);
             border-color: var(--text-secondary);
+            transform: translateX(5px);
         }
 
         .contact-icon {
-            margin-right: 8px;
-            font-size: 1.1rem;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-bottom {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .copyright {
-            color: var(--text-secondary);
+            color: var(--text-muted);
             font-size: 0.85rem;
             font-weight: 500;
         }
 
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            .hero { padding: 3rem 1.5rem 2rem; }
-            .hero h1 { font-size: 2.4rem; }
-            .hero p { font-size: 1.05rem; }
-            .app-grid { padding: 0 1.5rem 3rem; grid-template-columns: 1fr; }
+            .custom-app-section { padding: 2rem 1.5rem; }
+            .custom-card { padding: 2.5rem 1.5rem; }
+            .custom-card h2 { font-size: 2rem; }
             
+            .action-buttons { flex-direction: column; width: 100%; }
+            .btn-action { width: 100%; justify-content: center; }
+            
+            .hero { padding: 1rem 1.5rem 2rem; }
+            .hero h1 { font-size: 2rem; }
+            
+            .app-grid { padding: 0 1.5rem 3rem; grid-template-columns: 1fr; }
             .app-card { padding: 1rem; }
             .app-icon { width: 64px; height: 64px; border-radius: 14px; margin-right: 1rem; }
             .app-info h2 { font-size: 1.1rem; }
             .app-info p { font-size: 0.9rem; }
             .download-btn { padding: 8px 16px; font-size: 0.9rem; margin-left: 0.5rem; }
             
-            .custom-app-section { padding: 1.5rem; }
-            .custom-card { padding: 2rem 1.5rem; }
-            .custom-card h2 { font-size: 1.8rem; }
-            
-            .action-buttons { flex-direction: column; width: 100%; }
-            .btn-action { width: 100%; justify-content: center; }
-            
-            .contact-info { flex-direction: column; gap: 1rem; }
+            .footer-content { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-bottom { flex-direction: column; text-align: center; gap: 1rem; }
             .contact-link { width: 100%; justify-content: center; }
+            .contact-link:hover { transform: translateY(-3px); }
         }
     </style>
 </head>
@@ -386,8 +452,29 @@
     </header>
 
     <main>
+        <section class="custom-app-section">
+            <div class="custom-card">
+                <div class="custom-card-content">
+                    <h2>Bring Your Ideas to Life</h2>
+                    <p>Need a powerful mobile app for your <span class="highlight-text">business</span>, a dynamic portal for your <span class="highlight-text">startup</span>, or a standout <span class="highlight-text">college project</span>? Goorac Corporation builds scalable, state-of-the-art digital solutions tailored specifically to your goals.</p>
+                    <div class="action-buttons">
+                        <a href="https://wa.me/919443042733" class="btn-action whatsapp" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg> 
+                            Message on WhatsApp
+                        </a>
+                        <a href="mailto:corporationgoorac@gmail.com" class="btn-action email-btn">
+                            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            Email Our Team
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
         <section class="hero">
-            <h1>Apps by Goorac</h1>
+            <h1>Check out our Apps</h1>
             <p>Innovative software designed to connect, assist, and entertain.</p>
         </section>
 
@@ -425,37 +512,32 @@
 
         </section>
 
-        <section class="custom-app-section">
-            <div class="custom-card">
-                <div class="custom-card-content">
-                    <h2>Bring Your Ideas to Life</h2>
-                    <p>Need a powerful mobile app for your business, a dynamic portal for your startup, or a standout college project? Goorac Corporation builds scalable, state-of-the-art digital solutions tailored specifically to your goals.</p>
-                    <div class="action-buttons">
-                        <a href="https://wa.me/919443042733" class="btn-action whatsapp" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg> 
-                            Message on WhatsApp
-                        </a>
-                        <a href="mailto:corporationgoorac@gmail.com" class="btn-action email-btn">
-                            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                            Email Our Team
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </main>
 
     <footer>
-        <div class="contact-info">
-            <a href="mailto:corporationgoorac@gmail.com" class="contact-link">
-                <span class="contact-icon">✉️</span> corporationgoorac@gmail.com
-            </a>
-            <a href="tel:+919443042733" class="contact-link">
-                <span class="contact-icon">📞</span> +91 94430 42733
-            </a>
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>About Goorac Corporation</h3>
+                <p>Goorac Corporation is a leading technology firm dedicated to creating innovative digital ecosystems. We specialize in high-performance web applications, artificial intelligence integrations, and scalable mobile software designed to empower users worldwide.</p>
+            </div>
+            
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <div class="contact-info">
+                    <a href="mailto:corporationgoorac@gmail.com" class="contact-link">
+                        <span class="contact-icon">✉️</span> corporationgoorac@gmail.com
+                    </a>
+                    <a href="tel:+919443042733" class="contact-link">
+                        <span class="contact-icon">📞</span> +91 94430 42733
+                    </a>
+                </div>
+            </div>
         </div>
-        <p class="copyright">© 2026 Goorac Corporation. All rights reserved.</p>
+
+        <div class="footer-bottom">
+            <p class="logo" style="font-size: 1rem;">Goorac</p>
+            <p class="copyright">© 2026 Goorac Corporation. All rights reserved.</p>
+        </div>
     </footer>
 
 </body>
