@@ -93,6 +93,17 @@
             z-index: 1000;
         }
 
+        /* Added a Glass Wrapper for the logo to ensure high visibility on ALL backgrounds */
+        .logo-wrapper {
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
+            padding: 12px 32px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
         .logo {
             font-size: 1.75rem;
             font-weight: 800;
@@ -113,6 +124,7 @@
             justify-content: center;
             padding: 100px 2rem 4rem; /* Adjusted for absolute header */
             width: 100%;
+            position: relative; /* Added to position the scroll indicator */
         }
 
         .custom-card {
@@ -205,6 +217,48 @@
         .email-btn:hover { 
             transform: scale(1.02); 
             box-shadow: 0 6px 20px rgba(201, 43, 184, 0.5); 
+        }
+
+        /* --- Scroll Down Indicator --- */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .scroll-indicator a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            box-shadow: var(--glass-shadow);
+            animation: bounce 2s infinite;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-indicator a:hover {
+            background-color: var(--btn-bg);
+        }
+
+        .scroll-indicator svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-12px); }
+            60% { transform: translateY(-6px); }
         }
 
         .section-divider {
@@ -456,7 +510,9 @@
 <body>
 
     <header>
-        <div class="logo">Goorac Corporation</div>
+        <div class="logo-wrapper">
+            <div class="logo">Goorac Corporation</div>
+        </div>
     </header>
 
     <main>
@@ -477,11 +533,17 @@
                     </div>
                 </div>
             </div>
+
+            <div class="scroll-indicator">
+                <a href="#apps" aria-label="Scroll to Apps">
+                    <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </a>
+            </div>
         </section>
 
         <div class="section-divider"></div>
 
-        <section class="hero">
+        <section class="hero" id="apps">
             <div class="hero-text-wrapper">
                 <h1>Check out our Apps</h1>
                 <p>Innovative software designed to connect, assist, and entertain.</p>
