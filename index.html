@@ -6,35 +6,55 @@
     <title>Goorac Corporation | Apps</title>
     <style>
         /* ========================================================
-           ULTRA-MODERN REDESIGN (Staggered Showcase)
+           META-INSPIRED GLASSMORPHISM DESIGN 
+           (Static Header, Meta Patterns + Kept Background Images)
            ======================================================== */
         
         :root {
-            /* Sleek Dark Default (Tech Focus) */
-            --bg-color: #050505;
-            --surface-color: #111111;
-            --text-main: #ffffff;
-            --text-muted: #888888;
-            --accent: #0070f3;
-            --accent-glow: rgba(0, 112, 243, 0.3);
-            --gradient-hero: linear-gradient(to right, #0070f3, #f300e0);
-            --border-dim: rgba(255, 255, 255, 0.1);
+            /* Meta Brand Colors */
+            --meta-blue: #1877F2;
+            --meta-blue-hover: #166FE5;
+            --meta-gradient: linear-gradient(83.84deg, #0088FF -6.87%, #A033FF 26.54%, #FF5C87 100%);
+            --whatsapp-green: #25D366;
+            --whatsapp-hover: #20bd5a;
+
+            /* Light Mode Glass + Meta */
+            --text-primary: #1C1E21;
+            --text-secondary: #65676B;
+            --text-muted: #8A8D91;
+            --glass-bg: rgba(255, 255, 255, 0.85); /* Slightly more opaque for readability */
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --btn-secondary-bg: #E4E6EB;
+            --btn-secondary-text: #050505;
+            --btn-secondary-hover: #D8DADF;
+            --icon-bg: #F0F2F5;
+            
+            /* Stunning High-Res Abstract Light Background */
+            --bg-image: url('https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=2629&auto=format&fit=crop');
         }
 
-        @media (prefers-color-scheme: light) {
+        @media (prefers-color-scheme: dark) {
             :root {
-                /* Crisp Light Mode */
-                --bg-color: #ffffff;
-                --surface-color: #f7f7f7;
-                --text-main: #000000;
-                --text-muted: #666666;
-                --accent: #005bb5;
-                --accent-glow: rgba(0, 91, 181, 0.2);
-                --gradient-hero: linear-gradient(to right, #005bb5, #d100c1);
-                --border-dim: rgba(0, 0, 0, 0.1);
+                /* Dark Mode Glass + Meta */
+                --text-primary: #E4E6EB;
+                --text-secondary: #B0B3B8;
+                --text-muted: #8C939D;
+                --meta-blue: #2D88FF;
+                --glass-bg: rgba(36, 37, 38, 0.80); /* Meta Dark Surface Color as Glass */
+                --glass-border: rgba(255, 255, 255, 0.1);
+                --glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                --btn-secondary-bg: #3A3B3C;
+                --btn-secondary-text: #E4E6EB;
+                --btn-secondary-hover: #4E4F50;
+                --icon-bg: #18191A;
+                
+                /* Stunning High-Res 3D Dark Background */
+                --bg-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
             }
         }
 
+        /* Global Reset & Typography */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -42,324 +62,361 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            
+            /* Full Screen Background Setup - Kept as requested */
+            background-image: var(--bg-image);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            transition: color 0.3s ease;
         }
 
-        /* --- FLOATING PILL NAVIGATION --- */
+        /* Hide scrollbars but keep swipe/scroll functionality */
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none !important; }
+        html, body { -ms-overflow-style: none !important; scrollbar-width: none !important; scroll-behavior: smooth; }
+
+        /* ========================================================
+           HEADER - Redesigned (NOT Sticky, Clean)
+           ======================================================== */
         header {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--surface-color);
-            padding: 12px 32px;
-            border-radius: 100px;
-            border: 1px solid var(--border-dim);
+            position: relative; /* Removed fixed/sticky */
+            width: 100%;
+            background-color: transparent; /* Clean integration with background */
+            padding: 2rem 2rem 0; /* Padding to push it down nicely */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .logo {
-            font-size: 1.2rem;
+            font-size: 1.75rem;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: var(--gradient-hero);
+            letter-spacing: -0.03em;
+            background: var(--meta-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-align: center;
         }
 
-        /* --- IMMERSIVE HERO SECTION --- */
-        .hero-section {
-            min-height: 100vh;
+        /* ========================================================
+           SECTION 1: CUSTOM APP / BUSINESS (Meta Card Pattern)
+           ======================================================== */
+        .custom-app-section {
+            min-height: calc(100vh - 100px); /* Adjust for header */
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            padding: 2rem; 
+            width: 100%;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .custom-card {
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px; /* Meta standard radius */
+            padding: 4rem 3rem;
             text-align: center;
-            padding: 0 20px;
+            box-shadow: var(--glass-shadow);
+            max-width: 850px;
+            width: 100%;
             position: relative;
         }
 
-        /* Subtle background glow */
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            width: 60vw;
-            height: 60vw;
-            background: var(--accent-glow);
-            filter: blur(150px);
-            border-radius: 50%;
-            z-index: -1;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .custom-card-content {
+            position: relative;
+            z-index: 1;
         }
 
-        .hero-section h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 900;
-            line-height: 1.1;
-            letter-spacing: -0.04em;
-            margin-bottom: 24px;
-            max-width: 1000px;
+        .custom-card h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            line-height: 1.2;
         }
 
-        .hero-section p {
-            font-size: clamp(1.2rem, 2vw, 1.5rem);
-            color: var(--text-muted);
-            max-width: 700px;
-            margin-bottom: 48px;
+        .custom-card p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+            font-weight: 400; /* Meta uses lighter standard weights */
         }
 
+        /* Highlight Text Feature */
         .highlight-text {
-            color: var(--text-main);
-            font-weight: 700;
+            font-weight: 600;
+            color: var(--meta-blue);
         }
 
-        .action-row {
+        .action-buttons {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
             justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        .btn {
+        /* Meta Style Buttons (Slightly rounded, solid colors) */
+        .btn-action {
             display: inline-flex;
             align-items: center;
-            padding: 16px 32px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
             text-decoration: none;
-            transition: transform 0.2s, opacity 0.2s;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 12px 24px;
+            border-radius: 8px; /* Meta button style */
+            transition: all 0.2s ease;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        .btn svg {
-            width: 24px;
-            height: 24px;
-            margin-right: 12px;
+        .btn-action svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
             fill: currentColor;
         }
 
-        .btn-whatsapp {
-            background-color: #25D366;
-            color: #000;
+        .whatsapp {
+            background-color: var(--whatsapp-green); 
+            color: #ffffff;
+        }
+        .whatsapp:hover { 
+            background-color: var(--whatsapp-hover); 
+            transform: translateY(-2px); 
         }
 
-        .btn-email {
-            background-color: var(--text-main);
-            color: var(--bg-color);
+        .email-btn {
+            background-color: var(--meta-blue);
+            color: #ffffff;
+        }
+        .email-btn:hover { 
+            background-color: var(--meta-blue-hover); 
+            transform: translateY(-2px); 
         }
 
-        /* --- STAGGERED APP SHOWCASE --- */
-        .apps-header {
+        .section-divider {
+            display: none; 
+        }
+
+        /* ========================================================
+           SECTION 2: APP DIRECTORY
+           ======================================================== */
+        .hero {
             text-align: center;
-            padding: 100px 20px 40px;
-        }
-
-        .apps-header h2 {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-        }
-
-        .apps-header p {
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            margin-top: 10px;
-        }
-
-        .showcase-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px 100px;
-            display: flex;
-            flex-direction: column;
-            gap: 120px; /* Massive spacing for premium feel */
-        }
-
-        .app-row {
-            display: flex;
-            align-items: center;
-            gap: 60px;
-            justify-content: space-between;
-        }
-
-        /* Alternating layout */
-        .app-row:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .app-visual {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: var(--surface-color);
-            border: 1px solid var(--border-dim);
-            border-radius: 32px;
-            padding: 80px 40px;
+            padding: 4rem 2rem 2rem; 
             position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* App Store Grid - Meta App Center Style */
+        .app-grid {
+            display: flex;
+            flex-direction: column; /* Changed from grid to list view for Meta vibe */
+            gap: 1.2rem;
+            padding: 0 2rem 8rem;
+            max-width: 850px; /* Constrained width for list layout */
+            margin: 0 auto;
+        }
+
+        /* Glass App List Items */
+        .app-card {
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            transition: background-color 0.2s ease;
+        }
+
+        .app-card:hover {
+            background-color: var(--btn-secondary-bg); /* Meta hover effect */
         }
 
         .app-icon {
-            width: 150px;
-            height: 150px;
-            border-radius: 32px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            width: 60px;
+            height: 60px;
+            border-radius: 12px; /* Meta icon radius */
+            object-fit: cover;
+            background-color: var(--icon-bg);
+            margin-right: 1.2rem;
+            flex-shrink: 0;
+            border: 1px solid var(--glass-border);
         }
 
-        .app-row:hover .app-icon {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        .app-details {
-            flex: 1;
+        .app-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .app-category {
-            font-size: 1rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--accent);
+            letter-spacing: 0.05em;
+            color: var(--meta-blue);
             font-weight: 700;
-            margin-bottom: 16px;
-            display: block;
+            margin-bottom: 0.2rem;
         }
 
-        .app-details h3 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 24px;
-            letter-spacing: -0.03em;
+        .app-info h2 {
+            font-size: 1.2rem;
+            margin: 0;
+            font-weight: 700;
+            color: var(--text-primary);
         }
 
-        .app-details p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            margin-bottom: 40px;
-            max-width: 400px;
+        .app-info p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin: 0;
         }
 
+        /* Meta style secondary button */
         .download-btn {
-            display: inline-block;
-            background: transparent;
-            color: var(--text-main);
-            border: 2px solid var(--border-dim);
-            padding: 14px 40px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 100px;
+            background-color: var(--btn-secondary-bg);
+            color: var(--btn-secondary-text);
             text-decoration: none;
-            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 20px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+            margin-left: 1rem;
         }
 
         .download-btn:hover {
-            background: var(--text-main);
-            color: var(--bg-color);
+            background-color: var(--btn-secondary-hover);
         }
 
-        /* --- MINIMALIST FOOTER --- */
+        /* ========================================================
+           PROFESSIONAL FOOTER
+           ======================================================== */
         footer {
-            background: var(--surface-color);
-            border-top: 1px solid var(--border-dim);
-            padding: 80px 20px 40px;
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid var(--glass-border);
         }
 
-        .footer-grid {
-            max-width: 1200px;
+        .footer-content {
+            max-width: 1100px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 60px;
-            margin-bottom: 60px;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
         }
 
-        .footer-col h4 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+        .footer-about h3, .footer-contact h3 {
+            font-size: 1.1rem;
             font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
         }
 
-        .footer-col p {
-            color: var(--text-muted);
-            font-size: 1rem;
-            max-width: 500px;
+        .footer-about p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 450px;
         }
 
-        .footer-links {
+        .contact-info {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 0.8rem;
         }
 
-        .footer-links a {
-            color: var(--text-muted);
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--meta-blue);
             text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 500;
-            transition: color 0.2s;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: text-decoration 0.2s ease;
         }
 
-        .footer-links a:hover {
-            color: var(--text-main);
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+
+        .contact-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: var(--text-primary);
         }
 
         .footer-bottom {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding-top: 40px;
-            border-top: 1px solid var(--border-dim);
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .footer-bottom .logo {
-            font-size: 1rem;
         }
 
         .copyright {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        /* --- RESPONSIVE --- */
-        @media (max-width: 900px) {
-            .app-row, .app-row:nth-child(even) {
-                flex-direction: column;
-                text-align: center;
-                gap: 40px;
-            }
-            .app-details p {
-                margin: 0 auto 30px;
-            }
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .showcase-container {
-                gap: 80px;
-            }
+        /* Animations */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .custom-app-section { padding: 2rem 1rem; min-height: auto; margin-bottom: 3rem; }
+            .custom-card { padding: 3rem 1.5rem; }
+            .custom-card h2 { font-size: 2rem; }
+            
+            .action-buttons { flex-direction: column; width: 100%; }
+            .btn-action { width: 100%; justify-content: center; }
+            
+            .hero { padding: 3rem 1.5rem 2rem; }
+            
+            .app-grid { padding: 0 1rem 4rem; }
+            .app-card { padding: 1rem; }
+            
+            .footer-content { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-bottom { flex-direction: column; text-align: center; gap: 1rem; }
         }
     </style>
 </head>
@@ -370,86 +427,90 @@
     </header>
 
     <main>
-        <section class="hero-section">
-            <h1>Bring Your Ideas to Life</h1>
-            <p>Need a powerful mobile app for your <span class="highlight-text">business</span>, a dynamic portal for your <span class="highlight-text">startup</span>, or a standout <span class="highlight-text">college project</span>? Goorac Corporation builds scalable, state-of-the-art digital solutions tailored specifically to your goals.</p>
-            
-            <div class="action-row">
-                <a href="https://wa.me/919443042733" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg> 
-                    Message on WhatsApp
-                </a>
-                <a href="mailto:corporationgoorac@gmail.com" class="btn btn-email">
-                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    Email Our Team
-                </a>
+        <section class="custom-app-section">
+            <div class="custom-card">
+                <div class="custom-card-content">
+                    <h2>Bring Your Ideas to Life</h2>
+                    <p>Need a powerful mobile app for your <span class="highlight-text">business</span>, a dynamic portal for your <span class="highlight-text">startup</span>, or a standout <span class="highlight-text">college project</span>? Goorac Corporation builds scalable, state-of-the-art digital solutions tailored specifically to your goals.</p>
+                    <div class="action-buttons">
+                        <a href="https://wa.me/919443042733" class="btn-action whatsapp" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg> 
+                            Message on WhatsApp
+                        </a>
+                        <a href="mailto:corporationgoorac@gmail.com" class="btn-action email-btn">
+                            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            Email Our Team
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <div class="apps-header">
-            <h2>Check out our Apps</h2>
+        <div class="section-divider"></div>
+
+        <section class="hero">
+            <h1>Check out our Apps</h1>
             <p>Innovative software designed to connect, assist, and entertain.</p>
-        </div>
+        </section>
 
-        <section class="showcase-container">
+        <section class="app-grid">
             
-            <article class="app-row">
-                <div class="app-visual">
-                    <img src="https://www.goorac.biz/images/icon.png" alt="Quantum Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzIyMiIvPjwvc3ZnPg=='">
-                </div>
-                <div class="app-details">
-                    <span class="app-category">Social</span>
-                    <h3>Quantum</h3>
+            <div class="app-card">
+                <img src="https://www.goorac.biz/images/icon.png" alt="Quantum Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMmMwYzJlIi8+PC9zdmc+'">
+                <div class="app-info">
+                    <div class="app-category">Social</div>
+                    <h2>Quantum</h2>
                     <p>Messaging redefined.</p>
-                    <a href="https://www.goorac.biz/download.html" class="download-btn">Get Quantum</a>
                 </div>
-            </article>
+                <a href="https://www.goorac.biz/download.html" class="download-btn">Get</a>
+            </div>
 
-            <article class="app-row">
-                <div class="app-visual">
-                    <img src="https://quan.goorac.biz/images/icon.png" alt="Quan AI Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzIyMiIvPjwvc3ZnPg=='">
-                </div>
-                <div class="app-details">
-                    <span class="app-category">Productivity</span>
-                    <h3>Quan AI</h3>
+            <div class="app-card">
+                <img src="https://quan.goorac.biz/images/icon.png" alt="Quan AI Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMmMwYzJlIi8+PC9zdmc+'">
+                <div class="app-info">
+                    <div class="app-category">Productivity</div>
+                    <h2>Quan AI</h2>
                     <p>Your intelligent assistant.</p>
-                    <a href="https://quan.goorac.biz/download" class="download-btn">Get Quan AI</a>
                 </div>
-            </article>
+                <a href="https://quan.goorac.biz/download" class="download-btn">Get</a>
+            </div>
 
-            <article class="app-row">
-                <div class="app-visual">
-                    <img src="https://quanic.goorac.biz/images/icon.png" alt="Quanic Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzIyMiIvPjwvc3ZnPg=='">
-                </div>
-                <div class="app-details">
-                    <span class="app-category">Music</span>
-                    <h3>Quanic</h3>
+            <div class="app-card">
+                <img src="https://quanic.goorac.biz/images/icon.png" alt="Quanic Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMmMwYzJlIi8+PC9zdmc+'">
+                <div class="app-info">
+                    <div class="app-category">Music</div>
+                    <h2>Quanic</h2>
                     <p>Digital music store.</p>
-                    <a href="https://quanic.goorac.biz/download" class="download-btn">Get Quanic</a>
                 </div>
-            </article>
+                <a href="https://quanic.goorac.biz/download" class="download-btn">Get</a>
+            </div>
 
         </section>
+
     </main>
 
     <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>About Goorac Corporation</h4>
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>About Goorac Corporation</h3>
                 <p>Goorac Corporation is a leading technology firm dedicated to creating innovative digital ecosystems. We specialize in high-performance web applications, artificial intelligence integrations, and scalable mobile software designed to empower users worldwide.</p>
             </div>
             
-            <div class="footer-col">
-                <h4>Contact Us</h4>
-                <div class="footer-links">
-                    <a href="mailto:corporationgoorac@gmail.com">✉️ corporationgoorac@gmail.com</a>
-                    <a href="tel:+919443042733">📞 +91 94430 42733</a>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <div class="contact-info">
+                    <a href="mailto:corporationgoorac@gmail.com" class="contact-link">
+                        <span class="contact-icon">✉️</span> corporationgoorac@gmail.com
+                    </a>
+                    <a href="tel:+919443042733" class="contact-link">
+                        <span class="contact-icon">📞</span> +91 94430 42733
+                    </a>
                 </div>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p class="logo">Goorac</p>
+            <p class="logo" style="font-size: 1rem;">Goorac</p>
             <p class="copyright">© 2026 Goorac Corporation. All rights reserved.</p>
         </div>
     </footer>
