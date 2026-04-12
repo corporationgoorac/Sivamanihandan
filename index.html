@@ -6,50 +6,49 @@
     <title>Goorac Corporation | Apps</title>
     <style>
         /* ========================================================
-           META-INSPIRED GLASSMORPHISM DESIGN 
-           (Static Header, Meta Patterns + Kept Background Images)
+           COMPLETELY REDESIGNED: META-INSPIRED GLASS UI
            ======================================================== */
         
         :root {
-            /* Meta Brand Colors */
-            --meta-blue: #1877F2;
-            --meta-blue-hover: #166FE5;
-            --meta-gradient: linear-gradient(83.84deg, #0088FF -6.87%, #A033FF 26.54%, #FF5C87 100%);
-            --whatsapp-green: #25D366;
-            --whatsapp-hover: #20bd5a;
-
-            /* Light Mode Glass + Meta */
-            --text-primary: #1C1E21;
+            /* Meta Light Mode Variables */
+            --text-primary: #050505;
             --text-secondary: #65676B;
             --text-muted: #8A8D91;
-            --glass-bg: rgba(255, 255, 255, 0.85); /* Slightly more opaque for readability */
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            --btn-secondary-bg: #E4E6EB;
-            --btn-secondary-text: #050505;
-            --btn-secondary-hover: #D8DADF;
-            --icon-bg: #F0F2F5;
+            --accent-blue: #0064E0; /* Meta Blue */
+            --meta-gradient: linear-gradient(135deg, #0064E0 0%, #A334FA 50%, #FF5A8D 100%);
             
-            /* Stunning High-Res Abstract Light Background */
+            /* High Visibility Glass - Light */
+            --glass-bg: rgba(255, 255, 255, 0.88); /* High opacity for readability */
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --btn-bg: #E4E6EB;
+            --btn-hover: #D8DADF;
+            --btn-text: #050505;
+            --icon-bg: #ffffff;
+            
+            /* Distinct Light Mode Image */
             --bg-image: url('https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=2629&auto=format&fit=crop');
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                /* Dark Mode Glass + Meta */
+                /* Meta Dark Mode Variables */
                 --text-primary: #E4E6EB;
                 --text-secondary: #B0B3B8;
                 --text-muted: #8C939D;
-                --meta-blue: #2D88FF;
-                --glass-bg: rgba(36, 37, 38, 0.80); /* Meta Dark Surface Color as Glass */
-                --glass-border: rgba(255, 255, 255, 0.1);
-                --glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-                --btn-secondary-bg: #3A3B3C;
-                --btn-secondary-text: #E4E6EB;
-                --btn-secondary-hover: #4E4F50;
+                --accent-blue: #2D88FF;
+                --meta-gradient: linear-gradient(135deg, #2D88FF 0%, #A334FA 50%, #FF5A8D 100%);
+                
+                /* High Visibility Glass - Dark */
+                --glass-bg: rgba(36, 37, 38, 0.85); /* Deep Meta dark grey with high opacity */
+                --glass-border: rgba(255, 255, 255, 0.08);
+                --glass-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+                --btn-bg: rgba(255, 255, 255, 0.1);
+                --btn-hover: rgba(255, 255, 255, 0.2);
+                --btn-text: #E4E6EB;
                 --icon-bg: #18191A;
                 
-                /* Stunning High-Res 3D Dark Background */
+                /* Distinct Dark Mode Image */
                 --bg-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
             }
         }
@@ -62,32 +61,32 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: var(--text-primary);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             
-            /* Full Screen Background Setup - Kept as requested */
+            /* Full Screen Background Setup */
             background-image: var(--bg-image);
             background-attachment: fixed;
             background-size: cover;
             background-position: center;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, background-image 0.5s ease;
         }
 
-        /* Hide scrollbars but keep swipe/scroll functionality */
-        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none !important; }
-        html, body { -ms-overflow-style: none !important; scrollbar-width: none !important; scroll-behavior: smooth; }
+        /* Fluid scrolling */
+        html, body { scroll-behavior: smooth; }
 
         /* ========================================================
-           HEADER - Redesigned (NOT Sticky, Clean)
+           HEADER (Non-Sticky, Flows Naturally)
            ======================================================== */
         header {
-            position: relative; /* Removed fixed/sticky */
+            position: absolute; /* Removed sticky top. Now it scrolls away. */
+            top: 0;
+            left: 0;
             width: 100%;
-            background-color: transparent; /* Clean integration with background */
-            padding: 2rem 2rem 0; /* Padding to push it down nicely */
+            padding: 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -101,63 +100,66 @@
             background: var(--meta-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-align: center;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         /* ========================================================
-           SECTION 1: CUSTOM APP / BUSINESS (Meta Card Pattern)
+           SECTION 1: CUSTOM APP / BUSINESS (Meta AI Style Card)
            ======================================================== */
         .custom-app-section {
-            min-height: calc(100vh - 100px); /* Adjust for header */
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem; 
+            padding: 100px 2rem 4rem; /* Adjusted for absolute header */
             width: 100%;
-            animation: fadeInDown 1s ease-out;
         }
 
         .custom-card {
             background-color: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(40px) saturate(150%);
+            -webkit-backdrop-filter: blur(40px) saturate(150%);
             border: 1px solid var(--glass-border);
-            border-radius: 12px; /* Meta standard radius */
-            padding: 4rem 3rem;
+            border-radius: 36px; /* Heavy Meta-style rounding */
+            padding: 5rem 4rem;
             text-align: center;
             box-shadow: var(--glass-shadow);
-            max-width: 850px;
+            max-width: 900px;
             width: 100%;
             position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .custom-card-content {
-            position: relative;
-            z-index: 1;
+        .custom-card:hover {
+            transform: translateY(-5px);
         }
 
         .custom-card h2 {
-            font-size: 2.8rem;
+            font-size: 3.5rem;
             font-weight: 800;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             color: var(--text-primary);
             letter-spacing: -0.03em;
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
         .custom-card p {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             color: var(--text-secondary);
             max-width: 650px;
-            margin: 0 auto 2.5rem;
+            margin: 0 auto 3rem;
             line-height: 1.6;
-            font-weight: 400; /* Meta uses lighter standard weights */
+            font-weight: 500;
         }
 
         /* Highlight Text Feature */
         .highlight-text {
-            font-weight: 600;
-            color: var(--meta-blue);
+            font-weight: 700;
+            background: var(--meta-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .action-buttons {
@@ -167,41 +169,42 @@
             flex-wrap: wrap;
         }
 
-        /* Meta Style Buttons (Slightly rounded, solid colors) */
         .btn-action {
             display: inline-flex;
             align-items: center;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1rem;
-            padding: 12px 24px;
-            border-radius: 8px; /* Meta button style */
+            font-size: 1.05rem;
+            padding: 14px 32px;
+            border-radius: 50px;
             transition: all 0.2s ease;
         }
 
         .btn-action svg {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
+            width: 22px;
+            height: 22px;
+            margin-right: 10px;
             fill: currentColor;
         }
 
         .whatsapp {
-            background-color: var(--whatsapp-green); 
+            background-color: #25D366; 
             color: #ffffff;
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
         }
         .whatsapp:hover { 
-            background-color: var(--whatsapp-hover); 
-            transform: translateY(-2px); 
+            background-color: #20bd5a; 
+            transform: scale(1.02); 
         }
 
         .email-btn {
-            background-color: var(--meta-blue);
+            background: var(--meta-gradient);
             color: #ffffff;
+            box-shadow: 0 4px 14px rgba(201, 43, 184, 0.3);
         }
         .email-btn:hover { 
-            background-color: var(--meta-blue-hover); 
-            transform: translateY(-2px); 
+            transform: scale(1.02); 
+            box-shadow: 0 6px 20px rgba(201, 43, 184, 0.5); 
         }
 
         .section-divider {
@@ -213,18 +216,24 @@
            ======================================================== */
         .hero {
             text-align: center;
-            padding: 4rem 2rem 2rem; 
+            padding: 10vh 2rem 4rem;
             position: relative;
+        }
+
+        /* Text background pill for extremely high visibility on any image */
+        .hero-text-wrapper {
+            display: inline-block;
             background-color: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-top: 1px solid var(--glass-border);
-            border-bottom: 1px solid var(--glass-border);
-            margin-bottom: 3rem;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 2rem 3rem;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
         }
 
         .hero h1 {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 0.5rem;
             letter-spacing: -0.02em;
@@ -232,48 +241,50 @@
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: var(--text-secondary);
-            max-width: 500px;
             margin: 0 auto;
+            font-weight: 500;
         }
 
-        /* App Store Grid - Meta App Center Style */
+        /* App Store Grid */
         .app-grid {
-            display: flex;
-            flex-direction: column; /* Changed from grid to list view for Meta vibe */
-            gap: 1.2rem;
-            padding: 0 2rem 8rem;
-            max-width: 850px; /* Constrained width for list layout */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem 15vh;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Glass App List Items */
+        /* Redesigned Glass App Cards */
         .app-card {
             background-color: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-radius: 12px;
-            padding: 1.2rem 1.5rem;
+            backdrop-filter: blur(40px) saturate(150%);
+            -webkit-backdrop-filter: blur(40px) saturate(150%);
+            border-radius: 28px;
+            padding: 2rem;
             display: flex;
             align-items: center;
             border: 1px solid var(--glass-border);
             box-shadow: var(--glass-shadow);
-            transition: background-color 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .app-card:hover {
-            background-color: var(--btn-secondary-bg); /* Meta hover effect */
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.15);
         }
 
         .app-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px; /* Meta icon radius */
+            width: 80px;
+            height: 80px;
+            border-radius: 22px; /* Meta Squircle */
             object-fit: cover;
             background-color: var(--icon-bg);
-            margin-right: 1.2rem;
+            margin-right: 1.5rem;
             flex-shrink: 0;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
             border: 1px solid var(--glass-border);
         }
 
@@ -287,50 +298,54 @@
         .app-category {
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--meta-blue);
-            font-weight: 700;
-            margin-bottom: 0.2rem;
+            letter-spacing: 0.1em;
+            background: var(--meta-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
         }
 
         .app-info h2 {
-            font-size: 1.2rem;
-            margin: 0;
+            font-size: 1.5rem;
+            margin: 0 0 0.3rem 0;
             font-weight: 700;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
         .app-info p {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-secondary);
             margin: 0;
+            font-weight: 500;
         }
 
-        /* Meta style secondary button */
+        /* Pill Download Button */
         .download-btn {
-            background-color: var(--btn-secondary-bg);
-            color: var(--btn-secondary-text);
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 8px 20px;
-            border-radius: 6px;
-            transition: background-color 0.2s ease;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 10px 24px;
+            border-radius: 50px;
+            transition: all 0.2s ease;
             margin-left: 1rem;
         }
 
         .download-btn:hover {
-            background-color: var(--btn-secondary-hover);
+            background-color: var(--btn-hover);
         }
 
         /* ========================================================
-           PROFESSIONAL FOOTER
+           PROFESSIONAL GLASS FOOTER
            ======================================================== */
         footer {
             background-color: var(--glass-bg);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            padding: 4rem 2rem 2rem;
+            backdrop-filter: blur(40px) saturate(150%);
+            -webkit-backdrop-filter: blur(40px) saturate(150%);
+            padding: 5rem 2rem 2rem;
             border-top: 1px solid var(--glass-border);
         }
 
@@ -339,48 +354,61 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1.5fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
+            gap: 4rem;
+            margin-bottom: 4rem;
         }
 
-        .footer-about h3, .footer-contact h3 {
-            font-size: 1.1rem;
+        .footer-about h3 {
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         .footer-about p {
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             line-height: 1.6;
-            max-width: 450px;
+            max-width: 500px;
+            font-weight: 500;
+        }
+
+        .footer-contact h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
         }
 
         .contact-info {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 1rem;
         }
 
         .contact-link {
             display: inline-flex;
             align-items: center;
-            color: var(--meta-blue);
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
-            transition: text-decoration 0.2s ease;
+            padding: 12px 20px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.2s ease;
+            width: fit-content;
         }
 
         .contact-link:hover {
-            text-decoration: underline;
+            background-color: var(--btn-hover);
+            transform: translateX(4px);
         }
 
         .contact-icon {
-            margin-right: 10px;
+            margin-right: 12px;
             font-size: 1.2rem;
-            color: var(--text-primary);
         }
 
         .footer-bottom {
@@ -395,28 +423,33 @@
 
         .copyright {
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
-
-        /* Animations */
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            .custom-app-section { padding: 2rem 1rem; min-height: auto; margin-bottom: 3rem; }
-            .custom-card { padding: 3rem 1.5rem; }
-            .custom-card h2 { font-size: 2rem; }
+            .custom-app-section { padding: 8rem 1.5rem 2rem; }
+            .custom-card { padding: 3rem 1.5rem; border-radius: 30px; }
+            .custom-card h2 { font-size: 2.2rem; }
+            .custom-card p { font-size: 1.05rem; }
             
             .action-buttons { flex-direction: column; width: 100%; }
             .btn-action { width: 100%; justify-content: center; }
             
-            .hero { padding: 3rem 1.5rem 2rem; }
+            .hero { padding: 5vh 1.5rem 2rem; }
+            .hero-text-wrapper { padding: 1.5rem; border-radius: 24px; }
+            .hero h1 { font-size: 2rem; }
             
-            .app-grid { padding: 0 1rem 4rem; }
-            .app-card { padding: 1rem; }
+            .app-grid { padding: 0 1.5rem 5rem; grid-template-columns: 1fr; gap: 1.5rem; }
+            .app-card { padding: 1.5rem; flex-direction: column; text-align: center; border-radius: 24px; }
+            .app-icon { margin: 0 0 1rem 0; width: 90px; height: 90px; }
+            .download-btn { margin: 1rem 0 0 0; width: 100%; justify-content: center; display: flex; }
             
-            .footer-content { grid-template-columns: 1fr; gap: 2rem; }
-            .footer-bottom { flex-direction: column; text-align: center; gap: 1rem; }
+            .footer-content { grid-template-columns: 1fr; gap: 2.5rem; }
+            .footer-bottom { flex-direction: column; text-align: center; gap: 1.5rem; }
+            .contact-link { width: 100%; justify-content: center; }
+            .contact-link:hover { transform: none; }
         }
     </style>
 </head>
@@ -449,8 +482,10 @@
         <div class="section-divider"></div>
 
         <section class="hero">
-            <h1>Check out our Apps</h1>
-            <p>Innovative software designed to connect, assist, and entertain.</p>
+            <div class="hero-text-wrapper">
+                <h1>Check out our Apps</h1>
+                <p>Innovative software designed to connect, assist, and entertain.</p>
+            </div>
         </section>
 
         <section class="app-grid">
