@@ -284,6 +284,73 @@
         .section-divider { display: none; }
 
         /* ========================================================
+           NEW: AI QUALITY ASSURANCE BANNER
+           ======================================================== */
+        .ai-qa-section {
+            padding: 2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            z-index: 20;
+            position: relative;
+        }
+
+        .ai-qa-card {
+            background: linear-gradient(135deg, rgba(0, 100, 224, 0.1) 0%, rgba(163, 52, 250, 0.1) 100%);
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(50px) saturate(200%);
+            -webkit-backdrop-filter: blur(50px) saturate(200%);
+            border-radius: 30px;
+            padding: 2.5rem 3rem;
+            display: flex;
+            align-items: center;
+            border: 2px solid rgba(163, 52, 250, 0.3);
+            box-shadow: 0 15px 35px rgba(163, 52, 250, 0.15);
+            gap: 2rem;
+        }
+
+        .ai-qa-icon {
+            font-size: 3.5rem;
+            animation: ai-pulse 2s infinite alternate;
+            background: var(--icon-bg);
+            padding: 1rem;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .ai-qa-content h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+            background: var(--meta-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ai-qa-content p {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .ai-qa-content strong {
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        @keyframes ai-pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(163, 52, 250, 0.4)); }
+            100% { transform: scale(1.08); filter: drop-shadow(0 0 25px rgba(0, 100, 224, 0.6)); }
+        }
+
+        @media (max-width: 768px) {
+            .ai-qa-card { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+            .ai-qa-icon { margin-bottom: 1rem; }
+        }
+
+        /* ========================================================
            SECTION 2: APP DIRECTORY
            ======================================================== */
         .hero {
@@ -704,6 +771,7 @@
             display: block;
             width: 100%;
             cursor: pointer;
+            margin-top: auto;
         }
 
         .btn-outline {
@@ -1011,6 +1079,16 @@
             </div>
         </section>
 
+        <section class="ai-qa-section reveal-scale">
+            <div class="ai-qa-card">
+                <div class="ai-qa-icon">🤖✨</div>
+                <div class="ai-qa-content">
+                    <h3>AI-Powered Quality Assurance</h3>
+                    <p>We don't just rely on human expertise. Every single line of code, project file, and digital product is <strong>rigorously double-checked, reviewed, and approved by advanced AI systems</strong>. This guarantees zero bugs, robust security architectures, and flawless performance across all our builds.</p>
+                </div>
+            </div>
+        </section>
+
         <section class="app-showcase-section">
             <div class="showcase-header reveal">
                 <h2>Experience Our UI/UX</h2>
@@ -1075,16 +1153,16 @@
                 <div class="service-info"><h2>Progressive Web Apps</h2><p>Transforming web portals into native-feeling apps with advanced Service Worker caching strategies.</p></div>
             </div>
             <div class="service-card reveal-left">
-                <div class="service-icon">🔔</div>
-                <div class="service-info"><h2>Next-Gen Push Notifications</h2><p>Upgrading outdated messaging systems to industry-leading SDKs like OneSignal for real-time delivery.</p></div>
+                <div class="service-icon">🍓</div>
+                <div class="service-info"><h2>Raspberry Pi & IoT</h2><p>Custom edge computing, smart home automation, and tailored sensor integration using the Raspberry Pi ecosystem.</p></div>
             </div>
             <div class="service-card reveal">
-                <div class="service-icon">⚛️</div>
-                <div class="service-info"><h2>React Native Migrations</h2><p>We specialize in migrating massive HTML/JS portals into fluid, compiled native mobile environments.</p></div>
+                <div class="service-icon">♾️</div>
+                <div class="service-info"><h2>Arduino Prototyping</h2><p>Microcontroller programming for robotics, automated systems, and high-precision custom hardware prototypes.</p></div>
             </div>
             <div class="service-card reveal-right">
                 <div class="service-icon">🛠️</div>
-                <div class="service-info"><h2>Hardware & Infrastructure</h2><p>Beyond software. We consult on custom PC builds, network logic, and hardware resilience.</p></div>
+                <div class="service-info"><h2>Custom Hardware</h2><p>Beyond software. We consult on custom PC builds, tailored circuit logic, and bridging physical hardware with digital dashboards.</p></div>
             </div>
         </section>
 
@@ -1110,25 +1188,54 @@
                 </div>
 
                 <div class="pricing-card featured reveal">
-                    <div class="badge">STUDENT</div>
+                    <div class="badge">SOLO STUDENT</div>
                     <div class="pricing-icon">🎓</div>
-                    <h3 class="pricing-title">Co-Learn Program</h3>
+                    <h3 class="pricing-title">Co-Learn Solo</h3>
                     <div class="pricing-price">₹999<span>/ one-time</span></div>
-                    <p class="pricing-desc">Exclusive offer for college students! We build your academic project while teaching you how it works via dedicated tutorials.</p>
+                    <p class="pricing-desc">Exclusive offer for college students! We build your academic project while teaching you how it works.</p>
                     <ul class="pricing-features">
-                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Full Project Source Code Delivery</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Full Source Code Delivery</li>
                         <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Dedicated Video Tutorials</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> 1-on-1 Code Architecture Review</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> 1-on-1 Architecture Review</li>
                         <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Mentorship While Building</li>
                     </ul>
-                    <a href="#order-form" class="pricing-btn btn-filled">Enroll & Build</a>
+                    <a href="#order-form" class="pricing-btn btn-filled">Enroll Solo</a>
+                </div>
+
+                <div class="pricing-card featured reveal">
+                    <div class="badge" style="background: #00A400;">GROUP TEAM</div>
+                    <div class="pricing-icon">👥</div>
+                    <h3 class="pricing-title">Co-Learn Group</h3>
+                    <div class="pricing-price">₹1499<span>/ one-time</span></div>
+                    <p class="pricing-desc">Perfect for student teams! Advanced multi-feature projects with collaborative learning resources.</p>
+                    <ul class="pricing-features">
+                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Complex Group Architectures</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Group Video Mentorship</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> AI Code Verifications</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Extended Support & QA</li>
+                    </ul>
+                    <a href="#order-form" class="pricing-btn btn-filled">Enroll Group</a>
+                </div>
+                
+                <div class="pricing-card reveal-right">
+                    <div class="pricing-icon">💡</div>
+                    <h3 class="pricing-title">Startup Launchpad</h3>
+                    <div class="pricing-price">Custom<span>/ quote</span></div>
+                    <p class="pricing-desc">Everything an emerging startup needs: scalable MVP architectures, IoT device integration, and fast deployment.</p>
+                    <ul class="pricing-features">
+                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Custom MVP Development</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Hardware/Software Synergies</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Scalable Cloud Setup</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Pitch-Ready Polished UI</li>
+                    </ul>
+                    <a href="#order-form" class="pricing-btn btn-outline">Consult Now</a>
                 </div>
 
                 <div class="pricing-card reveal-right">
                     <div class="pricing-icon">💼</div>
-                    <h3 class="pricing-title">Enterprise Scale</h3>
+                    <h3 class="pricing-title">Business Scale</h3>
                     <div class="pricing-price">Custom<span>/ quote</span></div>
-                    <p class="pricing-desc">Advanced full-stack architectures, AI integrations, and heavy-duty databases for serious businesses.</p>
+                    <p class="pricing-desc">Advanced full-stack architectures, AI integrations, heavy-duty databases, and IoT for serious enterprises.</p>
                     <ul class="pricing-features">
                         <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Node.js/Firebase Backend Systems</li>
                         <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Compiled React Native Apps</li>
@@ -1166,7 +1273,12 @@
                             <select class="form-control" required>
                                 <option value="" disabled selected>Select service type...</option>
                                 <option>Essential Build (₹499)</option>
-                                <option>Co-Learn Student Program (₹999)</option>
+                                <option>Co-Learn Student Program - Solo (₹999)</option>
+                                <option>Co-Learn Student Program - Group (₹1499)</option>
+                                <option>Startup Launchpad Plan (Custom)</option>
+                                <option>Business / Enterprise Plan (Custom)</option>
+                                <option>Raspberry Pi & IoT Integration</option>
+                                <option>Arduino / Custom Hardware Prototyping</option>
                                 <option>Node.js / Express Backend</option>
                                 <option>React Native Development</option>
                                 <option>PWA Implementation</option>
@@ -1192,7 +1304,7 @@
         <div class="footer-content">
             <div class="footer-about">
                 <h3>About Goorac Corporation</h3>
-                <p>Goorac Corporation is a leading technology firm dedicated to creating innovative digital ecosystems. We specialize in high-performance web applications, artificial intelligence integrations, and scalable mobile software.</p>
+                <p>Goorac Corporation is a leading technology firm dedicated to creating innovative digital ecosystems. We specialize in high-performance web applications, artificial intelligence integrations, scalable mobile software, and custom hardware prototyping.</p>
             </div>
             <div class="footer-contact">
                 <h3>Contact Us</h3>
@@ -1246,16 +1358,16 @@
                 btn.addEventListener('click', () => triggerHaptic(60));
             });
 
-            // Form Submit Logic: Beautiful WhatsApp Redirect (FIXED JAVASCRIPT)
+            // Form Submit Logic: Beautiful WhatsApp Redirect (FIXED JAVASCRIPT INDEXING BUG)
             const projectForm = document.getElementById('project-form');
             projectForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
                 // Extracting values from form fields using correct array indexing
                 const inputs = this.querySelectorAll('input');
-                const name = inputs.value;
-                const email = inputs.value;
-                const phone = inputs.value;
+                const name = inputs[0].value;
+                const email = inputs[1].value;
+                const phone = inputs[2].value;
                 const service = this.querySelector('select').value;
                 const requirements = this.querySelector('textarea').value;
 
