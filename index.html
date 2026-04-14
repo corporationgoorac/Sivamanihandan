@@ -67,13 +67,13 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent; /* Remove mobile tap highlight */
         }
 
-        /* FIX: Added overflow-x hidden to prevent horizontal shifts and pinch-zoom bugs */
-        html, body {
-            width: 100%;
+        html {
+            scroll-behavior: smooth;
             overflow-x: hidden;
-            position: relative;
+            width: 100%;
         }
 
         body {
@@ -89,27 +89,24 @@
             background-size: cover;
             background-position: center;
             transition: color 0.3s ease, background-image 0.5s ease;
+            overflow-x: hidden; 
+            width: 100%;
+            touch-action: manipulation; 
         }
-
-        /* Fluid scrolling */
-        html { scroll-behavior: smooth; }
 
         /* ========================================================
            HEADER (Non-Sticky, Flows Naturally)
            ======================================================== */
         header {
-            position: absolute; /* Removed sticky top. Now it scrolls away. */
-            top: 0;
-            left: 0;
+            position: relative; 
             width: 100%;
-            padding: 2rem;
+            padding: 2.5rem 2rem 1rem;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
 
-        /* Added a Glass Wrapper for the logo to ensure high visibility on ALL backgrounds */
         .logo-wrapper {
             background-color: var(--glass-bg);
             backdrop-filter: blur(30px) saturate(150%);
@@ -134,13 +131,14 @@
            SECTION 1: CUSTOM APP / BUSINESS (Meta AI Style Card)
            ======================================================== */
         .custom-app-section {
-            min-height: 100vh;
+            min-height: calc(100vh - 100px);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 120px 2rem 6rem; /* Improved padding for alignment */
+            padding: 2rem;
             width: 100%;
-            position: relative; /* Added to position the scroll indicator */
+            position: relative;
         }
 
         .custom-card {
@@ -148,8 +146,8 @@
             backdrop-filter: blur(40px) saturate(150%);
             -webkit-backdrop-filter: blur(40px) saturate(150%);
             border: 1px solid var(--glass-border);
-            border-radius: 36px; /* Heavy Meta-style rounding */
-            padding: 5rem 4rem;
+            border-radius: 36px;
+            padding: 4rem 3rem;
             text-align: center;
             box-shadow: var(--glass-shadow);
             max-width: 900px;
@@ -158,6 +156,7 @@
             overflow: hidden;
             transform: translateY(0);
             transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+            z-index: 5;
         }
 
         .custom-card:hover {
@@ -183,7 +182,6 @@
             font-weight: 500;
         }
 
-        /* Highlight Text Feature */
         .highlight-text {
             font-weight: 700;
             background: var(--meta-gradient);
@@ -207,6 +205,7 @@
             padding: 14px 32px;
             border-radius: 50px;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
 
         .btn-action svg {
@@ -236,13 +235,14 @@
             box-shadow: 0 6px 20px rgba(201, 43, 184, 0.5); 
         }
 
-        /* --- Scroll Down Indicator --- */
+        /* --- FIXED: Scroll Down Indicator Centering --- */
         .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
+            margin-top: 3rem;
             z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
         }
 
         .scroll-indicator a {
@@ -260,6 +260,7 @@
             box-shadow: var(--glass-shadow);
             animation: bounce 2s infinite;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .scroll-indicator a:hover {
@@ -278,20 +279,17 @@
             60% { transform: translateY(-6px); }
         }
 
-        .section-divider {
-            display: none; 
-        }
+        .section-divider { display: none; }
 
         /* ========================================================
            SECTION 2: APP DIRECTORY
            ======================================================== */
         .hero {
             text-align: center;
-            padding: 10vh 2rem 4rem;
+            padding: 5rem 2rem 3rem;
             position: relative;
         }
 
-        /* Text background pill for extremely high visibility on any image */
         .hero-text-wrapper {
             display: inline-block;
             background-color: var(--glass-bg);
@@ -318,17 +316,15 @@
             font-weight: 500;
         }
 
-        /* App Store Grid */
         .app-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 2rem;
-            padding: 0 2rem 5vh; /* Adjusted padding for showcase section */
+            padding: 0 2rem 5rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Redesigned Glass App Cards */
         .app-card {
             background-color: var(--glass-bg);
             backdrop-filter: blur(40px) saturate(150%);
@@ -350,7 +346,7 @@
         .app-icon {
             width: 80px;
             height: 80px;
-            border-radius: 22px; /* Meta Squircle */
+            border-radius: 22px;
             object-fit: cover;
             background-color: var(--icon-bg);
             margin-right: 1.5rem;
@@ -392,7 +388,6 @@
             font-weight: 500;
         }
 
-        /* Pill Download Button */
         .download-btn {
             background-color: var(--btn-bg);
             color: var(--btn-text);
@@ -418,8 +413,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
-            padding: 0 2rem 15vh;
-            max-width: 1400px; /* Expanded width for more services */
+            padding: 0 2rem 5rem;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -441,7 +436,6 @@
         .service-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 24px 48px rgba(0,0,0,0.2);
-            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .service-icon {
@@ -453,7 +447,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 22px; /* Meta Squircle */
+            border-radius: 22px;
             box-shadow: 0 6px 16px rgba(0,0,0,0.1);
             border: 1px solid var(--glass-border);
         }
@@ -463,212 +457,22 @@
             margin: 0 0 0.8rem 0;
             font-weight: 700;
             color: var(--text-primary);
-            letter-spacing: -0.01em;
         }
 
         .service-info p {
             font-size: 1.05rem;
             color: var(--text-secondary);
-            margin: 0;
             font-weight: 500;
             line-height: 1.6;
         }
 
         /* ========================================================
-           PROFESSIONAL GLASS FOOTER
+           NEW: PROFESSIONAL APP SCREEN SHOWCASE (FIXED IMAGES)
            ======================================================== */
-        footer {
-            background-color: var(--glass-bg);
-            backdrop-filter: blur(40px) saturate(150%);
-            -webkit-backdrop-filter: blur(40px) saturate(150%);
-            padding: 5rem 2rem 3rem;
-            border-top: 1px solid var(--glass-border);
-            position: relative;
-            z-index: 10;
-        }
-
-        .footer-content {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 4rem;
-            margin-bottom: 4rem;
-        }
-
-        .footer-about h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 1.2rem;
-        }
-
-        .footer-about p {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            line-height: 1.6;
-            max-width: 500px;
-            font-weight: 500;
-        }
-
-        .footer-contact h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 1.2rem;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .contact-link {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--btn-bg);
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 600;
-            padding: 12px 20px;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            transition: all 0.2s ease;
-            width: fit-content;
-        }
-
-        .contact-link:hover {
-            background-color: var(--btn-hover);
-            transform: translateX(4px);
-        }
-
-        .contact-icon {
-            margin-right: 12px;
-            font-size: 1.2rem;
-        }
-
-        .footer-bottom {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding-top: 2rem;
-            border-top: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .copyright {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .custom-app-section { padding: 8rem 1.5rem 4rem; min-height: auto; }
-            .custom-card { padding: 3rem 1.5rem; border-radius: 30px; }
-            .custom-card h2 { font-size: 2.2rem; }
-            .custom-card p { font-size: 1.05rem; }
-            
-            .action-buttons { flex-direction: column; width: 100%; }
-            .btn-action { width: 100%; justify-content: center; }
-            
-            .hero { padding: 5vh 1.5rem 2rem; }
-            .hero-text-wrapper { padding: 1.5rem; border-radius: 24px; }
-            .hero h1 { font-size: 2rem; }
-            
-            .app-grid, .services-grid { padding: 0 1.5rem 5rem; grid-template-columns: 1fr; gap: 1.5rem; }
-            .app-card { padding: 1.5rem; flex-direction: column; text-align: center; border-radius: 24px; }
-            .app-icon { margin: 0 0 1rem 0; width: 90px; height: 90px; }
-            .download-btn { margin: 1rem 0 0 0; width: 100%; justify-content: center; display: flex; }
-            
-            .service-card { padding: 2rem 1.5rem; }
-
-            .footer-content { grid-template-columns: 1fr; gap: 2.5rem; }
-            .footer-bottom { flex-direction: column; text-align: center; gap: 1.5rem; }
-            .contact-link { width: 100%; justify-content: center; }
-            .contact-link:hover { transform: none; }
-
-            /* Mobile Overrides for new advanced sections */
-            .app-showcase-container {
-                height: 300px;
-                animation: scrollMarquee 15s linear infinite; /* Faster for mobile */
-            }
-            .app-screen {
-                width: 160px;
-                height: 340px;
-            }
-            .order-form-container {
-                padding: 2.5rem 1.5rem;
-            }
-            .form-grid {
-                grid-template-columns: 1fr !important;
-            }
-            .order-header h2 { font-size: 2rem; }
-        }
-
-        /* ========================================================
-           NEW: ADVANCED HARDWARE-ACCELERATED ANIMATIONS
-           ======================================================== */
-        
-        /* Base Reveal Class */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: opacity, transform;
-        }
-
-        /* Directional Variants */
-        .reveal-left {
-            opacity: 0;
-            transform: translateX(-40px);
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: opacity, transform;
-        }
-
-        .reveal-right {
-            opacity: 0;
-            transform: translateX(40px);
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: opacity, transform;
-        }
-
-        .reveal-scale {
-            opacity: 0;
-            transform: scale(0.95);
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: opacity, transform;
-        }
-
-        /* Active State toggled by Intersection Observer */
-        .reveal.active,
-        .reveal-left.active,
-        .reveal-right.active,
-        .reveal-scale.active {
-            opacity: 1;
-            transform: translate(0) scale(1);
-        }
-
-        /* Staggered Delays for Grid Items */
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-        .delay-400 { transition-delay: 400ms; }
-        .delay-500 { transition-delay: 500ms; }
-
-        /* ========================================================
-           NEW: PROFESSIONAL APP SCREEN SHOWCASE (MARQUEE)
-           ======================================================== */
-        
-        /* FIX: Wrapped in overflow-hidden to prevent layout breaking */
         .app-showcase-section {
-            padding: 4rem 0 8rem;
+            padding: 4rem 0 6rem;
             overflow: hidden;
             width: 100%;
-            position: relative;
         }
 
         .showcase-header {
@@ -691,10 +495,10 @@
         .app-showcase-container {
             display: flex;
             gap: 2rem;
-            width: max-content; /* FIX: Use max-content instead of 200% for stability */
+            width: max-content;
             animation: scrollMarquee 40s linear infinite;
             padding: 2rem 0;
-            perspective: 1000px;
+            will-change: transform;
         }
 
         .app-showcase-container:hover {
@@ -707,11 +511,11 @@
             border-radius: 36px;
             background-color: #000;
             border: 8px solid #222;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 0 0 2px #555;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             overflow: hidden;
             flex-shrink: 0;
             position: relative;
-            transform-style: preserve-3d;
+            transform: translate3d(0,0,0); 
             transition: transform 0.5s ease;
         }
 
@@ -724,44 +528,22 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.9;
-            transition: opacity 0.3s ease;
-        }
-
-        .app-screen:hover img {
-            opacity: 1;
-        }
-
-        /* Screen Notch Simulation */
-        .app-screen::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 25px;
-            background: #222;
-            border-bottom-left-radius: 16px;
-            border-bottom-right-radius: 16px;
-            z-index: 2;
+            background-color: #111; /* Fallback for loading */
         }
 
         @keyframes scrollMarquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
         }
 
         /* ========================================================
-           NEW: ADVANCED ORDER & INQUIRY FORM
+           NEW: ADVANCED ORDER & INQUIRY FORM (REFINED)
            ======================================================== */
-        
         .order-section {
-            padding: 5rem 2rem 10rem;
-            max-width: 1000px;
+            padding: 5rem 2rem 8rem;
+            max-width: 1100px;
             margin: 0 auto;
-            position: relative;
-            z-index: 5;
+            width: 100%;
         }
 
         .order-form-container {
@@ -769,31 +551,15 @@
             backdrop-filter: blur(50px) saturate(200%);
             -webkit-backdrop-filter: blur(50px) saturate(200%);
             border-radius: 40px;
-            padding: 4rem;
+            padding: 4rem 3rem;
             border: 1px solid var(--glass-border);
             box-shadow: 0 24px 64px rgba(0,0,0,0.15);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Decorative gradient blur behind form */
-        .order-form-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(163, 52, 250, 0.05) 0%, rgba(0, 100, 224, 0.05) 50%, transparent 100%);
-            z-index: 0;
-            pointer-events: none;
+            width: 100%;
         }
 
         .order-header {
             text-align: center;
             margin-bottom: 3rem;
-            position: relative;
-            z-index: 1;
         }
 
         .order-header h2 {
@@ -801,89 +567,60 @@
             font-weight: 800;
             color: var(--text-primary);
             margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-
-        .order-header p {
-            font-size: 1.15rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+            letter-spacing: -0.04em;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            position: relative;
-            z-index: 1;
+            gap: 1.5rem;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
 
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
+        .form-group.full-width { grid-column: 1 / -1; }
 
         .form-label {
             font-weight: 700;
             font-size: 0.95rem;
             color: var(--text-primary);
-            margin-bottom: 0.8rem;
-            letter-spacing: 0.02em;
+            margin-bottom: 0.6rem;
         }
 
         .form-control {
             background-color: var(--icon-bg);
             border: 2px solid var(--input-border);
             color: var(--text-primary);
-            padding: 1.2rem 1.5rem;
-            border-radius: 18px;
-            font-size: 1.05rem;
-            font-family: inherit;
+            padding: 1rem 1.2rem;
+            border-radius: 15px;
+            font-size: 1rem;
+            width: 100%;
             transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--accent-blue);
-            box-shadow: 0 0 0 4px rgba(0, 100, 224, 0.15), inset 0 2px 4px rgba(0,0,0,0.02);
             background-color: var(--glass-bg);
+            box-shadow: 0 0 0 4px rgba(0, 100, 224, 0.1);
         }
 
-        .form-control::placeholder {
-            color: var(--text-muted);
-        }
-
-        select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2365676B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1.5rem center;
-            background-size: 1.2em;
-            cursor: pointer;
-        }
-
-        textarea.form-control {
-            resize: vertical;
-            min-height: 180px;
-            line-height: 1.6;
-        }
+        textarea.form-control { min-height: 150px; resize: vertical; }
 
         .submit-btn {
             background: var(--meta-gradient);
             color: #fff;
             border: none;
-            padding: 1.2rem 2.5rem;
+            padding: 1.2rem;
             border-radius: 50px;
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(163, 52, 250, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -892,26 +629,104 @@
         }
 
         .submit-btn:hover {
-            transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 15px 30px rgba(163, 52, 250, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(163, 52, 250, 0.3);
         }
 
-        .submit-btn svg {
-            margin-left: 10px;
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-            transition: transform 0.3s ease;
+        /* ========================================================
+           PROFESSIONAL GLASS FOOTER
+           ======================================================== */
+        footer {
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(150%);
+            -webkit-backdrop-filter: blur(40px) saturate(150%);
+            padding: 5rem 2rem 2rem;
+            border-top: 1px solid var(--glass-border);
         }
 
-        .submit-btn:hover svg {
-            transform: translateX(5px);
+        .footer-content {
+            max-width: 1100px;
+            margin: 0 auto 4rem;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
         }
+
+        .footer-about h3, .footer-contact h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-about p {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .contact-info { display: flex; flex-direction: column; gap: 0.8rem; }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 15px;
+            width: fit-content;
+            transition: all 0.2s ease;
+        }
+
+        .contact-link:hover { transform: translateX(5px); }
+
+        .footer-bottom {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Mobile Responsiveness Improvements */
+        @media (max-width: 768px) {
+            html, body { overflow-x: hidden; width: 100vw; position: relative; }
+            
+            .custom-card { padding: 3rem 1.5rem; border-radius: 30px; }
+            .custom-card h2 { font-size: 2.2rem; }
+            .custom-card p { font-size: 1.1rem; }
+            
+            .action-buttons { flex-direction: column; width: 100%; }
+            .btn-action { width: 100%; justify-content: center; }
+            
+            .app-grid, .services-grid { grid-template-columns: 1fr; padding: 0 1.5rem 3rem; }
+            .app-card { flex-direction: column; text-align: center; }
+            .app-icon { margin: 0 0 1rem 0; }
+            .download-btn { margin: 1rem 0 0 0; width: 100%; }
+
+            .form-grid { grid-template-columns: 1fr; }
+            .order-form-container { padding: 3rem 1.5rem; border-radius: 30px; }
+            .order-header h2 { font-size: 2rem; }
+
+            .footer-content { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+            
+            .app-screen { width: 180px; height: 380px; border-radius: 24px; border: 5px solid #222; }
+        }
+
+        /* Reveal Animations */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal-left { opacity: 0; transform: translateX(-40px); transition: all 0.8s ease-out; }
+        .reveal-right { opacity: 0; transform: translateX(40px); transition: all 0.8s ease-out; }
+        .reveal-scale { opacity: 0; transform: scale(0.95); transition: all 0.8s ease-out; }
+        .active { opacity: 1; transform: translate(0) scale(1); }
     </style>
 </head>
 <body>
 
-    <header class="reveal-scale active">
+    <header class="reveal-scale">
         <div class="logo-wrapper">
             <div class="logo">Goorac Corporation</div>
         </div>
@@ -936,14 +751,12 @@
                 </div>
             </div>
 
-            <div class="scroll-indicator reveal delay-200">
+            <div class="scroll-indicator reveal">
                 <a href="#apps" aria-label="Scroll to Apps">
                     <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                 </a>
             </div>
         </section>
-
-        <div class="section-divider"></div>
 
         <section class="hero" id="apps">
             <div class="hero-text-wrapper reveal-scale">
@@ -953,9 +766,8 @@
         </section>
 
         <section class="app-grid">
-            
-            <div class="app-card reveal-left delay-100">
-                <img src="https://www.goorac.biz/images/icon.png" alt="Quantum Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMmMwYzJlIi8+PC9zdmc+'">
+            <div class="app-card reveal-left">
+                <img src="https://www.goorac.biz/images/icon.png" alt="Quantum Icon" class="app-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/5968/5968771.png'">
                 <div class="app-info">
                     <div class="app-category">Social</div>
                     <h2>Quantum</h2>
@@ -964,8 +776,8 @@
                 <a href="https://www.goorac.biz/download.html" class="download-btn">Get App</a>
             </div>
 
-            <div class="app-card reveal delay-200">
-                <img src="https://quan.goorac.biz/images/icon.png" alt="Quan AI Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMmMwYzJlIi8+PC9zdmc+'">
+            <div class="app-card reveal">
+                <img src="https://quan.goorac.biz/images/icon.png" alt="Quan AI Icon" class="app-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2103/2103633.png'">
                 <div class="app-info">
                     <div class="app-category">Productivity</div>
                     <h2>Quan AI</h2>
@@ -974,8 +786,8 @@
                 <a href="https://quan.goorac.biz/download" class="download-btn">Get App</a>
             </div>
 
-            <div class="app-card reveal-right delay-300">
-                <img src="https://quanic.goorac.biz/images/icon.png" alt="Quanic Icon" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMmMwYzJlIi8+PC9zdmc+'">
+            <div class="app-card reveal-right">
+                <img src="https://quanic.goorac.biz/images/icon.png" alt="Quanic Icon" class="app-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3043/3043665.png'">
                 <div class="app-info">
                     <div class="app-category">Music</div>
                     <h2>Quanic</h2>
@@ -983,7 +795,6 @@
                 </div>
                 <a href="https://quanic.goorac.biz/download" class="download-btn">Get App</a>
             </div>
-
         </section>
 
         <section class="app-showcase-section">
@@ -992,31 +803,16 @@
             </div>
             
             <div class="app-showcase-container reveal-scale">
-                <div class="app-screen">
-                    <img src="https://images.unsplash.com/photo-1618424181497-157f25b6ce5b?auto=format&fit=crop&w=400&q=80" alt="App Screen 1">
-                </div>
-                <div class="app-screen">
-                    <img src="https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&w=400&q=80" alt="App Screen 2">
-                </div>
-                <div class="app-screen">
-                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=400&q=80" alt="App Screen 3">
-                </div>
-                <div class="app-screen">
-                    <img src="https://images.unsplash.com/photo-1607252656733-fd742ca4c6bb?auto=format&fit=crop&w=400&q=80" alt="App Screen 4">
-                </div>
-                
-                <div class="app-screen">
-                    <img src="https://images.unsplash.com/photo-1618424181497-157f25b6ce5b?auto=format&fit=crop&w=400&q=80" alt="App Screen 1">
-                </div>
-                <div class="app-screen">
-                    <img src="https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&w=400&q=80" alt="App Screen 2">
-                </div>
-                <div class="app-screen">
-                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=400&q=80" alt="App Screen 3">
-                </div>
-                <div class="app-screen">
-                    <img src="https://images.unsplash.com/photo-1607252656733-fd742ca4c6bb?auto=format&fit=crop&w=400&q=80" alt="App Screen 4">
-                </div>
+                <div class="app-screen"><img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=400&q=80" alt="UI Screen 1"></div>
+                <div class="app-screen"><img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=400&q=80" alt="UI Screen 2"></div>
+                <div class="app-screen"><img src="https://images.unsplash.com/photo-1523206489230-c012c64b2b48?auto=format&fit=crop&w=400&q=80" alt="UI Screen 3"></div>
+                <div class="app-screen"><img src="https://images.unsplash.com/photo-1535303311164-664fc9ec6532?auto=format&fit=crop&w=400&q=80" alt="UI Screen 4"></div>
+                <div class="app-screen"><img src="https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&w=400&q=80" alt="UI Screen 5"></div>
+                <div class="app-screen"><img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=400&q=80" alt="UI Screen 1"></div>
+                <div class="app-screen"><img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=400&q=80" alt="UI Screen 2"></div>
+                <div class="app-screen"><img src="https://images.unsplash.com/photo-1523206489230-c012c64b2b48?auto=format&fit=crop&w=400&q=80" alt="UI Screen 3"></div>
+                <div class="app-screen"><img src="https://images.unsplash.com/photo-1535303311164-664fc9ec6532?auto=format&fit=crop&w=400&q=80" alt="UI Screen 4"></div>
+                <div class="app-screen"><img src="https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&w=400&q=80" alt="UI Screen 5"></div>
             </div>
         </section>
 
@@ -1028,103 +824,54 @@
         </section>
 
         <section class="services-grid">
-            
-            <div class="service-card reveal-left delay-100">
+            <div class="service-card reveal-left">
                 <div class="service-icon">🖥️</div>
-                <div class="service-info">
-                    <h2>Web Frontends</h2>
-                    <p>Engaging, responsive, and lightning-fast user interfaces built with modern web frameworks.</p>
-                </div>
+                <div class="service-info"><h2>Web Frontends</h2><p>Engaging, responsive, and lightning-fast user interfaces built with modern web frameworks.</p></div>
             </div>
-
-            <div class="service-card reveal delay-200">
+            <div class="service-card reveal">
                 <div class="service-icon">⚙️</div>
-                <div class="service-info">
-                    <h2>Scalable Backends</h2>
-                    <p>Robust server-side architecture, custom APIs, and automated system logic to power your applications.</p>
-                </div>
+                <div class="service-info"><h2>Scalable Backends</h2><p>Robust server-side architecture, custom APIs, and automated system logic to power your applications.</p></div>
             </div>
-
-            <div class="service-card reveal-right delay-300">
-                <div class="service-icon">🗄️</div>
-                <div class="service-info">
-                    <h2>Cloud Databases</h2>
-                    <p>Secure, real-time data management with optimized structures to ensure high performance and low latency.</p>
-                </div>
+            <div class="service-card reveal-right">
+                <div class="service-icon">☁️</div>
+                <div class="service-info"><h2>Cloud Databases</h2><p>Secure, real-time data management with optimized structures to ensure high performance and low latency.</p></div>
             </div>
-
-            <div class="service-card reveal-left delay-100">
+            <div class="service-card reveal-left">
                 <div class="service-icon">📱</div>
-                <div class="service-info">
-                    <h2>Mobile Apps</h2>
-                    <p>Sleek, intuitive native and cross-platform mobile experiences that keep users connected on the go.</p>
-                </div>
+                <div class="service-info"><h2>Mobile Apps</h2><p>Sleek, intuitive native and cross-platform mobile experiences that keep users connected on the go.</p></div>
             </div>
-
-            <div class="service-card reveal delay-200">
+            <div class="service-card reveal">
                 <div class="service-icon">🤖</div>
-                <div class="service-info">
-                    <h2>AI Integration</h2>
-                    <p>Advanced custom LLM hosting and smart generative AI integrations to automate and enhance productivity.</p>
-                </div>
+                <div class="service-info"><h2>AI Integration</h2><p>Advanced custom LLM hosting and smart generative AI integrations to automate and enhance productivity.</p></div>
             </div>
-
-            <div class="service-card reveal-right delay-300">
+            <div class="service-card reveal-right">
                 <div class="service-icon">🛍️</div>
-                <div class="service-info">
-                    <h2>Custom Portals</h2>
-                    <p>Tailored e-commerce solutions and micro-storefronts equipped with tracking and enterprise-grade security.</p>
-                </div>
+                <div class="service-info"><h2>Custom Portals</h2><p>Tailored e-commerce solutions and micro-storefronts equipped with tracking and enterprise-grade security.</p></div>
             </div>
-
-            <div class="service-card reveal-left delay-100">
+            <div class="service-card reveal-left">
                 <div class="service-icon">🟢</div>
-                <div class="service-info">
-                    <h2>Node.js Monoliths</h2>
-                    <p>We architect high-performance monolithic Node.js and Express backends. We deliver whole-code logic that guarantees stability without fragmentation.</p>
-                </div>
+                <div class="service-info"><h2>Node.js Monoliths</h2><p>We architect high-performance monolithic Node.js and Express backends for stability without fragmentation.</p></div>
             </div>
-
-            <div class="service-card reveal delay-200">
+            <div class="service-card reveal">
                 <div class="service-icon">🔥</div>
-                <div class="service-info">
-                    <h2>Firebase Architectures</h2>
-                    <p>Deep integration of Firestore, Realtime Database, and App Check authentication logic to handle massive, secure user synchronization instantly.</p>
-                </div>
+                <div class="service-info"><h2>Firebase Architectures</h2><p>Deep integration of Firestore and Realtime Database to handle massive user synchronization instantly.</p></div>
             </div>
-
-            <div class="service-card reveal-right delay-300">
+            <div class="service-card reveal-right">
                 <div class="service-icon">⚡</div>
-                <div class="service-info">
-                    <h2>Progressive Web Apps (PWA)</h2>
-                    <p>Transforming web portals into native-feeling apps. We implement advanced Service Worker caching strategies (including ignoreSearch query handling) for offline reliability.</p>
-                </div>
+                <div class="service-info"><h2>Progressive Web Apps</h2><p>Transforming web portals into native-feeling apps with advanced Service Worker caching strategies.</p></div>
             </div>
-
-            <div class="service-card reveal-left delay-100">
+            <div class="service-card reveal-left">
                 <div class="service-icon">🔔</div>
-                <div class="service-info">
-                    <h2>Next-Gen Push Notifications</h2>
-                    <p>Upgrading outdated messaging systems to industry-leading SDKs like OneSignal. We ensure real-time delivery to thousands of clients simultaneously.</p>
-                </div>
+                <div class="service-info"><h2>Next-Gen Push Notifications</h2><p>Upgrading outdated messaging systems to industry-leading SDKs like OneSignal for real-time delivery.</p></div>
             </div>
-
-            <div class="service-card reveal delay-200">
+            <div class="service-card reveal">
                 <div class="service-icon">⚛️</div>
-                <div class="service-info">
-                    <h2>React Native Migrations</h2>
-                    <p>Have a massive HTML/JS web portal? We specialize in migrating thousands of lines of monolithic code into fluid, compiled native mobile environments.</p>
-                </div>
+                <div class="service-info"><h2>React Native Migrations</h2><p>We specialize in migrating massive HTML/JS portals into fluid, compiled native mobile environments.</p></div>
             </div>
-
-            <div class="service-card reveal-right delay-300">
+            <div class="service-card reveal-right">
                 <div class="service-icon">🛠️</div>
-                <div class="service-info">
-                    <h2>Hardware & Infrastructure</h2>
-                    <p>Beyond software. We consult on custom PC rig builds, network printer sharing logic, and hardcore hardware resilience and recovery.</p>
-                </div>
+                <div class="service-info"><h2>Hardware & Infrastructure</h2><p>Beyond software. We consult on custom PC builds, network logic, and hardware resilience.</p></div>
             </div>
-
         </section>
 
         <section id="order-form" class="order-section">
@@ -1133,131 +880,110 @@
                     <h2>Start Your Project</h2>
                     <p>Provide details below. Our engineering team builds whole-code solutions perfectly tailored to your specifications.</p>
                 </div>
-
-                <form onsubmit="event.preventDefault(); alert('Order received by Goorac Corporation. We will contact you via email shortly.');">
+                <form id="project-form">
                     <div class="form-grid">
-                        
                         <div class="form-group">
-                            <label class="form-label" for="clientName">Full Name / Company Name</label>
-                            <input type="text" id="clientName" class="form-control" placeholder="e.g. John Doe / TechCorp" required>
+                            <label class="form-label">Full Name / Company Name</label>
+                            <input type="text" class="form-control" placeholder="e.g. John Doe / TechCorp" required>
                         </div>
-                        
                         <div class="form-group">
-                            <label class="form-label" for="clientEmail">Email Address</label>
-                            <input type="email" id="clientEmail" class="form-control" placeholder="john@example.com" required>
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" placeholder="john@example.com" required>
                         </div>
-                        
                         <div class="form-group">
-                            <label class="form-label" for="clientPhone">Phone / WhatsApp Number</label>
-                            <input type="tel" id="clientPhone" class="form-control" placeholder="+91 90000 00000" required>
+                            <label class="form-label">Phone / WhatsApp Number</label>
+                            <input type="tel" class="form-control" placeholder="+91 90000 00000" required>
                         </div>
-
                         <div class="form-group">
-                            <label class="form-label" for="projectType">Primary Engineering Service</label>
-                            <select id="projectType" class="form-control" required>
+                            <label class="form-label">Primary Engineering Service</label>
+                            <select class="form-control" required>
                                 <option value="" disabled selected>Select service type...</option>
-                                <option value="backend">Node.js / Express Backend Architecture</option>
-                                <option value="mobile_native">React Native App Development</option>
-                                <option value="pwa">PWA & Service Worker Implementation</option>
-                                <option value="firebase">Real-time Firebase Infrastructure</option>
-                                <option value="ai">AI LLM Integration (Gemini/Grok)</option>
-                                <option value="other">Other / Full Stack Solution</option>
+                                <option>Node.js / Express Backend</option>
+                                <option>React Native Development</option>
+                                <option>PWA Implementation</option>
+                                <option>Firebase Infrastructure</option>
+                                <option>AI LLM Integration</option>
+                                <option>Full Stack Solution</option>
                             </select>
                         </div>
-
                         <div class="form-group full-width">
-                            <label class="form-label" for="projectDetails">Comprehensive Project Requirements</label>
-                            <textarea id="projectDetails" class="form-control" placeholder="Describe your vision. Mention any specific feature requirements (e.g., Vercel deployment, OneSignal notifications, monolithic codebase structure)..." required></textarea>
+                            <label class="form-label">Comprehensive Project Requirements</label>
+                            <textarea class="form-control" placeholder="Describe your vision. Mention any specific feature requirements..." required></textarea>
                         </div>
-
                         <div class="form-group full-width">
-                            <button type="submit" class="submit-btn">
-                                Submit Project Order 
-                                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                            </button>
+                            <button type="submit" class="submit-btn">Submit Project Order <svg style="width:20px; margin-left:10px;" viewBox="0 0 24 24"><path fill="white" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
                         </div>
-
                     </div>
                 </form>
             </div>
         </section>
-
     </main>
 
     <footer class="reveal">
         <div class="footer-content">
             <div class="footer-about">
                 <h3>About Goorac Corporation</h3>
-                <p>Goorac Corporation is a leading technology firm dedicated to creating innovative digital ecosystems. We specialize in high-performance web applications, artificial intelligence integrations, and scalable mobile software designed to empower users worldwide.</p>
+                <p>Goorac Corporation is a leading technology firm dedicated to creating innovative digital ecosystems. We specialize in high-performance web applications, artificial intelligence integrations, and scalable mobile software.</p>
             </div>
-            
             <div class="footer-contact">
                 <h3>Contact Us</h3>
                 <div class="contact-info">
-                    <a href="mailto:corporationgoorac@gmail.com" class="contact-link">
-                        <span class="contact-icon">✉️</span> corporationgoorac@gmail.com
-                    </a>
-                    <a href="tel:+919443042733" class="contact-link">
-                        <span class="contact-icon">📞</span> +91 94430 42733
-                    </a>
+                    <a href="mailto:corporationgoorac@gmail.com" class="contact-link">✉️ corporationgoorac@gmail.com</a>
+                    <a href="tel:+919443042733" class="contact-link">📞 +91 94430 42733</a>
                 </div>
             </div>
         </div>
-
         <div class="footer-bottom">
             <p class="logo" style="font-size: 1rem;">Goorac</p>
-            <p class="copyright">© 2026 Goorac Corporation. All rights reserved.</p>
+            <p>© 2026 Goorac Corporation. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            
-            // Intersection Observer configuration for scroll reveals
-            const observerOptions = {
-                root: null, // use the viewport
-                rootMargin: '0px 0px -50px 0px', // Adjusted trigger margin to fix alignment pops
-                threshold: 0.1 // Trigger earlier for smoother entry
+            // Function for mobile haptic vibration
+            const triggerHaptic = (duration = 50) => {
+                if ("vibrate" in navigator) {
+                    navigator.vibrate(duration);
+                }
             };
 
-            // Callback function for the observer
-            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            // Intersection Observer for animations
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // If element is in view
                     if (entry.isIntersecting) {
-                        // Add the 'active' class to trigger CSS transition
                         entry.target.classList.add('active');
-                        // Unobserve the element so it only animates once
-                        observer.unobserve(entry.target);
                     }
                 });
-            }, observerOptions);
+            }, { threshold: 0.1 });
 
-            // Select all elements with reveal classes
-            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
-            
-            // Observe each element
-            revealElements.forEach(element => {
-                revealOnScroll.observe(element);
-            });
+            document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => observer.observe(el));
 
-            // Smooth scrolling for anchor links (e.g., from header to order form)
+            // Smooth Scroll with Haptic Trigger
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
-                    const targetId = this.getAttribute('href');
-                    if(targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if(targetElement) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if(target) {
                         e.preventDefault();
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
+                        triggerHaptic(30);
+                        target.scrollIntoView({ behavior: 'smooth' });
                     }
                 });
             });
 
+            // Button Feedback
+            document.querySelectorAll('.btn-action, .download-btn, .submit-btn, .contact-link').forEach(btn => {
+                btn.addEventListener('click', () => triggerHaptic(60));
+            });
+
+            // Form Submit Logic
+            const projectForm = document.getElementById('project-form');
+            projectForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                triggerHaptic(); // Special double vibration for success
+                alert('Order received by Goorac Corporation. We will contact you via email shortly.');
+                projectForm.reset();
+            });
         });
     </script>
 </body>
