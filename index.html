@@ -991,12 +991,34 @@
                 btn.addEventListener('click', () => triggerHaptic(60));
             });
 
-            // Form Submit Logic
+            // Form Submit Logic: Beautiful WhatsApp Redirect
             const projectForm = document.getElementById('project-form');
             projectForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                triggerHaptic(); // Special double vibration for success
-                alert('Order received by Goorac Corporation. We will contact you via email shortly.');
+                
+                // Extracting values from form fields
+                const name = this.querySelectorAll('input').value;
+                const email = this.querySelectorAll('input').value;
+                const phone = this.querySelectorAll('input').value;
+                const service = this.querySelector('select').value;
+                const requirements = this.querySelector('textarea').value;
+
+                // Creating the WhatsApp message body
+                const message = `🚀 *New Project Inquiry: Goorac Corp*%0A%0A` +
+                                `*Name/Company:* ${name}%0A` +
+                                `*Email:* ${email}%0A` +
+                                `*Phone:* ${phone}%0A` +
+                                `*Service:* ${service}%0A%0A` +
+                                `*Project Details:*%0A${requirements}%0A%0A` +
+                                `_Sent via Goorac Web Portal_`;
+
+                // Redirecting to WhatsApp
+                const whatsappNumber = "919443042733";
+                const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+                
+                triggerHaptic(100); // Stronger haptic for successful submission
+                window.open(whatsappURL, '_blank');
+                
                 projectForm.reset();
             });
         });
