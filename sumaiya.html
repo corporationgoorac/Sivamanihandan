@@ -87,7 +87,7 @@
             100% { transform: translate(-2vw, 3vh) scale(0.95); }
         }
 
-        /* Page Container */
+        /* Page Container - Updated to allow scrolling when content overflows */
         .page {
             position: absolute;
             top: 0;
@@ -99,10 +99,12 @@
             transition: opacity 1.2s var(--ease), visibility 1.2s;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; /* Changed from center to allow top scrolling properly */
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px; /* Increased padding */
             z-index: 10;
+            overflow-y: auto; /* Enabled vertical scrolling */
+            overflow-x: hidden;
         }
 
         .page.active {
@@ -128,7 +130,7 @@
             flex-direction: column;
             transform: rotateX(25deg) rotateY(-15deg) rotateZ(-10deg) scale(1.2);
             opacity: 0;
-            animation: revealAndFade 8.5s var(--ease) forwards;
+            animation: revealAndFade 4.5s var(--ease) forwards; /* Adjusted for 5s timer */
             pointer-events: none;
         }
 
@@ -168,14 +170,16 @@
             opacity: 0;
             transform: scale(0.9);
             text-align: center;
-            animation: popInText 4s ease-out 5.5s forwards; 
+            top: 50%;
+            transform: translateY(-50%) scale(0.9);
+            animation: popInText 2.5s ease-out 2.5s forwards; /* Adjusted for 5s timer */
         }
 
         @keyframes popInText {
-            0% { opacity: 0; transform: scale(0.9) translateY(20px); filter: blur(10px); }
-            30% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-            80% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-            100% { opacity: 0; transform: scale(1.05) translateY(-10px); filter: blur(10px); }
+            0% { opacity: 0; transform: scale(0.9) translateY(calc(-50% + 20px)); filter: blur(10px); }
+            30% { opacity: 1; transform: scale(1) translateY(-50%); filter: blur(0); }
+            80% { opacity: 1; transform: scale(1) translateY(-50%); filter: blur(0); }
+            100% { opacity: 0; transform: scale(1.05) translateY(calc(-50% - 10px)); filter: blur(10px); }
         }
 
         .realized-sorry h1 {
@@ -221,9 +225,11 @@
 
         /* --- Glassmorphism Cards --- */
         .glass-card-wrapper {
+            margin: auto 0; /* Ensures the card is centered when it's small, but doesn't cut off when big */
             perspective: 1200px;
             width: 100%;
             max-width: 550px;
+            padding: 20px 0; /* Padding for scroll clearance */
         }
 
         .glass-card {
@@ -638,7 +644,7 @@
 
             setTimeout(() => {
                 nextPage(1, 2);
-            }, 9000);
+            }, 5000); // Changed to 5000ms (5 seconds)
         }
 
         // --- Update Progress Bar ---
