@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For My Best Friend</title>
+    <title>For My Favorite Person</title>
     <style>
         /* Light Theme Meta Pattern Variables - Softened for maximum calmness */
         :root {
@@ -99,11 +99,11 @@
             transition: opacity 1.2s var(--ease), visibility 1.2s;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Changed from center to allow top scrolling properly */
+            justify-content: flex-start;
             align-items: center;
-            padding: 40px 20px; /* Increased padding */
+            padding: 40px 20px; 
             z-index: 10;
-            overflow-y: auto; /* Enabled vertical scrolling */
+            overflow-y: auto; 
             overflow-x: hidden;
         }
 
@@ -130,7 +130,7 @@
             flex-direction: column;
             transform: rotateX(25deg) rotateY(-15deg) rotateZ(-10deg) scale(1.2);
             opacity: 0;
-            animation: revealAndFade 4.5s var(--ease) forwards; /* Adjusted for 5s timer */
+            animation: revealAndFade 4.5s var(--ease) forwards;
             pointer-events: none;
         }
 
@@ -172,7 +172,7 @@
             text-align: center;
             top: 50%;
             transform: translateY(-50%) scale(0.9);
-            animation: popInText 2.5s ease-out 2.5s forwards; /* Adjusted for 5s timer */
+            animation: popInText 2.5s ease-out 2.5s forwards; 
         }
 
         @keyframes popInText {
@@ -190,6 +190,23 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 10px 30px rgba(43, 122, 120, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .pulse-heart {
+            display: inline-block;
+            color: var(--meta-pink);
+            -webkit-text-fill-color: var(--meta-pink);
+            animation: heartbeat 1.5s infinite ease-in-out;
+            text-shadow: none;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
         }
 
         /* --- Breathe Animation (De-escalation) --- */
@@ -225,11 +242,11 @@
 
         /* --- Glassmorphism Cards --- */
         .glass-card-wrapper {
-            margin: auto 0; /* Ensures the card is centered when it's small, but doesn't cut off when big */
+            margin: auto 0;
             perspective: 1200px;
             width: 100%;
             max-width: 550px;
-            padding: 20px 0; /* Padding for scroll clearance */
+            padding: 20px 0;
         }
 
         .glass-card {
@@ -442,7 +459,7 @@
     <div id="page1" class="page active">
         <div id="infinity-sorry-container"></div>
         <div class="realized-sorry">
-            <h1>One Realized Sorry</h1>
+            <h1>One Realized Sorry <span class="pulse-heart">❤️</span></h1>
         </div>
     </div>
 
@@ -466,7 +483,7 @@
                 <h2>I Know I Messed Up</h2>
                 <div class="highlight highlight-purple" style="font-size: 2rem;">This wasn't a small thing.</div>
                 <p>I know this argument made you want to just switch off your phone and walk away from everything.</p>
-                <p>You have every right to be mad. I am not sending this to make excuses; I am sending this because my life is significantly worse when my best friend is mad at me.</p>
+                <p>You have every right to be mad. I am not sending this to make excuses; I am sending this because my life is significantly worse when my <strong>favorite person</strong> is mad at me.</p>
                 <button class="btn" onclick="nextPage(3, 4)">Next</button>
             </div>
         </div>
@@ -530,9 +547,9 @@
                 <div class="highlight highlight-purple">134</div>
                 <p>Yeah, we fight. And this recent one was huge. But look at our track record.</p>
                 <ul class="fight-quotes">
-                    <li>Fake friends don't fight. Real friends argue because they actually care about the outcome.</li>
-                    <li>A solid bond isn't one without friction; it's one where forgiveness outlasts the heat.</li>
-                    <li>Indifference is the real enemy of friendship, not anger.</li>
+                    <li>Acquaintances don't fight. Favorite people argue because they actually care about the outcome.</li>
+                    <li>A solid connection isn't one without friction; it's one where forgiveness outlasts the heat.</li>
+                    <li>Indifference is the real enemy of our bond, not anger.</li>
                 </ul>
                 <button class="btn" onclick="nextPage(8, 9)">Next</button>
             </div>
@@ -557,7 +574,7 @@
                 </div>
 
                 <p>We literally average a fight every few days! And yet, we STILL haven't blocked each other permanently.</p>
-                <p>If that isn't peak best-friend resilience, I don't know what is.</p>
+                <p>If that isn't peak <strong>favorite-person</strong> resilience, I don't know what is.</p>
                 <button class="btn" onclick="nextPage(9, 10)">Next</button>
             </div>
         </div>
@@ -568,9 +585,9 @@
             <div class="glass-card tilt-card">
                 <h2>The Truth About Us</h2>
                 <div class="quote-box" style="background: rgba(225, 190, 231, 0.3); color: var(--meta-purple); border-left-color: var(--meta-purple);">
-                    "Every disagreement is just us figuring out how to be better friends to each other."
+                    "Every disagreement is just us figuring out how to be better for each other."
                 </div>
-                <p>I don't want to be right. I don't care about winning the argument. I just want my friend back.</p>
+                <p>I don't want to be right. I don't care about winning the argument. I just want my favorite person back.</p>
                 <button class="btn" onclick="nextPage(10, 11)">Next</button>
             </div>
         </div>
@@ -580,7 +597,7 @@
         <div class="glass-card-wrapper">
             <div class="glass-card tilt-card">
                 <h2>To Fathima Sumaiya</h2>
-                <p>You're not just a friend; you're my ultimate sounding board. No matter how chaotic my life gets, talking to you is the reset button I rely on.</p>
+                <p>You're not just someone I talk to; you are my absolute <strong>favorite person</strong>. No matter how chaotic my life gets, talking to you is the reset button I rely on.</p>
                 <p>When we aren't talking, a massive part of my day just feels empty.</p>
                 <button class="btn" onclick="nextPage(11, 12)">Next</button>
             </div>
@@ -592,7 +609,7 @@
             <div class="glass-card tilt-card">
                 <h2>Through Every Era</h2>
                 <p>From the old school bus rides to seeing Little Aafika grow into the incredible 21-year-old she is today, you've been a constant thread.</p>
-                <p>My biggest fear isn't an argument; it's losing my best friend. Let's not let a dumb fight break our streak.</p>
+                <p>My biggest fear isn't an argument; it's losing my favorite person. Let's not let a dumb fight break our streak.</p>
                 <button class="btn" onclick="nextPage(12, 13)">Next</button>
             </div>
         </div>
@@ -601,9 +618,12 @@
     <div id="page13" class="page">
         <div class="glass-card-wrapper">
             <div class="glass-card tilt-card">
-                <h2>My Promise</h2>
-                <p>I am deeply, genuinely sorry for my part in this. I never want to be the reason your mood is ruined.</p>
-                <p>I promise to listen better, be more patient, and protect our peace.</p>
+                <h2>The "Favorite Person" Status</h2>
+                <p>Out of everyone in the world, I chose you to be the one I want to talk to the most. That's what being a favorite person means.</p>
+                <div class="quote-box" style="background: rgba(209, 123, 136, 0.15); color: var(--meta-pink); border-left-color: var(--meta-pink);">
+                    "You know my flaws, you match my energy, and even when I'm annoying, you stay."
+                </div>
+                <p>That level of comfort is rare, and it's reserved only for you. I don't want to lose it.</p>
                 <button class="btn" onclick="nextPage(13, 14)">Next</button>
             </div>
         </div>
@@ -612,20 +632,31 @@
     <div id="page14" class="page">
         <div class="glass-card-wrapper">
             <div class="glass-card tilt-card">
+                <h2>My Promise</h2>
+                <p>I am deeply, genuinely sorry for my part in this. I never want to be the reason your mood is ruined.</p>
+                <p>I promise to listen better, be more patient, and protect our peace.</p>
+                <button class="btn" onclick="nextPage(14, 15)">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="page15" class="page">
+        <div class="glass-card-wrapper">
+            <div class="glass-card tilt-card">
                 <h2>So...</h2>
                 <div class="highlight" style="font-size: 2.8rem;">Are we okay?</div>
                 <p>Can we please put this big fight behind us, go back to our daily streak, and maybe put on a movie?</p>
                 
                 <div class="button-group">
                     <button class="btn" onclick="openInstagram()">Yes</button>
-                    <button class="btn" onclick="openInstagram()" style="background: linear-gradient(135deg, var(--meta-purple), #ff4081);">100% Yes</button>
+                    <button class="btn" onclick="openInstagram()" style="background: linear-gradient(135deg, var(--meta-purple), #ff4081);">100% Yes <span class="pulse-heart" style="-webkit-text-fill-color: white;">🤍</span></button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const totalPages = 14; 
+        const totalPages = 15; 
 
         // --- Page 1: Professional Kinetic Typography Sorry Logic ---
         function generateInfinitySorry() {
